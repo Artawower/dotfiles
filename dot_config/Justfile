@@ -41,40 +41,6 @@ mise:
     mise install
     mise trust ~/.config/mise.toml
 
-pnpm-globals:
-    pnpm add -g \
-    skills \
-    context-mode \
-    @mem0/cli \
-    mem0ai \
-    @mariozechner/pi-coding-agent \
-    opencode-ai \
-    env-cmd \
-    @angular/language-service@next \
-    vscode-langservers-extracted \
-    @angular/cli \
-    copilot-node-server \
-    yalc \
-    lua-fmt \
-    @openai/codex \
-    @qwen-code/qwen-code@latest \
-    mcp-codex-cli \
-    @gy920/qwen-mcp-tool \
-    pretty-ts-errors-markdown \
-    playwright \
-    typescript \
-    typescript-language-server \
-    @angular/language-server \
-    @vue/language-server \
-    @github/copilot-language-server \
-    eslint \
-    npm-check-updates \
-    npm-upgrade \
-    stylelint \
-    @mermaid-js/mermaid-cli \
-    @tobilu/qmd \
-    pi-antigravity-rotator
-
 cargo:
     just _cargo-{{os()}}
     cargo install gitu kdlfmt
