@@ -1,0 +1,255 @@
+default:
+    just --choose
+
+fedora-deps:
+    if [ ! -f /etc/yum.repos.d/terra.repo ]; then \
+        sudo rpm -e terra-release 2>/dev/null || true; \
+        sudo env -u LD_LIBRARY_PATH dnf install -y --nogpgcheck \
+            --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release; \
+    fi
+    sudo dnf copr enable solopasha/hyprland
+    sudo env -u LD_LIBRARY_PATH dnf clean all
+    sudo env -u LD_LIBRARY_PATH dnf install -y --skip-unavailable \
+        noctalia-shell \
+        fastfetch \
+        freetype-devel libepoxy-devel fontconfig-devel cairo-devel \
+        pango-devel gtk4-devel libadwaita-devel libspiro-devel \
+        android-tools neohtop fontconfig pkg-config rustup earlyoom \
+        openssl-devel vulkan-loader-devel vulkan-headers shaderc \
+        docker docker-compose nodejs22 bun emacs hunspell \
+        hunspell-ru hunspell-en-US wl-clipboard enchant2-devel \
+        bitwarden swayidle sway-audio-idle-inhibit rclone libevdev-devel \
+        hyprland meson cmake cpio gcc-c++ gcc
+
+    sudo systemctl enable --now docker
+    sudo systemctl enable --now earlyoom
+    sudo usermod -aG docker $USER
+
+    sudo rpm -v --import https://yum.tableplus.com/apt.tableplus.com.gpg.key
+    sudo env -u LD_LIBRARY_PATH dnf config-manager addrepo --overwrite --from-repofile=https://yum.tableplus.com/rpm/arm64/tableplus.repo
+    sudo env -u LD_LIBRARY_PATH dnf install -y tableplus
+
+flatpak:
+    flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+    flatpak install -y flathub io.github.seadve.Kooha
+    flatpak install -y flathub com.mattermost.Desktop
+    flatpak install -y flathub org.telegram.desktop
+    flatpak install -y flathub eu.betterbird.Betterbird
+    flatpak install -y flathub com.github.KRTirtho.Spotube
+
+mise:
+    mise install
+    mise trust ~/.config/mise.toml
+
+pnpm-globals:
+    pnpm add -g \
+    skills \
+    context-mode \
+    @mem0/cli \
+    mem0ai \
+    @mariozechner/pi-coding-agent \
+    opencode-ai \
+    env-cmd \
+    @angular/language-service@next \
+    vscode-langservers-extracted \
+    @angular/cli \
+    copilot-node-server \
+    yalc \
+    lua-fmt \
+    @openai/codex \
+    @qwen-code/qwen-code@latest \
+    mcp-codex-cli \
+    @gy920/qwen-mcp-tool \
+    pretty-ts-errors-markdown \
+    playwright \
+    typescript \
+    typescript-language-server \
+    @angular/language-server \
+    @vue/language-server \
+    @github/copilot-language-server \
+    eslint \
+    npm-check-updates \
+    npm-upgrade \
+    stylelint \
+    @mermaid-js/mermaid-cli \
+    @tobilu/qmd \
+    pi-antigravity-rotator
+
+cargo:
+    just _cargo-{{os()}}
+    cargo install gitu kdlfmt
+    cargo install codebook-lsp
+
+_cargo-linux:
+    PKG_CONFIG_PATH=/usr/lib64/pkgconfig
+    LD_LIBRARY_PATH=/usr/lib64
+    cargo install wl-screenrec
+
+_cargo-macos:
+    :
+    
+go:
+    go install golang.org/x/tools/gopls@latest
+
+uv:
+    uv tool upgrade --all
+    uv tool install rassumfrassum 
+    uv tool install ty
+    uv tool install basedpyright
+    uv tool install httpie
+    uv tool install http-prompt
+  
+    
+[working-directory("./nix-linux")]
+nix-linux:
+    nix run home-manager/master -- switch --flake . --impure
+
+nix-mac:
+    just nix-home-mac
+    just nix-darwin-mac
+
+[working-directory("./nix")]
+nix-darwin-mac:
+    sudo -v && sudo /run/current-system/sw/bin/darwin-rebuild switch --flake ~/.config/nix
+    @echo "Successfully applied Nix configuration for macOS."
+
+[working-directory("./nix")]
+nix-home-mac:
+    nix run home-manager/master -- switch -b backup --flake ~/.config/nix
+    @echo "Successfully applied Home Manager configuration for macOS."
+
+[working-directory("./nix")]
+nix-clean-mac:
+    find "$$HOME" \
+        -path "$$HOME/OrbStack/*" -prune -o \
+        -path "$$HOME/Library/Containers/*" -prune -o \
+        -xtype l -print0 | while IFS= read -r -d '' link; do \
+            echo "Removing broken link: $$link"; \
+            rm -f "$$link" 2>/dev/null || true; \
+        done
+
+[working-directory("/tmp")]
+manual-deps:
+    rm -rf /tmp/hyprvoice
+    cd /tmp
+    git clone https://github.com/leonardotrapani/hyprvoice.git
+    cd /tmp/hyprvoice
+    go mod download
+    go build -o hyprvoice ./cmd/hyprvoice
+    mkdir -p ~/.local/bin
+    cp hyprvoice ~/.local/bin/
+
+    rm -rf /tmp/trackpad-is-too-damn-big
+    git clone https://github.com/tascvh/trackpad-is-too-damn-big /tmp/trackpad-is-too-damn-big
+    cmake -B /tmp/trackpad-is-too-damn-big/build -S /tmp/trackpad-is-too-damn-big
+    make -C /tmp/trackpad-is-too-damn-big/build
+    sudo cp /tmp/trackpad-is-too-damn-big/build/titdb /usr/local/bin/titdb
+
+hyprland-plugins:
+    env -i HOME="$HOME" PATH="/usr/bin:/usr/sbin:/bin:/sbin" PKG_CONFIG_PATH="/usr/lib64/pkgconfig:/usr/share/pkgconfig" XDG_RUNTIME_DIR="$XDG_RUNTIME_DIR" HYPRLAND_INSTANCE_SIGNATURE="$HYPRLAND_INSTANCE_SIGNATURE" hyprpm update -f
+    env -i HOME="$HOME" PATH="/usr/bin:/usr/sbin:/bin:/sbin" PKG_CONFIG_PATH="/usr/lib64/pkgconfig:/usr/share/pkgconfig" XDG_RUNTIME_DIR="$XDG_RUNTIME_DIR" HYPRLAND_INSTANCE_SIGNATURE="$HYPRLAND_INSTANCE_SIGNATURE" hyprpm add https://github.com/hyprwm/hyprland-plugins || true
+    hyprpm enable hyprexpo || true
+    hyprpm enable hyprfocus || true
+    hyprpm reload
+
+systemd-services:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    sudo tee /etc/systemd/system/titdb.service > /dev/null <<'EOF'
+    [Unit]
+    Description=Trackpad is too damn big - palm rejection for Apple trackpad
+    After=multi-user.target
+
+    [Service]
+    ExecStart=/usr/local/bin/titdb -d /dev/input/by-path/platform-39b10c000.spi-cs-0-event-mouse -l 10 -r 15 -t 15 -b 10
+    Restart=on-failure
+    RestartSec=3
+
+    [Install]
+    WantedBy=multi-user.target
+    EOF
+    sudo systemctl daemon-reload
+    sudo systemctl enable titdb.service
+    sudo systemctl restart titdb.service
+
+fedora-files:
+    ln -s /home/darkawower/.config/vicinae/scripts /home/darkawower/.local/share/vicinae/scripts
+    echo "darkawower ALL=(root) NOPASSWD: /home/darkawower/.local/bin/cpu-profile-apply" | sudo tee /etc/sudoers.d/cpu-profile
+    sudo chmod 440 /etc/sudoers.d/cpu-profile
+
+link-dirs:
+    ln -sf "$HOME/.config/agents" "$HOME/.agents"
+
+init-linux:
+    just flatpak
+    just fedora-deps
+    just nix-linux
+    just mise
+    just uv
+    just manual-deps
+    just fedora-files
+    just link-dirs
+    just systemd-services
+    just hyprland-plugins
+
+init-mac:
+    just quasiqwerty
+    just mise
+    just uv
+    just nix-darwin-mac
+    just nix-home-mac
+    just uv
+    just go
+    just cargo
+    just link-dirs
+    just nix-clean-mac
+
+
+# Safe daily cleanup for Linux
+clean-linux:
+    @echo "=== Nix cleanup ==="
+    nix-collect-garbage --delete-older-than 7d
+    nix-store --optimise 2>/dev/null || true
+    
+    @echo "\n=== Docker cleanup ==="
+    docker system prune -f 2>/dev/null || true
+    docker builder prune -f --filter "until=24h" 2>/dev/null || true
+    
+    @echo "\n=== DNF cleanup ==="
+    sudo dnf clean all
+    
+    @echo "\n=== Journal cleanup (keep last 7 days) ==="
+    sudo journalctl --vacuum-time=7d
+    
+
+mac:
+    sudo lsof -iTCP -sTCP:LISTEN -n -P
+
+# Quick diagnostics for Nix/Fedora env split issues
+check-env:
+    @echo "Shell: $$SHELL"
+    @echo "PATH entries:"; printf '%s\n' "$${PATH//:/\n}"
+    @echo "LD_LIBRARY_PATH=$${LD_LIBRARY_PATH-<unset>}"
+    @echo "which ld: $$(which ld || true)"
+    @echo "ldd --version:"; ldd --version | head -n1 || true
+    @echo "rustc: $$(command -v rustc || true)"
+    @echo "cargo: $$(command -v cargo || true)"
+
+build-templates:
+    docker buildx build --progress=plain -f docker-services/devcontainer/templates/Dockerfile -t darkawower/devtemplates:latest docker-services/devcontainer/templates
+    docker push darkawower/devtemplates:latest
+
+quasiqwerty:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    TARGET_DIR="$HOME/Library/Keyboard Layouts/QuasiQWERTY.bundle"
+    if [ ! -d "$TARGET_DIR" ]; then
+        echo "Installing QuasiQWERTY layout..."
+        TMP_DIR=$(mktemp -d)
+        git clone --depth 1 https://github.com/larryv/quasiqwerty.git "$TMP_DIR/quasiqwerty"
+        cp -R "$TMP_DIR/quasiqwerty/QuasiQWERTY.bundle" "$HOME/Library/Keyboard Layouts/"
+        rm -rf "$TMP_DIR"
+        echo "QuasiQWERTY successfully installed. You may need to log out or reboot to see it in Keyboard settings."
+    else
+        echo "QuasiQWERTY is already installed."
+    fi
