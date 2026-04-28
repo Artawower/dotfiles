@@ -39,8 +39,8 @@ osascript -e 'tell application "Finder" to make alias file to posix file "/opt/h
 ** Paths
 Config path
 #+BEGIN_SRC emacs-lisp
-(setq my/config-dir "~/.local/share/chezmoi/dot_emacs.d/")
-(setq my/emacs-config-dir "~/.emacs.d/")
+(setq my/config-dir "~/.local/share/chezmoi")
+(setq my/emacs-config-dir "~/.local/share/chezmoi/dot_emacs.d/")
 (setq my/config-file (concat my/emacs-config-dir "README.org"))
 #+END_SRC
 
@@ -5185,11 +5185,17 @@ Override autosave function. What is the sense save buffer whic doesn't exist???
 Manage your dot files like a God
 #+BEGIN_SRC emacs-lisp :results silent
 (use-package chezmoi
-  :commands (chezmoi-find)
+  :commands (chezmoi-find my/open-emacs-config)
   :defer t
-  :binds
-  (("C-c f C" . chezmoi-find)
-   ("C-c f P" . chezmoi-find)))
+  :bind
+  (("C-c f c" . chezmoi-find)
+   ("C-c f P" . my/open-emacs-config))
+  :config
+  (defun my/open-emacs-config ()
+    "Open folder with emacs config"
+    (interactive)
+    (let ((default-directory my/config-file))
+      (call-interactively 'find-file))))
 #+END_SRC
 * Husky
 #+BEGIN_SRC emacs-lisp
