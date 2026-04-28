@@ -39,8 +39,8 @@ osascript -e 'tell application "Finder" to make alias file to posix file "/opt/h
 ** Paths
 Config path
 #+BEGIN_SRC emacs-lisp
-(setq my/config-dir "~/.config/")
-(setq my/emacs-config-dir (concat my/config-dir "emacs/"))
+(setq my/config-dir "~/.emacs.d/")
+(setq my/emacs-config-dir "~/.emacs.d/")
 (setq my/config-file (concat my/emacs-config-dir "README.org"))
 #+END_SRC
 
