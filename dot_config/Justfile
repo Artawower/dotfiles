@@ -1,7 +1,19 @@
 default:
     just --choose
 
-fedora-deps:
+# Set keyboard layout (colemak/qwerty) and apply
+layout layout="":
+    #!/usr/bin/env bash
+    if [ -z "{{ layout }}" ]; then
+        LAYOUT=$(echo -e 'colemak\nqwerty' | fzf --prompt='layout> ' --height=2 --no-multi)
+    else
+        LAYOUT='{{ layout }}'
+    fi
+    echo "layout = \"${LAYOUT}\"" > ~/.local/share/chezmoi/.chezmoidata.toml
+    echo "Layout set to ${LAYOUT}"
+    chezmoi apply
+
+fedoria-deps:
     if [ ! -f /etc/yum.repos.d/terra.repo ]; then \
         sudo rpm -e terra-release 2>/dev/null || true; \
         sudo env -u LD_LIBRARY_PATH dnf install -y --nogpgcheck \
