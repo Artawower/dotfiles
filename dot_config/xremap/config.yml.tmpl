@@ -80,14 +80,14 @@ keymap:
   - name: Ctrl+Meta arrows
     remap:
       C-Super-h: Left
-      C-Super-n: Down
-      C-Super-e: Up
-      C-Super-i: Right
+      C-Super-{{ if eq .layout "colemak" }}n{{ else }}j{{ end }}: Down
+      C-Super-{{ if eq .layout "colemak" }}e{{ else }}k{{ end }}: Up
+      C-Super-{{ if eq .layout "colemak" }}i{{ else }}l{{ end }}: Right
 
   - name: Fn tabs
     remap:
-      Fn-n: C-Tab
-      Fn-e: C-S-Tab
+      Fn-{{ if eq .layout "colemak" }}n{{ else }}j{{ end }}: C-Tab
+      Fn-{{ if eq .layout "colemak" }}e{{ else }}k{{ end }}: C-S-Tab
 
   - name: Emacs
     application:
