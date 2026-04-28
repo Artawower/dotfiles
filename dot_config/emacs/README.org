@@ -5201,6 +5201,12 @@ Override autosave function. What is the sense save buffer whic doesn't exist???
                        :smtp    "smtp.gmail.com"
                        :sent-action delete))))
 #+END_SRC
+
+** Chezmoi
+Manage your dot files like a God
+#+BEGIN_SRC emacs-lisp :results silent
+(use-package chezmoi :defer t)
+#+END_SRC
 * Husky
 #+BEGIN_SRC emacs-lisp
 (use-package husky
