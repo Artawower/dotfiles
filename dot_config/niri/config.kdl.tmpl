@@ -5,6 +5,18 @@
 // Input device configuration.
 // Find the full list of options on the wiki:
 // https://yalter.github.io/niri/Configuration:-Input
+
+{{- $down := "j" -}}
+{{- $up := "k" -}}
+{{- $right := "l" -}}
+{{- $dev_key := "K" -}}
+{{- if eq .layout "colemak" -}}
+{{-   $down = "n" -}}
+{{-   $up = "e" -}}
+{{-   $right = "i" -}}
+{{-   $dev_key = "E" -}}
+{{- end -}}
+
 input {
     keyboard {
         xkb {
@@ -239,7 +251,7 @@ binds {
     Alt+H {
         focus-column-left
     }
-    Alt+L {
+    Alt+{{ $right }} {
         focus-column-right
     }
     Alt+Shift+Left {
@@ -257,7 +269,7 @@ binds {
     Alt+Shift+H {
         move-column-left
     }
-    Alt+Shift+L {
+    Alt+Shift+{{ $right }} {
         move-column-right
     }
     Alt+Home {
@@ -302,10 +314,10 @@ binds {
     Alt+Page_Up {
         focus-workspace-up
     }
-    Alt+J {
+    Alt+{{ $down }} {
         focus-workspace-down
     }
-    Alt+K {
+    Alt+{{ $up }} {
         focus-workspace-up
     }
     Alt+Ctrl+Page_Down {
@@ -314,10 +326,10 @@ binds {
     Alt+Ctrl+Page_Up {
         move-column-to-workspace-up
     }
-    Alt+Shift+J {
+    Alt+Shift+{{ $down }} {
         move-column-to-workspace-down
     }
-    Alt+Shift+K {
+    Alt+Shift+{{ $up }} {
         move-column-to-workspace-up
     }
     Alt+Shift+Page_Down {
@@ -395,7 +407,7 @@ binds {
     Alt+D {
         spawn-sh "niri msg action focus-workspace dev && niri msg action focus-column-last"
     }
-    Alt+E {
+    Alt+{{ $dev_key }} {
         spawn-sh "niri msg action focus-workspace dev && niri msg action focus-column-first"
     }
     Alt+W {
@@ -581,4 +593,3 @@ binds {
 }
 include "dms/binds.kdl"
 include "dms/cursor.kdl"
-
