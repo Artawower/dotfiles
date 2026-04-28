@@ -143,9 +143,6 @@ fedora-files:
     echo "darkawower ALL=(root) NOPASSWD: /home/darkawower/.local/bin/cpu-profile-apply" | sudo tee /etc/sudoers.d/cpu-profile
     sudo chmod 440 /etc/sudoers.d/cpu-profile
 
-link-dirs:
-    ln -sf "$HOME/.config/agents" "$HOME/.agents"
-
 init-linux:
     just flatpak
     just fedora-deps
@@ -154,7 +151,6 @@ init-linux:
     just uv
     just manual-deps
     just fedora-files
-    just link-dirs
     just systemd-services
     just hyprland-plugins
 
@@ -167,7 +163,6 @@ init-mac:
     just uv
     just go
     just cargo
-    just link-dirs
     just nix-clean-mac
 
 

@@ -318,6 +318,7 @@ in
 
       # Emacs development
       "eask-cli"
+      "chezmoi"
     ];
     taps = [
       "BarutSRB/tap"
