@@ -31,34 +31,25 @@ Modern, AI-powered development environment for macOS and Linux. Managed by [[htt
 ** Prerequisites
 
 - macOS (Apple Silicon or Intel) or Linux (Fedora)
-- [[https://www.chezmoi.io/][chezmoi]] installed
+- That's it — chezmoi installs itself
 
-** Bootstrap Installation
+** One-Line Install
 
-#+NAME: install-chezmoi
+#+NAME: install
 #+BEGIN_SRC bash
-# Install chezmoi (macOS)
-brew install chezmoi
-# Or Linux
-curl -sfL https://get.chezmoi.io | sh
-
-# Apply dotfiles
-chezmoi init --apply https://github.com/Artawower/dotfiles
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/Artawower/dotfiles
 #+END_SRC
+
+This downloads chezmoi, clones the repo, and applies all dotfiles in one step.
 
 ** Install Tools
 
+After bootstrapping, =just= and =mise= are already available:
+
 #+NAME: install-tools
 #+BEGIN_SRC bash
-# Full setup (includes mise, nix, cargo tools, etc.)
-just init-mac     # macOS
-just init-linux   # Linux
-
-# Or step by step:
-just mise         # Install runtimes + npm globals via mise
-just uv           # Python tools via uv
-just cargo        # Rust tools
-just go           # Go tools (gopls)
+just init-mac     # macOS — installs mise runtimes, cargo/go tools, nix
+just init-linux   # Linux — same + systemd services, hyprland plugins
 #+END_SRC
 
 ** Install Nix (optional but recommended)
