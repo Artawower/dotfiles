@@ -39,7 +39,7 @@ osascript -e 'tell application "Finder" to make alias file to posix file "/opt/h
 ** Paths
 Config path
 #+BEGIN_SRC emacs-lisp
-(setq my/config-dir "~/.emacs.d/")
+(setq my/config-dir "~/.local/share/chezmoi/dot_emacs.d/")
 (setq my/emacs-config-dir "~/.emacs.d/")
 (setq my/config-file (concat my/emacs-config-dir "README.org"))
 #+END_SRC
@@ -2068,25 +2068,6 @@ Allow to transform PASCAL_CASE -> camelCase -> snake_case
   :bind ("s-C" . string-inflection-all-cycle))
 #+END_SRC
 * File management
-** Functions
-*** Open configuration file
-#+BEGIN_SRC emacs-lisp
-(defun my/open-emacs-config ()
-  "Open folder with emacs config"
-  (interactive)
-  (let ((default-directory my/config-file))
-    (call-interactively 'find-file)))
-#+END_SRC
-
-*** Find configuration file
-#+BEGIN_SRC emacs-lisp :results silent
-(defun my/open-config-file ()
-  "Finc dot file"
-  (interactive)
-  (let ((default-directory my/config-dir))
-    (call-interactively 'project-find-file)))
-#+END_SRC
-
 ** Dired
 *** Core package
 #+BEGIN_SRC emacs-lisp
@@ -3147,8 +3128,6 @@ Function for search in buffer depends or visual or normal line
   :bind (("s-f" . my/consult-line-or-region)
          ("C-c b a" . consult-buffer)
          ("C-c b b" . consult-project-buffer)
-         ("C-c f C" . my/open-config-file)
-         ("C-c f P" . my/open-emacs-config)
          ("C-c f p" . consult-ripgrep)
          ("C-c *" . (lambda () (interactive) (consult-ripgrep nil (thing-at-point 'symbol))))
          ("C-c /" . my/consult-ripgrep-selected-p)
@@ -5205,7 +5184,12 @@ Override autosave function. What is the sense save buffer whic doesn't exist???
 ** Chezmoi
 Manage your dot files like a God
 #+BEGIN_SRC emacs-lisp :results silent
-(use-package chezmoi :commands (chezmoi-find) :defer t)
+(use-package chezmoi
+  :commands (chezmoi-find)
+  :defer t
+  :binds
+  (("C-c f C" . chezmoi-find)
+   ("C-c f P" . chezmoi-find)))
 #+END_SRC
 * Husky
 #+BEGIN_SRC emacs-lisp
