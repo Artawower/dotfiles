@@ -1,0 +1,259 @@
+[[language]]
+name = "typescript"
+language-servers = ["typescript-language-server", "vscode-eslint-language-server", "gpt", "codebook"]
+auto-format = true
+indent = { tab-width = 2, unit = "  " }
+
+[[language]]
+name = "javascript"
+language-servers = ["typescript-language-server", "vscode-eslint-language-server", "gpt", "codebook"]
+auto-format = true
+indent = { tab-width = 2, unit = "  " }
+
+[[language]]
+name = "jsx"
+language-servers = ["typescript-language-server", "vscode-eslint-language-server", "gpt", "codebook"]
+auto-format = true
+indent = { tab-width = 2, unit = "  " }
+
+[[language]]
+name = "tsx"
+language-servers = ["typescript-language-server", "vscode-eslint-language-server", "gpt", "codebook"]
+auto-format = true
+indent = { tab-width = 2, unit = "  " }
+
+[[language]]
+name = "python"
+language-servers = ["pyright", "gpt", "codebook"]
+auto-format = true
+formatter = { command = "black", args = ["--quiet", "-"] }
+indent = { tab-width = 4, unit = "    " }
+
+[[language]]
+name = "go"
+language-servers = ["gopls", "codebook"]
+auto-format = true
+formatter = { command = "gofmt" }
+indent = { tab-width = 4, unit = "\t" }
+
+[[language]]
+name = "lua"
+language-servers = ["lua-language-server", "codebook"]
+auto-format = true
+indent = { tab-width = 2, unit = "  " }
+
+[[language]]
+name = "css"
+language-servers = ["vscode-css-language-server", "codebook"]
+auto-format = true
+indent = { tab-width = 2, unit = "  " }
+
+[[language]]
+name = "scss"
+language-servers = ["vscode-css-language-server", "codebook"]
+auto-format = true
+indent = { tab-width = 2, unit = "  " }
+
+[[language]]
+name = "html"
+language-servers = ["angularls", "vscode-html-language-server", "codebook"]
+auto-format = true
+indent = { tab-width = 2, unit = "  " }
+
+[[language]]
+name = "c-sharp"
+language-servers = [ "csharp-language-server", "codebook"]
+
+[[language]]
+name = "rust"
+language-servers = ["rust-analyzer", "codebook"]
+auto-format = true
+indent = { tab-width = 4, unit = "    " }
+
+
+
+[language-server.typescript-language-server.config]
+hostInfo = "helix"
+plugins = [ { name = "@vue/typescript-plugin", location = "/Users/darkawower/.volta/tools/shared/@vue/language-server", languages = ["vue"] } ]
+tsserver = { path = "/Users/darkawower/.volta/tools/shared/typescript/lib" }
+
+[[language]]
+name = "vue"
+auto-format = true
+language-servers = ["typescript-language-server"]
+formatter = { command = "prettier", args = ["--parser", "vue"] }
+
+[[language]]
+name = "yaml"
+language-servers = ["yaml-language-server"]
+auto-format = true
+indent = { tab-width = 2, unit = "  " }
+
+[[language]]
+name = "json"
+language-servers = ["vscode-json-language-server"]
+auto-format = true
+indent = { tab-width = 2, unit = "  " }
+
+[[language]]
+name = "markdown"
+language-servers = ["marksman"]
+auto-format = true
+indent = { tab-width = 2, unit = "  " }
+
+[[language]]
+name = "toml"
+auto-format = true
+language-servers = ["gpt"]
+indent = { tab-width = 2, unit = "  " }
+
+[language-server.typescript-language-server]
+command = "typescript-language-server"
+args = ["--stdio"]
+
+[language-server.typescript-language-server.config.typescript]
+updateImportsOnFileMove.enabled = "always"
+suggest.completeFunctionCalls = true
+inlayHints.parameterNames.enabled = "all"
+inlayHints.parameterTypes.enabled = true
+inlayHints.variableTypes.enabled = true
+inlayHints.propertyDeclarationTypes.enabled = true
+inlayHints.functionLikeReturnTypes = true
+inlayHints.enumMemberValues.enabled = true
+format.enable = false
+format.semicolons = "remove"
+preferences.importModuleSpecifier = "non-relative"
+preferences.importModuleSpecifierEnding = "auto"
+tsserver.pluginPaths = ["./node_modules"]
+
+[language-server.pyright]
+command = "pyright-langserver"
+args = ["--stdio"]
+config.python.analysis.autoSearchPaths = true
+config.python.analysis.typeCheckingMode = "basic"
+
+[language-server.ruff-lsp]
+command = "ruff-lsp"
+
+[language-server.gopls]
+command = "gopls"
+config.ui.completion.usePlaceholders = true
+
+[language-server.lua-language-server]
+command = "lua-language-server"
+config.Lua.runtime.version = "LuaJIT"
+config.Lua.diagnostics.globals = ["vim"]
+config.Lua.workspace.library = [
+    "$VIMRUNTIME/lua",
+    "$VIMRUNTIME/lua/vim/lsp",
+    "${3rd}/luv/library"
+]
+
+[language-server.vscode-css-language-server]
+command = "vscode-css-language-server"
+args = ["--stdio"]
+
+[language-server.vscode-html-language-server]
+command = "vscode-html-language-server"
+args = ["--stdio"]
+
+[language-server.angularls]
+command = "ngserver"
+args = ["--stdio", "--tsProbeLocations", ".", "--ngProbeLocations", "."]
+
+
+
+[language-server.yaml-language-server]
+command = "yaml-language-server"
+args = ["--stdio"]
+
+[language-server.yaml-language-server.config.yaml.schemas]
+"https://json.schemastore.org/github-workflow" = ".github/workflows/*"
+"https://json.schemastore.org/kustomization" = "kustomization.{yml,yaml}"
+"https://raw.githubusercontent.com/kubernetes/kubernetes/master/api/openapi-spec/swagger.json" = "*.k8s.{yml,yaml}"
+
+[language-server.vscode-eslint-language-server]
+command = "node"
+args = ["bun", "~/.emacs.d/var/lsp/server/eslint/unzipped/extension/server/out/eslintServer.js", '--stdio']
+
+[language-server.vscode-eslint-language-server.config]
+validate = "on"
+experimental = { useFlatConfig = false }
+rulesCustomizations = []
+run = "onType"
+problems = { shortenToSingleLine = false }
+nodePath = ""
+
+[language-server.marksman]
+command = "marksman"
+args = ["server"]
+
+
+[language-server.lsp-ai]
+command = "lsp-ai"
+[language-server.lsp-ai.config.models.ollama]
+type = "ollama"
+chat_endpoint = "http://localhost:11434/v1/chat/completions"
+model = "codellama:7b"
+[language-server.lsp-ai.config.completion]
+model = "ollama"
+
+[language-server.lsp-ai.config.completion.parameters]
+max_tokens = 64
+max_context = 2048
+
+[[language-server.lsp-ai.config.completion.parameters.messages]]
+role = "system"
+content = """You are an AI programming assistant integrated with Helix editor.
+- Given code with cursor position marked by "<CURSOR>", replace it with appropriate code or comments
+- Focus on contextually relevant completions
+- Keep completions concise and syntactically correct
+- Maintain consistency with existing code style"""
+[language-server.lsp-ai.config.chat]
+trigger = "!ai"
+model = "ollama"
+
+[language-server.lsp-ai.config.chat.parameters]
+max_tokens = 512
+max_context = 4096
+
+[[language-server.lsp-ai.config.chat.parameters.messages]]
+role = "system"
+content = """You are an AI coding assistant in Helix editor.
+- Help with code explanations, debugging, refactoring, and improvements
+- Provide concise, actionable responses
+- Consider the current file context and programming language
+- Format code examples with proper syntax highlighting"""
+
+[language-server.harper-ls]
+args = ["--stdio"]
+command = "harper-ls"
+# notice the key:
+config = { harper-ls = { diagnosticSeverity = "error", linters = { long_sentences = false } } }
+
+
+[language-server.csharp-language-server]
+command = "csharp-ls"
+args = ["-v", "-loglevel", "trace"]
+
+[language-server.gpt]
+command = "bun"
+args = ["run", "~/tmp/helix-gpt"]
+
+[language-server.rust-analyzer]
+command = "rust-analyzer"
+
+[language-server.rust-analyzer.config]
+check.command = "clippy"
+cargo.features = "all"
+inlayHints.bindingModeHints.enable = true
+inlayHints.closingBraceHints.minLines = 10
+inlayHints.closureReturnTypeHints.enable = "with_block"
+inlayHints.discriminantHints.enable = "fieldless"
+inlayHints.lifetimeElisionHints.enable = "skip_trivial"
+inlayHints.typeHints.hideClosureInitialization = false
+
+
+[language-server.codebook]
+command = "codebook-lsp"
+args = ["serve"]

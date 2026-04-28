@@ -1,0 +1,55 @@
+# mise global config — replaces volta
+# Runtime + global npm packages, all declarative.
+# Run: `mise install` to install everything.
+
+[tools]
+node = "22"
+pnpm = "latest"
+
+# --- CLI / coding agents ---
+"npm:@mariozechner/pi-coding-agent" = "latest"
+"npm:opencode-ai" = "latest"
+"npm:@openai/codex" = "latest"
+"npm:@qwen-code/qwen-code" = "latest"
+"npm:@kilocode/cli" = "latest"
+"npm:skills" = "latest"
+"npm:context-mode" = "latest"
+"npm:pi-antigravity-rotator" = "latest"
+"npm:pi-link" = "latest"
+"npm:@mem0/cli" = "latest"
+"npm:mem0ai" = "latest"
+
+# --- LSP / language servers ---
+"npm:typescript" = "latest"
+"npm:typescript-language-server" = "latest"
+"npm:vscode-langservers-extracted" = "latest"
+"npm:@angular/cli" = "latest"
+"npm:@angular/language-server" = "latest"
+"npm:@angular/language-service" = "next"
+"npm:@vue/language-server" = "latest"
+"npm:@github/copilot-language-server" = "latest"
+"npm:copilot-node-server" = "latest"
+"npm:pyright" = "latest"
+
+# --- MCP tools ---
+"npm:mcp-codex-cli" = "latest"
+"npm:@gy920/qwen-mcp-tool" = "latest"
+"npm:@tobilu/qmd" = "latest"
+
+# --- Linting / formatting ---
+"npm:eslint" = "latest"
+"npm:stylelint" = "latest"
+"npm:lua-fmt" = "latest"
+"npm:pretty-ts-errors-markdown" = "latest"
+
+# --- Dev tools ---
+"npm:playwright" = "latest"
+"npm:npm-check-updates" = "latest"
+"npm:npm-upgrade" = "latest"
+"npm:env-cmd" = "latest"
+"npm:yalc" = "latest"
+"npm:git-trim" = "latest"
+"npm:@mermaid-js/mermaid-cli" = "latest"
+"npm:ngx-unused-css" = "latest"
+"npm:opentmux" = "latest"
+"npm:orgnote-cli" = "latest"

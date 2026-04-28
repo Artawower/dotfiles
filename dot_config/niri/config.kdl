@@ -1,0 +1,584 @@
+// This config is in the KDL format: https://kdl.dev
+// "/-" comments out the following node.
+// Check the wiki for a full description of the configuration:
+// https://yalter.github.io/niri/Configuration:-Introduction
+// Input device configuration.
+// Find the full list of options on the wiki:
+// https://yalter.github.io/niri/Configuration:-Input
+input {
+    keyboard {
+        xkb {
+            layout "us,ru"
+            // replace ru with needed language
+            options "grp:caps_toggle"
+        }
+        //feel free to change it to other input toggle options, i like to use caps_lock as  language toggle        }
+        track-layout "global"
+        numlock
+    }
+    touchpad {
+        // off
+        // tap
+        // dwt
+        dwtp
+    }
+    mouse {
+
+    }
+    trackpoint {
+        // off
+        natural-scroll
+ // accel-speed 0.2
+        // accel-profile "flat"
+        // scroll-method "on-button-down"
+        // scroll-button 273
+        // scroll-button-lock
+        // middle-emulation
+    }
+ // Uncomment this to make the mouse warp to the center of newly focused windows.
+    // warp-mouse-to-focus
+
+    // Focus windows and outputs automatically when moving the mouse into them.
+    // Setting max-scroll-amount="0%" makes it work only on windows already fully on screen.
+    // focus-follows-mouse max-scroll-amount="0%"
+}
+output "eDP-1" {
+    mode "3024x1964@60.004"
+    scale 2
+}
+workspace "soc"
+workspace "web"
+workspace "dev"
+workspace "deb"
+workspace "oth"
+// workspace "term"
+// Settings that influence how windows are positioned and sized.
+// Find more information on the wiki:
+// https://yalter.github.io/niri/Configuration:-Layout
+layout {
+    background-color "00000020"
+    // Set gaps around windows in logical pixels.
+    gaps 16
+    center-focused-column "never"
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+    }
+    default-column-width {
+        proportion 0.5
+    }
+    focus-ring {
+        off
+        width 4
+        active-color "#7fc8ff"
+        inactive-color "#505050"
+    }
+    border {
+        width 2
+        active-color "#7b57ff"
+        inactive-color "#2e2a3a"
+        urgent-color "#9b0000"
+ // active-gradient from="#e5989b" to="#ffb4a2" angle=45 relative-to="workspace-view" in="oklch longer hue"
+
+        // inactive-gradient from="#505050" to="#808080" angle=45 relative-to="workspace-view"
+    }
+    shadow {
+        // on
+        draw-behind-window true
+        softness 30
+        spread 10
+        offset x=0 y=5
+        color "#0007"
+    }
+    struts {
+        // left 64
+        // right 64
+        top 0
+ // MacBook notch compensation // bottom 64
+    }
+}
+layer-rule {
+    place-within-backdrop true
+}
+spawn-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=niri"
+spawn-at-startup "darkman run"
+spawn-at-startup "ydotoold"
+// spawn-at-startup "dms" "run"
+spawn-at-startup "vicinae" "server"
+spawn-sh-at-startup "pkill xremap; xremap --watch ~/.config/xremap/config.yml"
+spawn-at-startup "sh" "-c" "sleep 1 && /usr/bin/quickshell -c noctalia-shell"
+spawn-at-startup "sh" "-c" "sleep 1; exec hyprvoice serve"
+spawn-sh-at-startup "$HOME/.config/bin/wallpaper-rotate"
+spawn-sh-at-startup "swayidle -w timeout 300 'qs -c noctalia-shell ipc call lockScreen lock' timeout 900 'systemctl suspend' before-sleep 'qs -c noctalia-shell ipc call lockScreen lock'"
+spawn-at-startup "sway-audio-idle-inhibit"
+spawn-at-startup "wl-clip-persist" "--clipboard" "regular"
+spawn-at-startup "wl-paste --type text --watch cliphist store"
+spawn-at-startup "wl-paste --type image --watch cliphist store"
+hotkey-overlay {
+ // Uncomment this line to disable the "Important Hotkeys" pop-up at startup.
+    // skip-at-startup
+
+}
+prefer-no-csd
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+// The wiki explains how to configure individual animations:
+// https://yalter.github.io/niri/Configuration:-Animations
+animations {
+ // Uncomment to turn off all animations.
+    // off
+
+    // Slow down all animations by this factor. Values below 1 speed them up instead.
+    // slowdown 3.0
+
+}
+window-rule {
+    match app-id="^org\\.wezfurlong\\.wezterm$"
+    default-column-width {
+
+    }
+}
+window-rule {
+    match app-id="^telegram-desktop$"
+    open-on-workspace "soc"
+}
+window-rule {
+    match app-id="^mattermost$"
+    open-on-workspace "soc"
+}
+window-rule {
+    match app-id="^discord$"
+    open-on-workspace "soc"
+}
+window-rule {
+    match app-id="^brave-browser"
+    open-on-workspace "oth"
+}
+window-rule {
+    match app-id="^zen-browser$"
+    open-on-workspace "web"
+}
+window-rule {
+    match app-id="^app.zen_browser.zen$"
+    open-on-workspace "web"
+}
+// Open the Firefox picture-in-picture player as floating by default.
+window-rule {
+    match app-id="firefox$" title="^Picture-in-Picture$"
+    open-floating true
+}
+window-rule {
+    match is-active=true
+    draw-border-with-background false
+    opacity 0.96
+}
+window-rule {
+    match is-active=false
+    opacity 0.94
+}
+// Rounded corners for all windows.
+window-rule {
+    geometry-corner-radius 6
+    clip-to-geometry true
+}
+binds {
+    Alt+Shift+Slash {
+        show-hotkey-overlay
+    }
+    Alt+Return hotkey-overlay-title="Open a Terminal: wezterm" {
+        spawn "flatpak" "run" "org.wezfurlong.wezterm"
+    }
+    Ctrl+Return hotkey-overlay-title="Open a Terminal: wezterm" {
+        spawn "ghostty"
+    }
+    Alt+Space hotkey-overlay-title="Run an Application: vicinae" {
+        spawn "vicinae" "open"
+    }
+    Super+Alt+L hotkey-overlay-title="Lock the Screen: noctalia" {
+        spawn "qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "lock"
+    }
+    XF86AudioRaiseVolume allow-when-locked=true {
+        spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+ -l 1.0"
+    }
+    XF86AudioLowerVolume allow-when-locked=true {
+        spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"
+    }
+    XF86AudioMute allow-when-locked=true {
+        spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+    }
+    XF86AudioMicMute allow-when-locked=true {
+        spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+    }
+    XF86AudioPlay allow-when-locked=true {
+        spawn-sh "playerctl play-pause"
+    }
+    XF86AudioStop allow-when-locked=true {
+        spawn-sh "playerctl stop"
+    }
+    XF86AudioPrev allow-when-locked=true {
+        spawn-sh "playerctl previous"
+    }
+    XF86AudioNext allow-when-locked=true {
+        spawn-sh "playerctl next"
+    }
+    XF86MonBrightnessUp allow-when-locked=true {
+        spawn "brightnessctl" "--class=backlight" "set" "+5%"
+    }
+    XF86MonBrightnessDown allow-when-locked=true {
+        spawn "brightnessctl" "--class=backlight" "set" "5%-"
+    }
+    Alt+G {
+        maximize-window-to-edges
+    }
+    Alt+i repeat=false {
+        toggle-overview
+    }
+    Alt+Q repeat=false {
+        close-window
+    }
+    Alt+H {
+        focus-column-left
+    }
+    Alt+L {
+        focus-column-right
+    }
+    Alt+Shift+Left {
+        move-column-left
+    }
+    Alt+Shift+Down {
+        move-window-down
+    }
+    Alt+Shift+Up {
+        move-window-up
+    }
+    Alt+Shift+Right {
+        move-column-right
+    }
+    Alt+Shift+H {
+        move-column-left
+    }
+    Alt+Shift+L {
+        move-column-right
+    }
+    Alt+Home {
+        focus-column-first
+    }
+    Alt+End {
+        focus-column-last
+    }
+    Alt+Ctrl+Home {
+        move-column-to-first
+    }
+    Alt+Ctrl+End {
+        move-column-to-last
+    }
+    Alt+Shift+Ctrl+Left {
+        move-column-to-monitor-left
+    }
+    Alt+Shift+Ctrl+Down {
+        move-column-to-monitor-down
+    }
+    Alt+Shift+Ctrl+Up {
+        move-column-to-monitor-up
+    }
+    Alt+Shift+Ctrl+Right {
+        move-column-to-monitor-right
+    }
+    Alt+Shift+Ctrl+H {
+        move-column-to-monitor-left
+    }
+    Alt+Shift+Ctrl+J {
+        move-column-to-monitor-down
+    }
+    Alt+Shift+Ctrl+K {
+        move-column-to-monitor-up
+    }
+    Alt+Shift+Ctrl+L {
+        move-column-to-monitor-right
+    }
+    Alt+Page_Down {
+        focus-workspace-down
+    }
+    Alt+Page_Up {
+        focus-workspace-up
+    }
+    Alt+J {
+        focus-workspace-down
+    }
+    Alt+K {
+        focus-workspace-up
+    }
+    Alt+Ctrl+Page_Down {
+        move-column-to-workspace-down
+    }
+    Alt+Ctrl+Page_Up {
+        move-column-to-workspace-up
+    }
+    Alt+Shift+J {
+        move-column-to-workspace-down
+    }
+    Alt+Shift+K {
+        move-column-to-workspace-up
+    }
+    Alt+Shift+Page_Down {
+        move-workspace-down
+    }
+    Alt+Shift+Page_Up {
+        move-workspace-up
+    }
+    Alt+Shift+U {
+        move-workspace-down
+    }
+    Alt+Shift+I {
+        move-workspace-up
+    }
+    Alt+WheelScrollDown cooldown-ms=150 {
+        focus-workspace-down
+    }
+    Alt+WheelScrollUp cooldown-ms=150 {
+        focus-workspace-up
+    }
+    Alt+Ctrl+WheelScrollDown cooldown-ms=150 {
+        move-column-to-workspace-down
+    }
+    Alt+Ctrl+WheelScrollUp cooldown-ms=150 {
+        move-column-to-workspace-up
+    }
+    Alt+WheelScrollRight {
+        focus-column-right
+    }
+    Alt+WheelScrollLeft {
+        focus-column-left
+    }
+    Alt+Ctrl+WheelScrollRight {
+        move-column-right
+    }
+    Alt+Ctrl+WheelScrollLeft {
+        move-column-left
+    }
+    Alt+Shift+WheelScrollDown {
+        focus-column-right
+    }
+    Alt+Shift+WheelScrollUp {
+        focus-column-left
+    }
+    Alt+Ctrl+Shift+WheelScrollDown {
+        move-column-right
+    }
+    Alt+Ctrl+Shift+WheelScrollUp {
+        move-column-left
+    }
+    Alt+1 {
+        focus-workspace "soc"
+    }
+    Alt+2 {
+        focus-workspace "web"
+    }
+    Alt+3 {
+        focus-workspace "dev"
+    }
+    Alt+4 {
+        focus-workspace "deb"
+    }
+    Alt+5 {
+        focus-workspace "oth"
+    }
+    Alt+O {
+        focus-workspace "oth"
+    }
+    Alt+S {
+        focus-workspace "soc"
+    }
+    Alt+P {
+        focus-workspace "deb"
+    }
+    Alt+D {
+        spawn-sh "niri msg action focus-workspace dev && niri msg action focus-column-last"
+    }
+    Alt+E {
+        spawn-sh "niri msg action focus-workspace dev && niri msg action focus-column-first"
+    }
+    Alt+W {
+        focus-workspace "web"
+    }
+    Alt+Shift+1 {
+        move-window-to-workspace "soc"
+    }
+    Alt+Shift+2 {
+        move-window-to-workspace "web"
+    }
+    Alt+Shift+3 {
+        move-window-to-workspace "dev"
+    }
+    Alt+Shift+4 {
+        move-window-to-workspace "deb"
+    }
+    Alt+Shift+5 {
+        move-window-to-workspace "oth"
+    }
+    Alt+Shift+O {
+        move-window-to-workspace "oth"
+    }
+    Alt+Shift+S {
+        move-window-to-workspace "soc"
+    }
+    Alt+Shift+W {
+        move-window-to-workspace "web"
+    }
+    Alt+Shift+D {
+        move-window-to-workspace "dev"
+    }
+    Alt+Shift+P {
+        move-window-to-workspace "deb"
+    }
+    Alt+Ctrl+1 {
+        move-column-to-workspace "soc"
+    }
+    Alt+Ctrl+2 {
+        move-column-to-workspace "dev"
+    }
+    Alt+Ctrl+3 {
+        move-column-to-workspace "web"
+    }
+    Alt+Ctrl+4 {
+        move-column-to-workspace "deb"
+    }
+    Alt+Ctrl+5 {
+        move-column-to-workspace "oth"
+    }
+    Alt+BracketLeft {
+        consume-or-expel-window-left
+    }
+    Alt+BracketRight {
+        consume-or-expel-window-right
+    }
+    Alt+Comma {
+        consume-window-into-column
+    }
+    Alt+Period {
+        expel-window-from-column
+    }
+    Alt+R {
+        switch-preset-column-width
+    }
+    Alt+Shift+R {
+        switch-preset-window-height
+    }
+    Alt+Ctrl+R {
+        reset-window-height
+    }
+    Alt+F {
+        maximize-column
+    }
+    Alt+Shift+F {
+        fullscreen-window
+    }
+    Alt+Ctrl+F {
+        expand-column-to-available-width
+    }
+    Alt+C {
+        center-column
+    }
+    Alt+Ctrl+C {
+        center-visible-columns
+    }
+    Alt+Minus {
+        set-column-width "-10%"
+    }
+    Alt+Equal {
+        set-column-width "+10%"
+    }
+    Alt+Shift+Minus {
+        set-window-height "-10%"
+    }
+    Alt+Shift+Equal {
+        set-window-height "+10%"
+    }
+    Alt+Shift+C {
+        toggle-window-floating
+    }
+    Alt+Shift+V {
+        switch-focus-between-floating-and-tiling
+    }
+    // Actions to switch layouts.
+    // Note: if you uncomment these, make sure you do NOT have
+    // a matching layout switch hotkey configured in xkb options above.
+    // Having both at once on the same hotkey will break the switching,
+    // since it will switch twice upon pressing the hotkey (once by xkb, once by niri).
+    // Alt+Dot       { switch-layout "next"; }
+    // Mod+Shift+Space { switch-layout "prev"; }
+    Ctrl+Shift+X {
+        spawn-sh "GEOM=$(slurp); canberra-gtk-play -i camera-shutter & grim -g \"$GEOM\" - | gradia"
+    }
+    Ctrl+Shift+1 {
+        spawn-sh "canberra-gtk-play -i camera-shutter & grim - | gradia"
+    }
+    Ctrl+Shift+2 {
+        spawn-sh "canberra-gtk-play -i camera-shutter & grim -g \"$(slurp)\" - | gradia"
+    }
+    Super+Shift+X {
+        spawn-sh "GEOM=$(slurp); canberra-gtk-play -i camera-shutter & grim -g \"$GEOM\" - | satty -f - "
+    }
+    Super+Shift+1 {
+        spawn-sh "canberra-gtk-play -i camera-shutter & grim - | satty -f - "
+    }
+    Super+Shift+2 {
+        spawn-sh "canberra-gtk-play -i camera-shutter & grim -g \"$(slurp)\" - | satty -f - "
+    }
+    Alt+Escape allow-inhibiting=false {
+        toggle-keyboard-shortcuts-inhibit
+    }
+    Alt+Shift+Q {
+        quit
+    }
+    Ctrl+Alt+Delete {
+        quit
+    }
+    Super+Shift+Alt+C {
+        spawn "vicinae" "vicinae://extensions/vicinae/clipboard/history"
+    }
+    Super+Space {
+        spawn "vicinae" "vicinae://extensions/vicinae/clipboard/history"
+    }
+    Super+Shift+E {
+        spawn "vicinae" "vicinae://extensions/vicinae/core/search-emojis"
+    }
+    Super+Shift+Alt+G {
+        spawn "vicinae" "vicinae://extensions/rolandleth/kill-process/index"
+    }
+    Super+Shift+Alt+B {
+        spawn "vicinae" "vicinae://extensions/lardissone/raindrop-io/search"
+    }
+    Super+Shift+G {
+        spawn-sh "grim -g \"$(slurp)\" - | tesseract - - -l rus+eng | wl-copy"
+    }
+    Alt+Tab {
+        spawn "vicinae" "vicinae://extensions/vicinae/wm/switch-windows"
+    }
+    Super+Shift+3 {
+        spawn-sh "dms notify \"Start crop recording\" && wf-recorder --audio -g \"$(slurp)\" -f ~/Videos/crop_$(date +%H%M%S).mp4"
+    }
+    Super+Shift+4 {
+        spawn-sh "dms notify \"Start full recording\" && wf-recorder --audio -f ~/Videos/full_$(date +%H%M%S).mp4"
+    }
+    Super+Shift+S {
+        spawn-sh "killall -s SIGINT wf-recorder && dms notify \"Stop recording\" && sleep 0.5 && nautilus ~/Videos"
+    }
+    Ctrl+Backslash {
+        spawn-sh "hyprvoice toggle"
+    }
+    Ctrl+Shift+Backslash {
+        // spawn-sh "/home/darkawower/.local/bin/waystt-toggle"
+        spawn-sh "pkill -USR2 -n handy"
+    }
+ // waystt - Speech to Text (clipboard copy)
+    // Ctrl+Shift+R {
+    //     spawn "/home/darkawower/.local/bin/waystt-toggle"
+    // }
+ // Ctrl+Backslash {
+    //     spawn-sh "hyprvoice toggle && sleep 0.1 && wtype -M ctrl -k v -m ctrl"
+    // }
+}
+include "dms/binds.kdl"
+include "dms/cursor.kdl"
+
