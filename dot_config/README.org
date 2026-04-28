@@ -16,14 +16,14 @@ Modern, AI-powered development environment for macOS and Linux. Managed by [[htt
 
 ** 🎯 Key Features
 
-- ⌨️ Vim-oriented keyboard navigation (Colemak HNEI layout)
-- 💻 *Zellij* for rich terminal multiplexing
+- ⌨️ Multi-layout keyboard support — [[#keyboard-layouts][Colemak (HNEI) and QWERTY (HJKL)]]
+- 💻 *Zellij* / *cmux* for rich terminal multiplexing
 - 🐚 *Xonsh* - Python-powered shell with rich customization
 - 📦 *mise* - Declarative runtime & global package management
 - 🏗️ *Nix + Home Manager* - Reproducible system configuration
 - ✨ *Multi-editor* - Emacs (primary), Helix for quick terminal edits
-- 🤖 *AI Integration* - Pi, ECA, OpenCode, Codex for intelligent coding assistance
-- 🎨 *Desktop* - macOS: Yabai + SketchyBar / Linux: Niri + Hyprland
+- 🤖 *AI Integration* - Pi, ECA, OpenCode for intelligent coding assistance
+- 🎨 *Desktop* - macOS: Yabai / Linux: Niri + Hyprland
 - 🔧 *Polyglot* - Go, Rust, Node.js, Python, Java tooling
 
 * 🚀 Quick Start
@@ -85,7 +85,27 @@ just nix-linux    # Linux
 echo "$(which xonsh)" | sudo tee -a /etc/shells
 chsh -s $(which xonsh)
 
-# Restart terminal
+# Switch keyboard layout (default: colemak)
+just layout qwerty  # or "just layout" to pick interactively
+#+END_SRC
+
+* ⌨️ Keyboard Layouts
+:PROPERTIES:
+:CUSTOM_ID: keyboard-layouts
+:END:
+
+All configs support both **Colemak** (HNEI) and **QWERTY** (HJKL) layouts via a single variable in =.chezmoidata.toml=:
+
+#+BEGIN_SRC toml
+layout = "colemak"   # or "qwerty"
+#+END_SRC
+
+Switch with one command:
+
+#+BEGIN_SRC bash
+just layout qwerty   # switch to QWERTY
+just layout colemak  # switch back
+just layout          # pick interactively with fzf
 #+END_SRC
 
 * 🛠️ Core Tools
@@ -96,6 +116,7 @@ chsh -s $(which xonsh)
 |-----------+----------------------------+---------------------------|
 | [[https://xon.sh/][Xonsh]]     | Python-powered shell       | =xonsh/rc.xsh=            |
 | [[https://zellij.dev/][Zellij]]    | Terminal multiplexer       | =zellij/=                 |
+| [[https://github.com/nikitabobko/AeroSpace][cmux]]      | AI-native terminal IDE     | =cmux/settings.json=      |
 | [[https://starship.rs/][Starship]]  | Cross-shell prompt         | =starship.toml=           |
 | [[https://github.com/ajeetdsouza/zoxide][Zoxide]]    | Smart directory jumper     | =xonsh/zoxide.xsh=        |
 
@@ -106,22 +127,26 @@ chsh -s $(which xonsh)
 | [[https://www.gnu.org/software/emacs/][Emacs]] | IDE                    | Elpaca, extensive packages              |
 | [[https://helix-editor.com/][Helix]] | Quick terminal editing | LSP, tree-sitter, yazi, git integration |
 
+** File Managers
+
+| Tool  | Role                   | Features                    |
+|-------+------------------------+-----------------------------|
+| [[https://github.com/yorukot/superfile][spf]]   | Terminal file manager   | Vim-like navigation         |
+| [[https://github.com/sxyazi/yazi][Yazi]]  | Terminal file manager   | Async, fast preview         |
+
 ** AI Coding Assistants
 
 | Tool     | Purpose                                          |
 |----------+--------------------------------------------------|
 | [[https://github.com/mariozechner/pi-coding-agent][Pi]]       | Primary AI coding agent harness with skills system |
 | [[https://github.com/editor-code-assistant/eca][ECA]]      | AI tool with seamless Emacs integration           |
-| [[https://github.com/anomalyco/opencode][OpenCode]] | AI pair programming                              |
-| [[https://github.com/openai/codex][Codex]]    | Advanced code assistant with MCP                  |
-| [[https://github.com/QwenCode/qwen-code][Qwen]]     | Qwen-powered coding assistant                    |
 
 ** Package Managers
 
 | Language   | Tools                              |
 |------------+------------------------------------|
 | System     | [[https://www.chezmoi.io/][chezmoi]], [[https://github.com/jdx/mise][mise]], [[https://nixos.org/][Nix]] |
-| Node.js    | mise (=npm:= prefix), pnpm         |
+| Node.js    | mise (=npm:= prefix)               |
 | Python     | uv, pip3                           |
 | Rust       | Cargo                              |
 | Go         | Go modules                         |
@@ -152,9 +177,7 @@ chsh -s $(which xonsh)
 
 * 🎨 Customization
 ** Xonsh Aliases
-
 60+ aliases configured in =xonsh/aliases.xsh=:
-
 - Docker shortcuts (=dps=, =drm=, =dex=)
 - Kubernetes (=k=, =kgp=, =kd=)
 - Git operations (=gst=, =gco=, =gp=)
@@ -171,10 +194,11 @@ This repo is a [[https://www.chezmoi.io/][chezmoi]] source state (=chezmoi edit=
 | =chezmoi diff=        | Preview pending changes          |
 | =chezmoi re-add=      | Sync target → source             |
 | =just mise=           | Install/update mise packages     |
+| =just layout=         | Switch keyboard layout           |
 
 OS-specific configs are excluded via =.chezmoiignore.tmpl=:
 - Linux configs (niri, hyprland, xremap, cava, noctalia...) skipped on macOS
-- macOS configs (aerospace, karabiner, sketchybar, yabai...) skipped on Linux
+- macOS configs (yabai, karabiner, sketchybar, skhd...) skipped on Linux
 
 * 🔧 System Requirements
 
@@ -218,5 +242,8 @@ MIT License - Use freely, attribution appreciated.
 #+HTML: <a href="https://helix-editor.com/"><img src="https://img.shields.io/badge/Helix-7E57C2?style=for-the-badge" alt="Helix"></a>
 #+HTML: <a href="https://github.com/jdx/mise"><img src="https://img.shields.io/badge/mise-Packages-2ECC71?style=for-the-badge" alt="mise"></a>
 #+HTML: <a href="https://www.chezmoi.io/"><img src="https://img.shields.io/badge/Chezmoi-Dotfiles-E74C3C?style=for-the-badge" alt="Chezmoi"></a>
+#+HTML: <a href="https://github.com/nikitabobko/cmux"><img src="https://img.shields.io/badge/cmux-Terminal-9B59B6?style=for-the-badge" alt="cmux"></a>
+#+HTML: <a href="https://github.com/yorukot/superfile"><img src="https://img.shields.io/badge/Superfile-FileManager-3498DB?style=for-the-badge" alt="Superfile"></a>
+#+HTML: <a href="https://github.com/sxyazi/yazi"><img src="https://img.shields.io/badge/Yazi-FileManager-E67E22?style=for-the-badge" alt="Yazi"></a>
 #+HTML: </p>
 #+end_center

@@ -12,6 +12,9 @@ key = "4357424B95BAB5C5"
 [revsets]
 push-default = "@"
 
+[revset-aliases]
+"immutable_heads()" = "none()"
+
 
 [git]
 push = "origin"
