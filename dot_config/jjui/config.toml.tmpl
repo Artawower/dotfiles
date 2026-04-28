@@ -1,190 +1,215 @@
-# Colemak HNEI keybindings for jjui
-# Navigation: j→n, k→e, l→i (h stays)
-# Displaced: n→j (new), e→k (edit), i→l (interactive)
-# Shift: J→N, K→E, L→I (where applicable)
+# HNEI (colemak) / HJKL (qwerty) keybindings for jjui
+# Layout: {{ .layout }}
+
+{{- $down := "j" }}
+{{- $up := "k" }}
+{{- $right := "l" }}
+{{- $new := "n" }}
+{{- $edit := "e" }}
+{{- $interactive := "i" }}
+{{- if eq .layout "colemak" }}
+{{-   $down = "n" }}
+{{-   $up = "e" }}
+{{-   $right = "i" }}
+{{-   $new = "j" }}
+{{-   $edit = "k" }}
+{{-   $interactive = "l" }}
+{{- end }}
+
+# --- Navigation ---
 
 [[bindings]]
 action = "revisions.move_down"
-key = "n"
+key = "{{ $down }}"
 scope = "revisions"
-desc = "down (colemak)"
+desc = "down"
 
 [[bindings]]
 action = "revisions.move_up"
-key = "e"
+key = "{{ $up }}"
 scope = "revisions"
-desc = "up (colemak)"
+desc = "up"
 
 [[bindings]]
 action = "revisions.open_details"
-key = "i"
+key = "{{ $right }}"
 scope = "revisions"
-desc = "details (colemak)"
+desc = "details"
 
 [[bindings]]
 action = "revset.edit"
-key = "shift+i"
+key = "shift+{{ $right }}"
 scope = "revisions"
-desc = "revset (colemak)"
+desc = "revset"
 
-# Displaced keys: n→j (new), e→k (edit)
+# --- Displaced keys ---
+
 [[bindings]]
 action = "revisions.new"
-key = "j"
+key = "{{ $new }}"
 scope = "revisions"
-desc = "new (colemak)"
+desc = "new"
 
 [[bindings]]
 action = "revisions.edit"
-key = "k"
+key = "{{ $edit }}"
 scope = "revisions"
-desc = "edit (colemak)"
+desc = "edit"
 
-# Help scope
+# --- Help scope ---
+
 [[bindings]]
 action = "help.scroll_down"
-key = "n"
+key = "{{ $down }}"
 scope = "help"
-desc = "down (colemak)"
+desc = "down"
 
 [[bindings]]
 action = "help.scroll_up"
-key = "e"
+key = "{{ $up }}"
 scope = "help"
-desc = "up (colemak)"
+desc = "up"
 
-# Diff scope
+# --- Diff scope ---
+
 [[bindings]]
 action = "diff.scroll_down"
-key = "n"
+key = "{{ $down }}"
 scope = "diff"
-desc = "down (colemak)"
+desc = "down"
 
 [[bindings]]
 action = "diff.scroll_up"
-key = "e"
+key = "{{ $up }}"
 scope = "diff"
-desc = "up (colemak)"
+desc = "up"
 
 [[bindings]]
 action = "diff.right"
-key = "i"
+key = "{{ $right }}"
 scope = "diff"
-desc = "right (colemak)"
+desc = "right"
 
-# Oplog scope
+# --- Oplog scope ---
+
 [[bindings]]
 action = "oplog.move_down"
-key = "n"
+key = "{{ $down }}"
 scope = "oplog"
-desc = "down (colemak)"
+desc = "down"
 
 [[bindings]]
 action = "oplog.move_up"
-key = "e"
+key = "{{ $up }}"
 scope = "oplog"
-desc = "up (colemak)"
+desc = "up"
 
-# Bookmarks scope
+# --- Bookmarks scope ---
+
 [[bindings]]
 action = "bookmarks.move_down"
-key = "n"
+key = "{{ $down }}"
 scope = "bookmarks"
-desc = "down (colemak)"
+desc = "down"
 
 [[bindings]]
 action = "bookmarks.move_up"
-key = "e"
+key = "{{ $up }}"
 scope = "bookmarks"
-desc = "up (colemak)"
+desc = "up"
 
-# Git scope
+# --- Git scope ---
+
 [[bindings]]
 action = "git.move_down"
-key = "n"
+key = "{{ $down }}"
 scope = "git"
-desc = "down (colemak)"
+desc = "down"
 
 [[bindings]]
 action = "git.move_up"
-key = "e"
+key = "{{ $up }}"
 scope = "git"
-desc = "up (colemak)"
+desc = "up"
 
-# Choose scope
+# --- Choose scope ---
+
 [[bindings]]
 action = "choose.move_down"
-key = "n"
+key = "{{ $down }}"
 scope = "choose"
-desc = "down (colemak)"
+desc = "down"
 
 [[bindings]]
 action = "choose.move_up"
-key = "e"
+key = "{{ $up }}"
 scope = "choose"
-desc = "up (colemak)"
+desc = "up"
 
-# Revisions details scope
+# --- Revisions details scope ---
+
 [[bindings]]
 action = "revisions.details.move_down"
-key = "n"
+key = "{{ $down }}"
 scope = "revisions.details"
-desc = "down (colemak)"
+desc = "down"
 
 [[bindings]]
 action = "revisions.details.move_up"
-key = "e"
+key = "{{ $up }}"
 scope = "revisions.details"
-desc = "up (colemak)"
+desc = "up"
 
-# Revisions squash scope
+# --- Revisions squash scope ---
+
 [[bindings]]
 action = "revisions.move_down"
-key = "n"
+key = "{{ $down }}"
 scope = "revisions.squash"
-desc = "down (colemak)"
+desc = "down"
 
 [[bindings]]
 action = "revisions.move_up"
-key = "e"
+key = "{{ $up }}"
 scope = "revisions.squash"
-desc = "up (colemak)"
+desc = "up"
 
-# Displaced in squash scope: e→k (keep_emptied), i→l (interactive)
 [[bindings]]
 action = "revisions.squash.keep_emptied"
-key = "k"
+key = "{{ $edit }}"
 scope = "revisions.squash"
-desc = "keep emptied (colemak)"
+desc = "keep emptied"
 
 [[bindings]]
 action = "revisions.squash.interactive"
-key = "l"
+key = "{{ $interactive }}"
 scope = "revisions.squash"
-desc = "interactive (colemak)"
+desc = "interactive"
 
-# Evolog scope
+# --- Evolog scope ---
+
 [[bindings]]
 action = "revisions.evolog.move_down"
-key = "n"
+key = "{{ $down }}"
 scope = "revisions.evolog"
-desc = "down (colemak)"
+desc = "down"
 
 [[bindings]]
 action = "revisions.evolog.move_up"
-key = "e"
+key = "{{ $up }}"
 scope = "revisions.evolog"
-desc = "up (colemak)"
+desc = "up"
 
-# Quick search — underscore form per v0.10.2 builtins
+# --- Quick search ---
+
 [[bindings]]
 action = "revisions.quick_search_next"
-key = "n"
+key = "{{ $down }}"
 scope = "revisions.quick_search"
-desc = "next (colemak)"
+desc = "next"
 
 [[bindings]]
 action = "revisions.quick_search_prev"
-key = "e"
+key = "{{ $up }}"
 scope = "revisions.quick_search"
-desc = "prev (colemak)"
+desc = "prev"
