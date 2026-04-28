@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Fetch PR data for AI code review via GitHub GraphQL + REST API.
 
 Usage:

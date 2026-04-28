@@ -1,0 +1,180 @@
+{
+  "lastChangelogVersion": "0.67.68",
+  "hideThinkingBlock": true,
+  "quietStartup": true,
+  "enableSkillCommands": true,
+  "npmCommand": ["npm"],
+  "packages": [
+    "npm:pi-web-access",
+    {
+      "source": "npm:pi-powerline-footer",
+      "extensions": ["+index.ts"]
+    },
+    {
+      "source": "npm:oh-pi",
+      "skills": [
+        "-pi-package/skills/liquid-glass/SKILL.md",
+        "-pi-package/skills/glassmorphism/SKILL.md",
+        "+pi-package/skills/git-workflow/SKILL.md",
+        "-pi-package/skills/debug-helper/SKILL.md",
+        "-pi-package/skills/neubrutalism/SKILL.md",
+        "-pi-package/skills/quick-setup/SKILL.md",
+        "+pi-package/skills/context7/SKILL.md"
+      ],
+      "extensions": [
+        "-pi-package/extensions/bg-process.ts",
+        "-pi-package/extensions/custom-footer.ts",
+        "-pi-package/extensions/ant-colony/index.ts",
+        "-pi-package/extensions/auto-update.ts",
+        "-pi-package/extensions/auto-session-name.ts",
+        "-pi-package/extensions/compact-header.ts",
+        "-pi-package/extensions/git-guard.ts",
+        "-pi-package/extensions/safe-guard.ts"
+      ],
+      "themes": ["-pi-package/themes/catppuccin-mocha.json"]
+    },
+    {
+      "source": "npm:lsp-pi@1.0.4",
+      "extensions": ["+lsp-tool.ts", "+lsp.ts"]
+    },
+    "npm:pi-copy-output",
+    {
+      "source": "npm:pi-teams",
+      "extensions": ["-extensions/index.ts"],
+      "skills": ["-skills/teams.md"]
+    },
+    "npm:@sherif-fanous/pi-catppuccin",
+    "npm:pi-notify",
+    {
+      "source": "npm:pi-animations",
+      "extensions": ["-animations.ts"]
+    },
+    {
+      "source": "npm:pi-tool-display",
+      "extensions": ["+index.ts"]
+    },
+    {
+      "source": "npm:@ifi/pi-extension-subagents",
+      "extensions": ["-index.ts", "-notify.ts"]
+    },
+    {
+      "source": "npm:pi-usage-bars",
+      "extensions": ["+extensions/usage-bars/index.ts"]
+    },
+    {
+      "source": "npm:@danchamorro/pi-prompt-enhancer",
+      "extensions": ["+index.ts"]
+    },
+    {
+      "source": "npm:@tintinweb/pi-subagents",
+      "extensions": ["+src/index.ts"]
+    },
+    {
+      "source": "npm:pi-subagents",
+      "extensions": ["-index.ts", "-notify.ts"]
+    },
+    {
+      "source": "npm:@ifi/oh-pi-ant-colony",
+      "extensions": ["-extensions/ant-colony/index.ts"]
+    },
+    "npm:@mjakl/pi-dark-or-light",
+    "npm:@benvargas/pi-exa-mcp",
+    "npm:pi-context-saver",
+    {
+      "source": "npm:pi-zellij",
+      "extensions": ["-extensions/index.ts"],
+      "skills": ["-skills/code-review/SKILL.md"],
+      "prompts": ["-prompts/review-diff.md", "-prompts/review.md"]
+    },
+    {
+      "source": "npm:@ogulcancelik/pi-spar",
+      "extensions": ["+index.ts"]
+    },
+    {
+      "source": "npm:@ogulcancelik/pi-minimal-footer",
+      "extensions": ["-index.ts"]
+    },
+    {
+      "source": "npm:pi-coordinator",
+      "extensions": ["-extensions/index.ts"]
+    },
+    "npm:pi-formatter",
+    {
+      "source": "git:github.com/hk-vk/pi-connect",
+      "extensions": ["-index.ts"]
+    },
+    {
+      "source": "npm:pi-free",
+      "extensions": [
+        "-providers/fireworks.ts",
+        "-providers/go.ts",
+        "-providers/mistral.ts",
+        "-providers/nvidia.ts"
+      ]
+    },
+    {
+      "source": "npm:pi-image-preview",
+      "extensions": ["-index.ts"]
+    },
+    "npm:pi-skills-sh",
+    {
+      "source": "npm:@thurstonsand/pi-powerline-footer",
+      "extensions": ["-index.ts"]
+    },
+    {
+      "source": "npm:@ifi/oh-pi-extensions",
+      "extensions": [
+        "-extensions/bg-process.ts",
+        "-extensions/custom-footer.ts",
+        "-extensions/auto-session-name.ts",
+        "-extensions/auto-update.ts",
+        "-extensions/btw.ts",
+        "-extensions/compact-header.ts",
+        "-extensions/git-guard.ts",
+        "-extensions/safe-guard.ts",
+        "-extensions/scheduler.ts",
+        "-extensions/usage-tracker.ts",
+        "-extensions/watchdog.ts"
+      ]
+    },
+    "npm:pi-secret-guard",
+    "npm:pi-extension-manager",
+    {
+      "source": "npm:pi-btw",
+      "extensions": ["-extensions/btw.ts"]
+    },
+    "npm:pi-session-switch",
+    "npm:@dkmnx/pi-clarify",
+    "npm:pi-ask-user",
+    "npm:pi-bailian-models",
+    "npm:@thesethrose/pi-zai-provider",
+    "git:github.com/HazAT/pi-interactive-subagents",
+    {
+      "source": "git:github.com/TropicalDog17/pi-messenger-swarm",
+      "extensions": ["-index.ts"],
+      "skills": ["-skills/pi-messenger-swarm/SKILL.md"]
+    },
+    {
+      "source": "git:github.com/visua1hue/pi-pane",
+      "extensions": ["-src/index.ts"]
+    },
+    {
+      "source": "npm:pi-lens",
+      "extensions": ["-index.ts"],
+      "skills": ["-skills/ast-grep/SKILL.md", "-skills/lsp-navigation/SKILL.md"]
+    },
+    "npm:pi-link",
+    "git:github.com/tomooshi/condensed-milk-pi"
+  ],
+  "defaultProvider": "zen",
+  "defaultModel": "minimax-m2.5-free",
+  "defaultThinkingLevel": "medium",
+  "collapseChangelog": false,
+  "theme": "catppuccin-frappe",
+  "extensions": [
+    "-extensions/subagent/index.ts",
+    "-extensions/subagent/notify.ts",
+    "-extensions/agent-team.ts"
+  ],
+  "autocompleteMaxVisible": 3
+}

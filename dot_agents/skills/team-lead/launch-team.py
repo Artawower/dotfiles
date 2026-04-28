@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 from __future__ import annotations
 
 """Deterministically launch the local team-lead cmux/pi-link layout without relying on the skill prompt."""

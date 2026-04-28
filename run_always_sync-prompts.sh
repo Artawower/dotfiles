@@ -2,7 +2,7 @@
 # Syncs shared prompts to pi/opencode/eca, stripping YAML frontmatter for opencode/eca
 set -euo pipefail
 
-CHEZMOI_SRC="$(cd "$(dirname "$0")" && pwd)"
+CHEZMOI_SRC="$HOME/.local/share/chezmoi"
 PROMPTS_DIR="$CHEZMOI_SRC/.chezmoiexternal/prompt"
 
 strip_frontmatter() {

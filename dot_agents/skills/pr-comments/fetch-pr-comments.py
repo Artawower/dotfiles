@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Fetch unresolved PR review comments via GitHub GraphQL API.
 
 Usage:
