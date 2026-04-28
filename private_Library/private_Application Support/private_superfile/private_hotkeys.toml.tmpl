@@ -1,0 +1,115 @@
+{{- $down := "j" -}}
+{{- $up := "k" -}}
+{{- $right := "l" -}}
+{{- $DOWN := "J" -}}
+{{- $UP := "K" -}}
+{{- $RIGHT := "L" -}}
+{{- $new := "n" -}}
+{{- $editor := "e" -}}
+{{- $EDITOR := "E" -}}
+{{- if eq .layout "colemak" -}}
+{{-   $down = "n" -}}
+{{-   $up = "e" -}}
+{{-   $right = "i" -}}
+{{-   $DOWN = "N" -}}
+{{-   $UP = "E" -}}
+{{-   $RIGHT = "I" -}}
+{{-   $new = "j" -}}
+{{-   $editor = "k" -}}
+{{-   $EDITOR = "K" -}}
+{{- end -}}
+##############################################
+#                                            #
+#           Superfile Configuration          #
+#                                            #
+##############################################
+
+# This contains the hotkey config file for superfile! More details can be found at
+# https://superfile.dev/configure/custom-hotkeys/.
+
+###############################################################################
+#                                Global hotkeys                               #
+###############################################################################
+
+# Note: These hotkeys should be unique.
+
+#-- Basic Actions
+confirm = ['enter', 'right', '{{ $right }}']
+cd_quit = ['Q', '']
+quit = ['q', 'esc']
+
+#-- Navigation
+list_down = ['down', '{{ $down }}']
+list_up = ['up', '{{ $up }}']
+page_down = ['pgdown','']
+page_up = ['pgup','']
+
+#-- File Panel Controls
+close_file_panel = ['w', '']
+create_new_file_panel = ['{{ $new }}', '']
+next_file_panel = ['tab', '{{ $RIGHT }}']
+open_sort_options_menu = ['o', '']
+pinned_directory = ['P', '']
+previous_file_panel = ['shift+left', 'H']
+toggle_file_preview_panel = ['f', '']
+toggle_reverse_sort = ['R', '']
+
+#-- Focus Manipulation
+focus_on_metadata = ['m', '']
+focus_on_process_bar = ['p', '']
+focus_on_sidebar = ['s', '']
+
+#-- File/Dir Creation/Renaming
+file_panel_item_create = ['ctrl+{{ $new }}', '']
+file_panel_item_rename = ['ctrl+r', '']
+
+#-- Main File Operations
+copy_items = ['ctrl+c', '']
+cut_items = ['ctrl+x', '']
+delete_items = ['ctrl+d', 'delete', '']
+paste_items = ['ctrl+v', 'ctrl+w', '']
+permanently_delete_items = ['D', '']
+
+#-- Archive Manipulation
+compress_file = ['ctrl+a', '']
+extract_file = ['ctrl+e', '']
+
+#-- Editor Actions
+open_current_directory_with_editor = ['{{ $EDITOR }}', '']
+open_file_with_editor = ['{{ $editor }}', '']
+
+#-- Other Actions
+change_panel_mode = ['v', '']
+copy_path = ['ctrl+p', '']
+copy_present_working_directory = ['c', '']
+open_command_line = [':', '']
+open_help_menu = ['?', '']
+open_spf_prompt = ['>', '']
+open_zoxide = ['z', '']
+toggle_dot_file = ['.', '']
+toggle_footer = ['F', '']
+
+###############################################################################
+#                                Typing hotkeys                               #
+###############################################################################
+
+# Note: These hotkeys can override all hotkeys.
+
+confirm_typing = ['enter', '']
+cancel_typing = ['ctrl+c', 'esc']
+
+###############################################################################
+#                            Mode-Specific Hotkeys                            #
+###############################################################################
+
+# Note: These hotkeys can conflict with other modes, but not with global
+# hotkeys.
+
+#-- Normal Mode Actions
+parent_directory = ['h', 'left', 'backspace']
+search_bar = ['/', '']
+
+#-- Selection Mode Actions
+file_panel_select_mode_items_select_down = ['shift+down', '{{ $DOWN }}']
+file_panel_select_mode_items_select_up = ['shift+up', '{{ $UP }}']
+file_panel_select_all_items = ['A', '']
