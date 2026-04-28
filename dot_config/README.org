@@ -4,7 +4,7 @@
 
 * 📋 Overview
 
-Modern, AI-powered development environment for macOS. A polyglot configuration featuring Xonsh shell, Nix package management, and extensive editor integrations.
+Modern, AI-powered development environment for macOS and Linux. Managed by [[https://www.chezmoi.io/][chezmoi]] with [[https://github.com/jdx/mise][mise]] for runtime/package management, [[https://nixos.org/][Nix]] for system-level reproducibility, and extensive editor integrations.
 
 #+begin_quote
 *Philosophy:* Modular, reproducible, AI-assisted development with literate configuration.
@@ -16,71 +16,71 @@ Modern, AI-powered development environment for macOS. A polyglot configuration f
 
 ** 🎯 Key Features
 
-- ⌨️ Vim-oriented keyboard navigation
-- 💻 *Zellij* for rich terminal and multiplexing
+- ⌨️ Vim-oriented keyboard navigation (Colemak HNEI layout)
+- 💻 *Zellij* for rich terminal multiplexing
 - 🐚 *Xonsh* - Python-powered shell with rich customization
-- 📦 *Nix + Home Manager* - Declarative, reproducible system configuration
+- 📦 *mise* - Declarative runtime & global package management
+- 🏗️ *Nix + Home Manager* - Reproducible system configuration
 - ✨ *Multi-editor* - Emacs (primary), Helix for quick terminal edits
-- 🤖 *AI Integration* - OpenCode, Codex, Claude, ECA for intelligent coding assistance
-- 🎨 *Desktop* - Yabai tiling WM, ICE, auto theme switching, JankyBorders
+- 🤖 *AI Integration* - Pi, ECA, OpenCode, Codex for intelligent coding assistance
+- 🎨 *Desktop* - macOS: Yabai + SketchyBar / Linux: Niri + Hyprland
 - 🔧 *Polyglot* - Go, Rust, Node.js, Python, Java tooling
 
 * 🚀 Quick Start
 
 ** Prerequisites
 
-macOS (Apple Silicon or Intel)
+- macOS (Apple Silicon or Intel) or Linux (Fedora)
+- [[https://www.chezmoi.io/][chezmoi]] installed
 
 ** Bootstrap Installation
 
-The system uses *Nix* as the foundation for reproducible package management. Install it first:
+#+NAME: install-chezmoi
+#+BEGIN_SRC bash
+# Install chezmoi (macOS)
+brew install chezmoi
+# Or Linux
+curl -sfL https://get.chezmoi.io | sh
+
+# Apply dotfiles
+chezmoi init --apply https://github.com/Artawower/dotfiles
+#+END_SRC
+
+** Install Tools
+
+#+NAME: install-tools
+#+BEGIN_SRC bash
+# Full setup (includes mise, nix, cargo tools, etc.)
+just init-mac     # macOS
+just init-linux   # Linux
+
+# Or step by step:
+just mise         # Install runtimes + npm globals via mise
+just uv           # Python tools via uv
+just cargo        # Rust tools
+just go           # Go tools (gopls)
+#+END_SRC
+
+** Install Nix (optional but recommended)
 
 #+NAME: install-nix
-#+BEGIN_SRC bash :tangle bootstrap.sh
+#+BEGIN_SRC bash
 # Install Nix package manager (multi-user installation)
 curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | \
   sh -s -- install
 
 # Source nix
 . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-#+END_SRC
 
-** Clone Configuration
-
-#+NAME: clone-config
-#+BEGIN_SRC bash :tangle bootstrap.sh
-# Backup existing config
-[ -d ~/.config ] && mv ~/.config ~/.config.backup.$(date +%Y%m%d_%H%M%S)
-
-# Clone dotfiles
-git clone https://github.com/Artawower/.config.git ~/.config
-cd ~/.config
-#+END_SRC
-
-** Initialize with Nix
-
-#+NAME: nix-init
-#+BEGIN_SRC bash :tangle bootstrap.sh
-# Build and activate the configuration
-cd ~/.config/nix
-nix flake update  # Update dependencies
-
-# For Darwin (macOS) system configuration
-nix build .#darwinConfigurations.$(hostname -s).system
-./result/sw/bin/darwin-rebuild switch --flake .
-
-# For Home Manager
-nix run home-manager/master -- switch --flake ~/.config/nix
+# Apply Nix configuration
+just nix-mac      # macOS
+just nix-linux    # Linux
 #+END_SRC
 
 ** Post-Installation
 
 #+NAME: post-install
 #+BEGIN_SRC bash
-# Install launch agents for system theme watching
-cd ~/.config/launchagents
-./install.sh
-
 # Configure Xonsh as default shell
 echo "$(which xonsh)" | sudo tee -a /etc/shells
 chsh -s $(which xonsh)
@@ -88,11 +88,6 @@ chsh -s $(which xonsh)
 # Restart terminal
 #+END_SRC
 
-** Polish some tools
-*** Opencode
-#+BEGIN_SRC bash
-bunx oh-my-opencode install
-#+END_SRC
 * 🛠️ Core Tools
 
 ** Shell Environment
@@ -113,26 +108,27 @@ bunx oh-my-opencode install
 
 ** AI Coding Assistants
 
-| Tool     | Model       | Purpose                                          |
-|----------+-------------+--------------------------------------------------|
-| [[https://github.com/editor-code-assistant/eca][ECA]]      | Various     | The best AI tool with seamless Emacs integration |
-| [[https://github.com/Codex][Codex]]    | GPT-5-Codex | Advanced code assistant with MCP                 |
-| [[https://claude.ai/][Claude]]   | Sonnet 4.5  | Interactive coding via codex integration         |
-| Aictl    | Multi-model | Unified AI client control                        |
-| [[https://github.com/anomalyco/opencode][Opencode]] | Various     | One of the best AI pair programming tools        |
+| Tool     | Purpose                                          |
+|----------+--------------------------------------------------|
+| [[https://github.com/mariozechner/pi-coding-agent][Pi]]       | Primary AI coding agent harness with skills system |
+| [[https://github.com/editor-code-assistant/eca][ECA]]      | AI tool with seamless Emacs integration           |
+| [[https://github.com/anomalyco/opencode][OpenCode]] | AI pair programming                              |
+| [[https://github.com/openai/codex][Codex]]    | Advanced code assistant with MCP                  |
+| [[https://github.com/QwenCode/qwen-code][Qwen]]     | Qwen-powered coding assistant                    |
 
 ** Package Managers
 
-| Language   | Tools                      |
-|------------+----------------------------|
-| System     | Nix, Home Manager          |
-| Node.js    | Bun, Volta             |
-| Python     | UV, pip3                   |
-| Rust       | Cargo                      |
-| Go         | Go modules                 |
-| Java       | SDKMAN                     |
+| Language   | Tools                              |
+|------------+------------------------------------|
+| System     | [[https://www.chezmoi.io/][chezmoi]], [[https://github.com/jdx/mise][mise]], [[https://nixos.org/][Nix]] |
+| Node.js    | mise (=npm:= prefix), pnpm         |
+| Python     | uv, pip3                           |
+| Rust       | Cargo                              |
+| Go         | Go modules                         |
 
 ** Desktop Environment
+
+*** macOS
 
 | Component  | Tool            | Purpose                  |
 |------------+-----------------+--------------------------|
@@ -140,10 +136,19 @@ bunx oh-my-opencode install
 | Borders    | [[https://github.com/FelixKratz/JankyBorders][JankyBorders]]    | Window border effects    |
 | Menu Bar   | [[https://github.com/jordanbaird/Ice][ICE]]             | Menu bar management      |
 | Hotkeys    | [[https://github.com/koekeishiya/skhd][Skhd]]            | Keyboard shortcuts       |
-| Bar        | [[https://github.com/FelixKratz/SketchyBar][Sketchybar]]      | Status bar               |
+| Bar        | [[https://github.com/FelixKratz/SketchyBar][SketchyBar]]      | Status bar               |
 | Launcher   | [[https://www.raycast.com/][Raycast]]         | Productivity launcher    |
 | Keyboard   | [[https://karabiner-elements.pqrs.org/][Karabiner]]       | Advanced key remapping   |
 | Wallpapers | [[https://github.com/Zagaz/wallboy][Wallboy]]         | Wallpaper management     |
+
+*** Linux
+
+| Component  | Tool            | Purpose                  |
+|------------+-----------------+--------------------------|
+| Compositor | [[https://github.com/YaLTeR/niri][Niri]] / [[https://hyprland.org/][Hyprland]] | Scrollable/tiling WM     |
+| Keyboard   | [[https://github.com/k0kubun/xremap][xremap]]         | Colemak key remapping    |
+| Shell      | [[https://github.com/nicoulaj/noctalia][Noctalia]]       | Desktop shell            |
+| Visualizer | [[https://github.com/karlstav/cava][Cava]]           | Audio visualizer         |
 
 * 🎨 Customization
 ** Xonsh Aliases
@@ -155,15 +160,33 @@ bunx oh-my-opencode install
 - Git operations (=gst=, =gco=, =gp=)
 - Development (=pn= for pnpm, =bn= for bun)
 
+* 🔧 Management with Chezmoi
+
+This repo is a [[https://www.chezmoi.io/][chezmoi]] source state (=chezmoi edit= opens files from =~/.local/share/chezmoi/=).
+
+| Command              | Purpose                          |
+|----------------------+----------------------------------|
+| =chezmoi apply=       | Deploy changes to =~/=            |
+| =chezmoi edit <file>= | Edit source version of a file    |
+| =chezmoi diff=        | Preview pending changes          |
+| =chezmoi re-add=      | Sync target → source             |
+| =just mise=           | Install/update mise packages     |
+
+OS-specific configs are excluded via =.chezmoiignore.tmpl=:
+- Linux configs (niri, hyprland, xremap, cava, noctalia...) skipped on macOS
+- macOS configs (aerospace, karabiner, sketchybar, yabai...) skipped on Linux
+
 * 🔧 System Requirements
 
-- *OS:* macOS 12+ (Monterey or later)
-- *Arch:* Apple Silicon (M1/M2/M3) or Intel
+- *OS:* macOS 12+ (Monterey or later) / Linux (Fedora)
+- *Arch:* Apple Silicon (M1/M2/M3) or Intel / x86_64 / ARM64
 - *Disk:* ~5GB for full installation
-- *Network:* Internet connection for Nix packages
+- *Network:* Internet connection for packages
 
 * 📚 Documentation
 
+- [[https://www.chezmoi.io/][Chezmoi Docs]]
+- [[https://mise.jdx.dev/][mise Docs]]
 - [[https://nixos.org/manual/nix/stable/][Nix Manual]]
 - [[https://nix-community.github.io/home-manager/][Home Manager Guide]]
 - [[https://xon.sh/tutorial.html][Xonsh Tutorial]]
@@ -193,5 +216,7 @@ MIT License - Use freely, attribution appreciated.
 #+HTML: <a href="https://github.com/koekeishiya/yabai"><img src="https://img.shields.io/badge/Yabai-WM-1E1E2E?style=for-the-badge" alt="Yabai"></a>
 #+HTML: <a href="https://github.com/editor-code-assistant/eca"><img src="https://img.shields.io/badge/ECA-AI-00D9FF?style=for-the-badge" alt="ECA"></a>
 #+HTML: <a href="https://helix-editor.com/"><img src="https://img.shields.io/badge/Helix-7E57C2?style=for-the-badge" alt="Helix"></a>
+#+HTML: <a href="https://github.com/jdx/mise"><img src="https://img.shields.io/badge/mise-Packages-2ECC71?style=for-the-badge" alt="mise"></a>
+#+HTML: <a href="https://www.chezmoi.io/"><img src="https://img.shields.io/badge/Chezmoi-Dotfiles-E74C3C?style=for-the-badge" alt="Chezmoi"></a>
 #+HTML: </p>
 #+end_center
