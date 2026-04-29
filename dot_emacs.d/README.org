@@ -4566,55 +4566,69 @@ Automatically creates parent directories if needed."
   (add-to-list 'org-src-lang-modes '("python" . python-ts))
   (add-to-list 'org-src-lang-modes '("rust" . rust-ts))
   (setq org-capture-templates
-      `(("t" "Task → Inbox" entry
-         (file ,(expand-file-name "inbox.org" my/agenda-dir))
-         "* TODO %? :inbox:\nSCHEDULED: %^{When}t\n%U\n"
-         :empty-lines 1
-         :prepend t)
+        `(("t" "Task → Inbox" entry
+           (file ,(expand-file-name "inbox.org" my/agenda-dir))
+           "* TODO %? :inbox:\nSCHEDULED: %^{When}t\n%U\n"
+           :empty-lines 1
+           :prepend t)
 
-        ("w" "Work → Next actions" entry
-         (file+headline ,(expand-file-name "work.org" my/agenda-dir) "Next actions")
-         "* TODO %? :work:\n%U\n"
-         :empty-lines 1
-         :prepend t)
+          ("w" "Work → Next actions" entry
+           (file+headline ,(expand-file-name "work.org" my/agenda-dir) "Next actions")
+           "* TODO %? :work:\n%U\n"
+           :empty-lines 1
+           :prepend t)
 
-        ("l" "Live")
+          ("l" "Live")
 
-        ("lt" "Live → Next actions" entry
-         (file+headline ,(expand-file-name "live.org" my/agenda-dir) "Next actions")
-         "* TODO %? :live:\n%U\n"
-         :empty-lines 1
-         :prepend t)
+          ("lt" "Live → Next actions" entry
+           (file+headline ,(expand-file-name "live.org" my/agenda-dir) "Next actions")
+           "* TODO %? :live:\n%U\n"
+           :empty-lines 1
+           :prepend t)
 
-        ("ls" "Live → Scheduled" entry
-         (file+headline ,(expand-file-name "live.org" my/agenda-dir) "Next actions")
-         "* TODO %? :live:\nSCHEDULED: %^{When}t\n%U\n"
-         :empty-lines 1
-         :prepend t)
+          ("ls" "Live → Scheduled" entry
+           (file+headline ,(expand-file-name "live.org" my/agenda-dir) "Next actions")
+           "* TODO %? :live:\nSCHEDULED: %^{When}t\n%U\n"
+           :empty-lines 1
+           :prepend t)
 
-        ("ld" "Live → Daily habit" entry
-         (file+headline ,(expand-file-name "live.org" my/agenda-dir) "Next actions")
-         "* TODO %? :live:\nSCHEDULED: %^{When}t +1d\n%U\n"
-         :empty-lines 1
-         :prepend t)
+          ("ld" "Live → Daily habit" entry
+           (file+headline ,(expand-file-name "live.org" my/agenda-dir) "Next actions")
+           "* TODO %? :live:\nSCHEDULED: %^{When}t +1d\n%U\n"
+           :empty-lines 1
+           :prepend t)
 
-        ("lw" "Live → Weekly habit" entry
-         (file+headline ,(expand-file-name "live.org" my/agenda-dir) "Next actions")
-         "* TODO %? :live:\nSCHEDULED: %^{When}t ++1w\n%U\n"
-         :empty-lines 1
-         :prepend t)
+          ("lw" "Live → Weekly habit" entry
+           (file+headline ,(expand-file-name "live.org" my/agenda-dir) "Next actions")
+           "* TODO %? :live:\nSCHEDULED: %^{When}t ++1w\n%U\n"
+           :empty-lines 1
+           :prepend t)
 
-        ("lf" "Live → Finances" entry
-         (file+headline ,(expand-file-name "live.org" my/agenda-dir) "Finances")
-         "* TODO %? :finance:\nSCHEDULED: %^{When}t\n%U\n"
-         :empty-lines 1
-         :prepend t)
+          ("lf" "Live → Finances" entry
+           (file+headline ,(expand-file-name "live.org" my/agenda-dir) "Finances")
+           "* TODO %? :finance:\nSCHEDULED: %^{When}t\n%U\n"
+           :empty-lines 1
+           :prepend t)
 
-        ("e" "Task → environment" entry
-         (file+headline ,(expand-file-name "environment.org" my/agenda-dir) "Next actions")
-         "* TODO %? :env:\nSCHEDULED: %^{When}t\n%U\n"
-         :empty-lines 1
-         :prepend t)))
+          ("e" "Task → environment" entry
+           (file+headline ,(expand-file-name "environment.org" my/agenda-dir) "Next actions")
+           "* TODO %? :env:\nSCHEDULED: %^{When}t\n%U\n"
+           :empty-lines 1
+           :prepend t)
+
+          ("o" "Orgnote")
+          
+          ("on" "Orgnote → Next actions" entry
+           (file+headline ,(expand-file-name "orgnote.org" my/agenda-dir) "Next actions")
+           "* TODO %? \n%U\n"
+           :empty-lines 1
+           :prepend t)
+
+          ("oi" "Orgnote → Inbox" entry
+           (file+headline ,(expand-file-name "orgnote.org" my/agenda-dir) "Inbox")
+           "* TODO %? :inbox:\n%U\n"
+           :empty-lines 1
+           :prepend t)))
 
   (my/setup-org-mode-faces)
   (add-hook 'org-mode-hook
