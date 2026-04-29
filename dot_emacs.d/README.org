@@ -1341,6 +1341,7 @@ Move to husky
 
   (meow-define-keys 'agenda-motion
     '("<escape>" . org-agenda-quit)
+    '("SPC" . meow-keypad)
     '("q" . org-agenda-quit)
     '("n" . org-agenda-next-line)
     '("e" . org-agenda-previous-line)
