@@ -177,6 +177,12 @@ init-mac:
     just cargo
     just nix-clean-mac
 
+# Daily update — refresh packages without full reinstall
+update-mac:
+    mise upgrade --bump --exclude pnpm
+    mise trust ~/.config/mise.toml
+    pi update
+
 
 # Safe daily cleanup for Linux
 clean-linux:
