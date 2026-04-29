@@ -104,7 +104,7 @@ pane = "left"
 
 
 [[layouts]]
-id = "COMPACT_AI"
+id = "COMPACT"
 name = "🦐 COMPACT AI"
 description = "[AI + VCS]"
 
