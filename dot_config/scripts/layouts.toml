@@ -101,3 +101,22 @@ command = "jjui"
 [[layouts.tabs]]
 name = "{dir}@term"
 pane = "left"
+
+
+[[layouts]]
+id = "COMPACT_AI"
+name = "🦐 COMPACT AI"
+description = "[AI + VCS]"
+
+[[layouts.tabs]]
+name = "{dir}@ai"
+pane = "left"
+
+[layouts.tabs.pi]
+role = "ai"
+
+[[layouts.tabs]]
+name = "{dir}@vcs"
+pane = "left"
+command = "jjui"
+
