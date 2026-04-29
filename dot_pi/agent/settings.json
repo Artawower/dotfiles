@@ -228,7 +228,8 @@
     },
     "npm:pi-link",
     "git:github.com/tomooshi/condensed-milk-pi",
-    "npm:pi-antigravity-rotator"
+    "npm:pi-antigravity-rotator",
+    "npm:@tmustier/pi-usage-extension"
   ],
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.4-mini",
