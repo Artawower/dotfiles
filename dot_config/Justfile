@@ -182,6 +182,7 @@ update-mac:
     mise upgrade --bump --exclude pnpm
     mise trust ~/.config/mise.toml
     pi update
+    printenv > ~/.emacs.d/.local/env
 
 
 # Safe daily cleanup for Linux
