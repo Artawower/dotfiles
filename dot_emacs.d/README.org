@@ -5210,10 +5210,9 @@ Manage your dot files like a God
 #+BEGIN_SRC emacs-lisp :results silent
 (use-package chezmoi
   :commands (chezmoi-find)
-  :defer t
-  :binds
-  (("C-c f C" . chezmoi-find)
-   ("C-c f P" . chezmoi-find)))
+  :defer 3
+  :bind (("C-c f C" . chezmoi-find)
+         ("C-c f P" . chezmoi-find)))
 #+END_SRC
 * Husky
 #+BEGIN_SRC emacs-lisp
