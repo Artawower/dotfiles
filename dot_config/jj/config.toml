@@ -11,6 +11,7 @@ key = "4357424B95BAB5C5"
 
 [revsets]
 push-default = "@"
+log = "present(@) | ancestors(latest(visible_heads(), 10), 10) | latest(::, 20) | trunk()"
 
 [revset-aliases]
 "immutable_heads()" = "none()"

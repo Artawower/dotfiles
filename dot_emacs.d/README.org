@@ -699,20 +699,8 @@ Modeline inactive color
 
 *** Zoom manager
 #+BEGIN_SRC emacs-lisp
- (use-package zoom-window
-  :ensure (zoom-window :host github :repo "artawower/zoom-window" :branch "fix/re-zoom")
-   :defer t
-   :after meow
-   :commands (zoom-window-zoom)
-   :bind ( :map meow-normal-state-keymap
-           ("\\ m" . zoom-window-zoom)
-           :map meow-motion-state-keymap
-           ("\\ m" . zoom-window-zoom)))
-#+END_SRC
-
-** Zoom current window
-#+BEGIN_SRC emacs-lisp :results silent
 (use-package zoom-window
+ :ensure (zoom-window :host github :repo "artawower/zoom-window" :branch "fix/re-zoom")
   :defer t
   :after meow
   :commands (zoom-window-zoom)
@@ -2284,71 +2272,6 @@ Comile mode
 #+END_SRC
 * Git
 ** Magit
-*** Core package
- #+BEGIN_SRC emacs-lisp
- (use-package magit
-   :commands
-   (magit-get-current-branch)
-   :bind
-   (("C-M-g" . magit-status)
-    ("C-M-S-d" . magit-ediff-compare)
-    ("C-M-S-c" . magit-commit)
-    ("C-M-S-a" . my/magit-stage-current-file)
-    ("C-M-d" . my/magit-ediff-current-file-against-head)
-    ("C-c g g" . magit-status)
-    :map magit-mode-map
-    ("C-1" . magit-section-show-level-1)
-    ("C-2" . magit-section-show-level-2)
-    ("C-3" . magit-section-show-level-3)
-    ("C-n" . magit-section-forward)
-    ("C-e" . magit-section-backward)
-    ("C-4" . magit-section-show-level-4)
-    ("q" . kill-current-buffer)
-    ("<escape>" . kill-current-buffer)
-    ("Q" . bury-buffer)
-    (";" . meow-reverse)
-    ("Z" . magit-stash)
-    ("P" . magit-fetch)
-    ("p" . magit-push)
-    ("`" . magit-process-buffer)
-    ("f" . avy-goto-word-1)
-    ("x" . magit-discard)
-    :map magit-status-mode-map
-    ("x" . meow-line)
-    ("X" . magit-discard)
-    ("z z" . recenter)
-    ("C-n" . magit-section-forward)
-    ("C-e" . magit-section-backward)
-    ("M-k" . husky-lsp-repeat-consult-search-forward)
-    ("M-p" . husky-lsp-repeat-consult-search-backward)
-    :map magit-diff-mode-map
-    ("C-n" . magit-section-forward)
-    ("C-e" . magit-section-backward))
-   :custom-face
-   (git-commit-overlong-summary ((t :inherit error :weight bold)))
-   :custom
-   (magit-diff-visit-prefer-worktree t)
-   (magit-ediff-dwim-show-on-hunks t)
-   (magit-diff-refine-hunk t)
-   (magit-process-timestamp-format "%H:%M")
-   (magit-display-buffer-function #'magit-display-buffer-fullcolumn-most-v1)
-   (magit-process-finish-apply-ansi-colors t)
-   :hook
-   (magit-process-mode . compilation-minor-mode)
-   :config
-   ;; Reset magit numbers
-   (dolist (key (mapcar (lambda (n) (kbd (number-to-string n))) (number-sequence 0 9)))
-     (define-key magit-mode-map key nil)
-     (define-key magit-status-mode-map key nil))
-   (define-key transient-map        "q" 'transient-quit-one)
-   (define-key transient-edit-map   "q" 'transient-quit-one)
-   (define-key transient-sticky-map "q" 'transient-quit-seq)
-   (define-key magit-file-section-map (kbd "C-n") 'magit-section-forward)
-   (define-key magit-hunk-section-map (kbd "C-n") 'magit-section-forward)
-   (setcdr magit-process-mode-map (cdr (make-keymap)))
-   (set-keymap-parent magit-process-mode-map special-mode-map))
- #+END_SRC
- 
 *** Helper functions
 **** Stage current file
 #+BEGIN_SRC emacs-lisp :results silent
