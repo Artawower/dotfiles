@@ -2804,7 +2804,14 @@ Prevents closing the last frame in daemon mode on macOS."
   (tabspaces-todo-file-name "project-todo.org")
   ;; sessions
   (tabspaces-session nil)
-  (tabspaces-session-auto-restore nil))
+  (tabspaces-session-auto-restore nil)
+  :config
+  (defun my/project-majutsu ()
+    "Run Majutsu from the current project root."
+    (interactive)
+    (let ((default-directory (project-root (project-current t))))
+      (call-interactively #'majutsu)))
+  (add-to-list 'tabspaces-project-switch-commands '(my/project-majutsu "Jujutsu" ?j)))
 #+END_SRC
 
 
@@ -4836,8 +4843,8 @@ My own package for publish roam files
    ("C-c n P" . orgnote-publish-all)
    ("C-c n L" . orgnote-load))
   :custom
-  (orgnote-debug-p t)
-  (orgnote-execution-script "bun /Users/darkawower/projects/pet/orgnote/orgnote-cli/dist/index.js"))
+  (orgnote-debug-p t))
+  ;; (orgnote-execution-script "bun /Users/darkawower/projects/pet/orgnote/orgnote-cli/dist/index.js"))
   ;; :config
   ;; (orgnote-autosync-global-mode))
 
