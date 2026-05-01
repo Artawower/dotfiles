@@ -3,7 +3,11 @@
 # theme = dark:Laser,light:Seoulbones Dark
 # theme = dark:Laser,light:Catppuccin Latte
 # theme = dark:Laser,light:Pro light
+{{- if eq .chezmoi.os "linux" }}
+theme = noctalia
+{{- else }}
 theme = dark:TokyoNight,light:Catppuccin Latte
+{{- end }}
 
 window-decoration = false
 window-theme = ghostty
