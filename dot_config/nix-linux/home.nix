@@ -13,7 +13,7 @@
   nixpkgs.config.allowUnfree = true;
 
   home.packages = with pkgs; [
-    inputs.dms.packages.${pkgs.system}.dms-shell
+    inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.dms-shell
 
     helix
     fastfetch
@@ -79,7 +79,7 @@
     cmake
     libtool
     pkg-config
-    enchant2
+    enchant_2
     llvmPackages.libclang.lib
 
     isync
@@ -102,8 +102,8 @@
   home.sessionVariables = {
     BROWSER = "app.zen_browser.zen";
     SHELL = "${pkgs.xonsh}/bin/xonsh";
-    CPATH = "${pkgs.enchant2}/include/enchant-2";
-    LIBRARY_PATH = "${pkgs.enchant2}/lib";
+    CPATH = "${pkgs.enchant_2}/include/enchant-2";
+    LIBRARY_PATH = "${pkgs.enchant_2}/lib";
     LIBCLANG_PATH = "${pkgs.llvmPackages.libclang.lib}/lib";
     BINDGEN_EXTRA_CLANG_ARGS = "-I${pkgs.llvmPackages.libclang.lib}/lib/clang/${pkgs.llvmPackages.libclang.version}/include";
   };
@@ -158,7 +158,7 @@ programs.gpg = {
 
   services.gpg-agent = {
     enable = true;
-    pinentryPackage = pkgs.pinentry-tty;
+    pinentry.package = pkgs.pinentry-tty;
     enableSshSupport = true;
     enableExtraSocket = true;
     extraConfig = ''

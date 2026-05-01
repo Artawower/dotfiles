@@ -13,7 +13,7 @@ layout layout="":
     echo "Layout set to ${LAYOUT}"
     chezmoi apply
 
-fedoria-deps:
+fedora-deps:
     if [ ! -f /etc/yum.repos.d/terra.repo ]; then \
         sudo rpm -e terra-release 2>/dev/null || true; \
         sudo env -u LD_LIBRARY_PATH dnf install -y --nogpgcheck \
@@ -80,7 +80,7 @@ uv:
     
 [working-directory("./nix-linux")]
 nix-linux:
-    nix run home-manager/master -- switch --flake . --impure
+    nix run home-manager/master -- switch -b backup --flake . --impure
 
 nix-mac:
     just nix-home-mac

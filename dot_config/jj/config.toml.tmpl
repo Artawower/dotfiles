@@ -7,7 +7,11 @@ email = "artawower@protonmail.com"
 [signing]
 behavior = "own"
 backend = "gpg"
+{{- if eq .chezmoi.os "linux" }}
+key = "542983F6B228CCC1"
+{{- else }}
 key = "4357424B95BAB5C5"
+{{- end }}
 
 [revsets]
 push-default = "@"

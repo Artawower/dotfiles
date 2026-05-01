@@ -2,5 +2,5 @@
   username = "darkawower";
   fullName = "Artur Iaroshenko";
   email = "artawower@protonmail.com";
-  gpgKey = "4357424B95BAB5C5";
+  gpgKey = "542983F6B228CCC1";
 }
