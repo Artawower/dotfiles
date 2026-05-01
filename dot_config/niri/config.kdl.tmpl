@@ -120,7 +120,7 @@ spawn-at-startup "darkman run"
 spawn-at-startup "ydotoold"
 // spawn-at-startup "dms" "run"
 spawn-at-startup "vicinae" "server"
-spawn-sh-at-startup "pkill xremap; xremap --watch ~/.config/xremap/config.yml"
+spawn-sh-at-startup "pkill xremap; xremap --ignore xremap --watch ~/.config/xremap/config.yml"
 spawn-at-startup "sh" "-c" "sleep 1 && /usr/bin/quickshell -c noctalia-shell"
 spawn-at-startup "sh" "-c" "sleep 1; exec hyprvoice serve"
 spawn-sh-at-startup "$HOME/.config/bin/wallpaper-rotate"
@@ -241,282 +241,281 @@ binds {
     XF86MonBrightnessDown allow-when-locked=true {
         spawn "brightnessctl" "--class=backlight" "set" "5%-"
     }
-    Alt+G {
+    Alt+Shift+G {
         maximize-window-to-edges
     }
-    Alt+{{ $overview }} repeat=false {
+    Alt+Shift+{{ $overview }} repeat=false {
         toggle-overview
     }
-    Alt+Q repeat=false {
+    Alt+Shift+Q repeat=false {
         close-window
     }
-    Alt+H {
+    Alt+Shift+H {
         focus-column-left
     }
-    Alt+{{ $right }} {
+    Alt+Shift+{{ $right }} {
         focus-column-right
     }
-    Alt+Shift+Left {
+    Alt+Shift+Super+Left {
         move-column-left
     }
-    Alt+Shift+Down {
+    Alt+Shift+Super+Down {
         move-window-down
     }
-    Alt+Shift+Up {
+    Alt+Shift+Super+Up {
         move-window-up
     }
-    Alt+Shift+Right {
+    Alt+Shift+Super+Right {
         move-column-right
     }
-    Alt+Shift+H {
+    Alt+Shift+Super+H {
         move-column-left
     }
-    Alt+Shift+{{ $right }} {
+    Alt+Shift+Super+{{ $right }} {
         move-column-right
     }
-    Alt+Home {
+    Alt+Shift+Home {
         focus-column-first
     }
-    Alt+End {
+    Alt+Shift+End {
         focus-column-last
     }
-    Alt+Ctrl+Home {
+    Alt+Shift+Ctrl+Home {
         move-column-to-first
     }
-    Alt+Ctrl+End {
+    Alt+Shift+Ctrl+End {
         move-column-to-last
     }
-    Alt+Shift+Ctrl+Left {
+    Alt+Shift+Ctrl+Super+Left {
         move-column-to-monitor-left
     }
-    Alt+Shift+Ctrl+Down {
+    Alt+Shift+Ctrl+Super+Down {
         move-column-to-monitor-down
     }
-    Alt+Shift+Ctrl+Up {
+    Alt+Shift+Ctrl+Super+Up {
         move-column-to-monitor-up
     }
-    Alt+Shift+Ctrl+Right {
+    Alt+Shift+Ctrl+Super+Right {
         move-column-to-monitor-right
     }
-    Alt+Shift+Ctrl+H {
+    Alt+Shift+Ctrl+Super+H {
         move-column-to-monitor-left
     }
-    Alt+Shift+Ctrl+{{ $down }} {
+    Alt+Shift+Ctrl+Super+{{ $down }} {
         move-column-to-monitor-down
     }
-    Alt+Shift+Ctrl+{{ $up }} {
+    Alt+Shift+Ctrl+Super+{{ $up }} {
         move-column-to-monitor-up
     }
-    Alt+Shift+Ctrl+{{ $right }} {
+    Alt+Shift+Ctrl+Super+{{ $right }} {
         move-column-to-monitor-right
-    }
-    Alt+Page_Down {
-        focus-workspace-down
-    }
-    Alt+Page_Up {
-        focus-workspace-up
-    }
-    Alt+{{ $down }} {
-        focus-workspace-down
-    }
-    Alt+{{ $up }} {
-        focus-workspace-up
-    }
-    Alt+Ctrl+Page_Down {
-        move-column-to-workspace-down
-    }
-    Alt+Ctrl+Page_Up {
-        move-column-to-workspace-up
-    }
-    Alt+Shift+{{ $down }} {
-        move-column-to-workspace-down
-    }
-    Alt+Shift+{{ $up }} {
-        move-column-to-workspace-up
     }
     Alt+Shift+Page_Down {
-        move-workspace-down
+        focus-workspace-down
     }
     Alt+Shift+Page_Up {
+        focus-workspace-up
+    }
+    Alt+Shift+{{ $down }} {
+        focus-workspace-down
+    }
+    Alt+Shift+{{ $up }} {
+        focus-workspace-up
+    }
+    Alt+Shift+Ctrl+Page_Down {
+        move-column-to-workspace-down
+    }
+    Alt+Shift+Ctrl+Page_Up {
+        move-column-to-workspace-up
+    }
+    Alt+Shift+Super+{{ $down }} {
+        move-column-to-workspace-down
+    }
+    Alt+Shift+Super+{{ $up }} {
+        move-column-to-workspace-up
+    }
+    Alt+Shift+Super+Page_Down {
+        move-workspace-down
+    }
+    Alt+Shift+Super+Page_Up {
         move-workspace-up
     }
 {{- if ne .layout "colemak" }}
-    Alt+Shift+U {
+    Alt+Shift+Super+U {
         move-workspace-down
     }
-    Alt+Shift+I {
+    Alt+Shift+Super+I {
         move-workspace-up
     }
 {{- end }}
-    Alt+WheelScrollDown cooldown-ms=150 {
+    Alt+Shift+WheelScrollDown cooldown-ms=150 {
         focus-workspace-down
     }
-    Alt+WheelScrollUp cooldown-ms=150 {
+    Alt+Shift+WheelScrollUp cooldown-ms=150 {
         focus-workspace-up
     }
-    Alt+Ctrl+WheelScrollDown cooldown-ms=150 {
+    Alt+Shift+Ctrl+WheelScrollDown cooldown-ms=150 {
         move-column-to-workspace-down
     }
-    Alt+Ctrl+WheelScrollUp cooldown-ms=150 {
+    Alt+Shift+Ctrl+WheelScrollUp cooldown-ms=150 {
         move-column-to-workspace-up
     }
-    Alt+WheelScrollRight {
+    Alt+Shift+WheelScrollRight {
         focus-column-right
     }
-    Alt+WheelScrollLeft {
+    Alt+Shift+WheelScrollLeft {
         focus-column-left
     }
-    Alt+Ctrl+WheelScrollRight {
+    Alt+Shift+Ctrl+WheelScrollRight {
         move-column-right
     }
-    Alt+Ctrl+WheelScrollLeft {
+    Alt+Shift+Ctrl+WheelScrollLeft {
         move-column-left
     }
-    Alt+Shift+WheelScrollDown {
+    Alt+Shift+Super+WheelScrollDown {
         focus-column-right
     }
-    Alt+Shift+WheelScrollUp {
+    Alt+Shift+Super+WheelScrollUp {
         focus-column-left
     }
-    Alt+Ctrl+Shift+WheelScrollDown {
+    Alt+Shift+Ctrl+Super+WheelScrollDown {
         move-column-right
     }
-    Alt+Ctrl+Shift+WheelScrollUp {
+    Alt+Shift+Ctrl+Super+WheelScrollUp {
         move-column-left
-    }
-    Alt+1 {
-        focus-workspace "soc"
-    }
-    Alt+2 {
-        focus-workspace "web"
-    }
-    Alt+3 {
-        focus-workspace "dev"
-    }
-    Alt+4 {
-        focus-workspace "deb"
-    }
-    Alt+5 {
-        focus-workspace "oth"
-    }
-    Alt+O {
-        focus-workspace "oth"
-    }
-    Alt+S {
-        focus-workspace "soc"
-    }
-    Alt+P {
-        focus-workspace "deb"
-    }
-    Alt+D {
-        spawn-sh "niri msg action focus-workspace dev && niri msg action focus-column-last"
-    }
-    Alt+Ctrl+D {
-        spawn-sh "niri msg action focus-workspace dev && niri msg action focus-column-first"
-    }
-    Alt+W {
-        focus-workspace "web"
     }
     Alt+Shift+1 {
-        move-window-to-workspace "soc"
+        focus-workspace "soc"
     }
     Alt+Shift+2 {
-        move-window-to-workspace "web"
+        focus-workspace "web"
     }
     Alt+Shift+3 {
-        move-window-to-workspace "dev"
+        focus-workspace "dev"
     }
     Alt+Shift+4 {
-        move-window-to-workspace "deb"
+        focus-workspace "deb"
     }
     Alt+Shift+5 {
-        move-window-to-workspace "oth"
+        focus-workspace "oth"
     }
     Alt+Shift+O {
-        move-window-to-workspace "oth"
+        focus-workspace "oth"
     }
     Alt+Shift+S {
-        move-window-to-workspace "soc"
-    }
-    Alt+Shift+W {
-        move-window-to-workspace "web"
-    }
-    Alt+Shift+D {
-        move-window-to-workspace "dev"
+        focus-workspace "soc"
     }
     Alt+Shift+P {
+        focus-workspace "deb"
+    }
+    Alt+Shift+D {
+        spawn-sh "niri msg action focus-workspace dev && niri msg action focus-column-last"
+    }
+    Alt+Shift+Ctrl+D {
+        spawn-sh "niri msg action focus-workspace dev && niri msg action focus-column-first"
+    }
+    Alt+Shift+W {
+        focus-workspace "web"
+    }
+    Alt+Shift+Super+1 {
+        move-window-to-workspace "soc"
+    }
+    Alt+Shift+Super+2 {
+        move-window-to-workspace "web"
+    }
+    Alt+Shift+Super+3 {
+        move-window-to-workspace "dev"
+    }
+    Alt+Shift+Super+4 {
         move-window-to-workspace "deb"
     }
-    Alt+Ctrl+1 {
+    Alt+Shift+Super+5 {
+        move-window-to-workspace "oth"
+    }
+    Alt+Shift+Super+O {
+        move-window-to-workspace "oth"
+    }
+    Alt+Shift+Super+S {
+        move-window-to-workspace "soc"
+    }
+    Alt+Shift+Super+W {
+        move-window-to-workspace "web"
+    }
+    Alt+Shift+Super+D {
+        move-window-to-workspace "dev"
+    }
+    Alt+Shift+Super+P {
+        move-window-to-workspace "deb"
+    }
+    Alt+Shift+Ctrl+1 {
         move-column-to-workspace "soc"
     }
-    Alt+Ctrl+2 {
+    Alt+Shift+Ctrl+2 {
         move-column-to-workspace "dev"
     }
-    Alt+Ctrl+3 {
+    Alt+Shift+Ctrl+3 {
         move-column-to-workspace "web"
     }
-    Alt+Ctrl+4 {
+    Alt+Shift+Ctrl+4 {
         move-column-to-workspace "deb"
     }
-    Alt+Ctrl+5 {
+    Alt+Shift+Ctrl+5 {
         move-column-to-workspace "oth"
     }
-    Alt+BracketLeft {
+    Alt+Shift+BracketLeft {
         consume-or-expel-window-left
     }
-    Alt+BracketRight {
+    Alt+Shift+BracketRight {
         consume-or-expel-window-right
     }
-    Alt+Comma {
+    Alt+Shift+Comma {
         consume-window-into-column
     }
-    Alt+Period {
+    Alt+Shift+Period {
         expel-window-from-column
     }
-    Alt+R {
+    Alt+Shift+R {
         switch-preset-column-width
     }
-    Alt+Shift+R {
+    Alt+Shift+Super+R {
         switch-preset-window-height
     }
-    Alt+Ctrl+R {
+    Alt+Shift+Ctrl+R {
         reset-window-height
     }
-    Alt+F {
+    Alt+Shift+F {
         maximize-column
     }
-    Alt+Shift+F {
+    Alt+Shift+Super+F {
         fullscreen-window
     }
-    Alt+Ctrl+F {
+    Alt+Shift+Ctrl+F {
         expand-column-to-available-width
     }
-    Alt+C {
+    Alt+Shift+C {
         center-column
     }
-    Alt+Ctrl+C {
+    Alt+Shift+Ctrl+C {
         center-visible-columns
     }
-    Alt+Minus {
+    Alt+Shift+Minus {
         set-column-width "-10%"
     }
-    Alt+Equal {
+    Alt+Shift+Equal {
         set-column-width "+10%"
     }
-    Alt+Shift+Minus {
+    Alt+Shift+Super+Minus {
         set-window-height "-10%"
     }
-    Alt+Shift+Equal {
+    Alt+Shift+Super+Equal {
         set-window-height "+10%"
     }
-    Alt+Shift+C {
+    Alt+Shift+Super+C {
         toggle-window-floating
     }
-    Alt+Shift+V {
+    Alt+Shift+Super+V {
         switch-focus-between-floating-and-tiling
-    }
-    // Actions to switch layouts.
+    }    // Actions to switch layouts.
     // Note: if you uncomment these, make sure you do NOT have
     // a matching layout switch hotkey configured in xkb options above.
     // Having both at once on the same hotkey will break the switching,
@@ -535,28 +534,28 @@ binds {
     Super+Shift+X {
         spawn-sh "GEOM=$(slurp); canberra-gtk-play -i camera-shutter & grim -g \"$GEOM\" - | satty -f - "
     }
-    Super+Shift+1 {
+    Ctrl+Super+1 {
         spawn-sh "canberra-gtk-play -i camera-shutter & grim - | satty -f - "
     }
-    Super+Shift+2 {
+    Ctrl+Super+2 {
         spawn-sh "canberra-gtk-play -i camera-shutter & grim -g \"$(slurp)\" - | satty -f - "
     }
     Alt+Escape allow-inhibiting=false {
         toggle-keyboard-shortcuts-inhibit
     }
-    Alt+Shift+Q {
+    Ctrl+Alt+Shift+Q {
         quit
     }
     Ctrl+Alt+Delete {
         quit
     }
-    Super+Shift+Alt+C {
+    Ctrl+Super+C {
         spawn "vicinae" "vicinae://extensions/vicinae/clipboard/history"
     }
     Super+Space {
         spawn "vicinae" "vicinae://extensions/vicinae/clipboard/history"
     }
-    Super+Shift+E {
+    Ctrl+Super+E {
         spawn "vicinae" "vicinae://extensions/vicinae/core/search-emojis"
     }
     Super+Shift+Alt+G {
@@ -571,13 +570,13 @@ binds {
     Alt+Tab {
         spawn "vicinae" "vicinae://extensions/vicinae/wm/switch-windows"
     }
-    Super+Shift+3 {
+    Ctrl+Super+3 {
         spawn-sh "dms notify \"Start crop recording\" && wf-recorder --audio -g \"$(slurp)\" -f ~/Videos/crop_$(date +%H%M%S).mp4"
     }
-    Super+Shift+4 {
+    Ctrl+Super+4 {
         spawn-sh "dms notify \"Start full recording\" && wf-recorder --audio -f ~/Videos/full_$(date +%H%M%S).mp4"
     }
-    Super+Shift+S {
+    Ctrl+Super+S {
         spawn-sh "killall -s SIGINT wf-recorder && dms notify \"Stop recording\" && sleep 0.5 && nautilus ~/Videos"
     }
     Ctrl+Backslash {
