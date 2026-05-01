@@ -51,10 +51,10 @@ def list_env():
         print("Storage is empty")
         return
 
-    print(f"{'VARIABLE':<25} VALUE")
+    print("{:<25} VALUE".format("VARIABLE"))
     print("-" * 40)
     for k, v in storage.items():
-        print(f"{k:<25} {v}")
+        print("{:<25} {}".format(k, v))
 
 
 def set_env(key, value):

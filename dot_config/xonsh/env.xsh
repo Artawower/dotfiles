@@ -25,7 +25,12 @@ $XONSH_COLOR_STYLE = 'one-dark'
 $DOTNET_CLI_TELEMETRY_OPTOUT = '1'
 $DOTNET_ROOT = '/usr/local/share/dotnet'
 $DOTNET_ROLL_FORWARD = "Major"
-$GPG_TTY = $(tty).strip()
+import subprocess as _subprocess
+_gpg_tty_result = _subprocess.run(['tty'], capture_output=True, text=True)
+_gpg_tty = _gpg_tty_result.stdout.strip()
+if _gpg_tty_result.returncode == 0 and _gpg_tty:
+    $GPG_TTY = _gpg_tty
+del _gpg_tty, _gpg_tty_result, _subprocess
 
 $XONSH_HISTORY_BACKEND = 'sqlite'
 

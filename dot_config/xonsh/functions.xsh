@@ -115,7 +115,7 @@ def _ud(args):
 
 def print_colors():
     for name, (r, g, b) in color_tools.BASE_XONSH_COLORS.items():
-        print(f"\033[48;2;{r};{g};{b}m  \033[0m {name:20} rgb({r},{g},{b})")
+        print("\033[48;2;{};{};{}m  \033[0m {:20} rgb({},{},{})".format(r, g, b, name, r, g, b))
 
 def pnpm_update_all():
     res = $(pnpm list -g --depth=0 --parseable).strip().split('\n')
