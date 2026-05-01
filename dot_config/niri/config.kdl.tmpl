@@ -6,22 +6,24 @@
 // Find the full list of options on the wiki:
 // https://yalter.github.io/niri/Configuration:-Input
 
-{{- $down := "j" -}}
-{{- $up := "k" -}}
-{{- $right := "l" -}}
-{{- $dev_key := "K" -}}
-{{- if eq .layout "colemak" -}}
-{{-   $down = "n" -}}
-{{-   $up = "e" -}}
-{{-   $right = "i" -}}
-{{-   $dev_key = "E" -}}
-{{- end -}}
+{{ $down := "j" -}}
+{{ $up := "k" -}}
+{{ $right := "l" -}}
+{{ $overview := "i" -}}
+{{ if eq .layout "colemak" -}}
+{{   $down = "n" -}}
+{{   $up = "e" -}}
+{{   $right = "i" -}}
+{{   $overview = "l" -}}
+{{ end }}
 
 input {
     keyboard {
         xkb {
             layout "us,ru"
-            // replace ru with needed language
+{{- if eq .layout "colemak" }}
+            variant "colemak,"
+{{- end }}
             options "grp:caps_toggle"
         }
         //feel free to change it to other input toggle options, i like to use caps_lock as  language toggle        }
@@ -242,7 +244,7 @@ binds {
     Alt+G {
         maximize-window-to-edges
     }
-    Alt+i repeat=false {
+    Alt+{{ $overview }} repeat=false {
         toggle-overview
     }
     Alt+Q repeat=false {
@@ -299,13 +301,13 @@ binds {
     Alt+Shift+Ctrl+H {
         move-column-to-monitor-left
     }
-    Alt+Shift+Ctrl+J {
+    Alt+Shift+Ctrl+{{ $down }} {
         move-column-to-monitor-down
     }
-    Alt+Shift+Ctrl+K {
+    Alt+Shift+Ctrl+{{ $up }} {
         move-column-to-monitor-up
     }
-    Alt+Shift+Ctrl+L {
+    Alt+Shift+Ctrl+{{ $right }} {
         move-column-to-monitor-right
     }
     Alt+Page_Down {
@@ -338,12 +340,14 @@ binds {
     Alt+Shift+Page_Up {
         move-workspace-up
     }
+{{- if ne .layout "colemak" }}
     Alt+Shift+U {
         move-workspace-down
     }
     Alt+Shift+I {
         move-workspace-up
     }
+{{- end }}
     Alt+WheelScrollDown cooldown-ms=150 {
         focus-workspace-down
     }
@@ -407,7 +411,7 @@ binds {
     Alt+D {
         spawn-sh "niri msg action focus-workspace dev && niri msg action focus-column-last"
     }
-    Alt+{{ $dev_key }} {
+    Alt+Ctrl+D {
         spawn-sh "niri msg action focus-workspace dev && niri msg action focus-column-first"
     }
     Alt+W {
