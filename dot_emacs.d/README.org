@@ -717,6 +717,19 @@ Modeline inactive color
          ("C-c w r" . rotate-window)))
 #+END_SRC
 
+** Title with tab name
+#+BEGIN_SRC emacs-lisp :results silent
+(defun my/current-tab-name ()
+  (alist-get 'name (tab-bar--current-tab)))
+
+(defun my/frame-title ()
+  (format "[%s] %s"
+          (my/current-tab-name)
+          (buffer-name)))
+
+(setq frame-title-format
+      '(:eval (my/frame-title)))
+#+END_SRC
 ** Folding, outline
 #+BEGIN_SRC emacs-lisp
 (use-package outline-indent
