@@ -13,6 +13,9 @@ key = "542983F6B228CCC1"
 key = "4357424B95BAB5C5"
 {{- end }}
 
+[ui]
+editor = "hx"
+
 [revsets]
 push-default = "@"
 log = "present(@) | ancestors(latest(visible_heads(), 10), 10) | latest(::, 20) | trunk()"

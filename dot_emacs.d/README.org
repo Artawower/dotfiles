@@ -2527,7 +2527,13 @@ Setup blamer face
   :ensure (:host github :repo "0WD0/majutsu")
   :config
   (with-eval-after-load 'with-editor
-    (setq with-editor-emacsclient-executable "/opt/homebrew/bin/emacsclient"))
+    (setq with-editor-emacsclient-executable
+          (cond
+           ((and (eq system-type 'darwin)
+                 (file-executable-p "/opt/homebrew/bin/emacsclient"))
+            "/opt/homebrew/bin/emacsclient")
+           ((executable-find "emacsclient"))
+           (t "emacsclient"))))
   (set-face-attribute 'majutsu-interactive-selected-hunk nil :background (modus-themes-get-color-value 'green-cooler))
   (define-key majutsu-diff-mode-map (kbd "C-n") nil))
 #+END_SRC
