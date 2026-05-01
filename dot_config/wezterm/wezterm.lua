@@ -1,7 +1,56 @@
 local wezterm = require "wezterm"
-local theme_switcher = require "theme-switcher"
-local theme_config = require "theme-config"
 local config = {}
+
+local theme_config = {
+  window_themes = {},
+  themes = {
+    "Catppuccin Latte",
+    "Tokyo Night",
+    "Catppuccin Frappe",
+    "Builtin Solarized Light",
+    "Builtin Solarized Dark",
+  },
+}
+
+function theme_config.get_appearance_themes()
+  return theme_config.themes
+end
+
+function theme_config.get_initial_theme_name()
+  if wezterm.gui and wezterm.gui.get_appearance then
+    local appearance = wezterm.gui.get_appearance()
+    if appearance:find("Dark") then
+      return "Tokyo Night"
+    end
+  end
+
+  return "Catppuccin Latte"
+end
+
+function theme_config.get_theme_overrides(theme_name)
+  return { color_scheme = theme_name }
+end
+
+function theme_config.apply_theme_to_window(window, theme_name)
+  theme_config.window_themes[window:window_id()] = theme_name
+  window:set_config_overrides(theme_config.get_theme_overrides(theme_name))
+end
+
+local function switch_theme(window, pane)
+  local themes = theme_config.get_appearance_themes()
+  local window_id = window:window_id()
+  local current_theme = theme_config.window_themes[window_id]
+  local next_index = 1
+
+  for index, theme_name in ipairs(themes) do
+    if theme_name == current_theme then
+      next_index = index % #themes + 1
+      break
+    end
+  end
+
+  theme_config.apply_theme_to_window(window, themes[next_index])
+end
 
 config.font = wezterm.font("JetBrains Mono", { weight = 400 })
 config.window_decorations = "RESIZE"
@@ -38,12 +87,14 @@ if wezterm.target_triple:find("linux") then
   }
 end
 
-local current_path = os.getenv("PATH") or ""
-local my_paths = "/opt/homebrew/bin:/Users/darkawower/.nix-profile/bin:/usr/local/bin:" .. current_path
+if not wezterm.target_triple:find("linux") then
+  local current_path = os.getenv("PATH") or ""
+  local my_paths = "/opt/homebrew/bin:/Users/darkawower/.nix-profile/bin:/usr/local/bin:" .. current_path
 
-config.set_environment_variables = {
-  PATH = my_paths
-}
+  config.set_environment_variables = {
+    PATH = my_paths
+  }
+end
 
 wezterm.on(
   "window-config-reloaded",
@@ -133,7 +184,7 @@ config.keys = {
   {
     key = "y",
     mods = "CMD|SHIFT",
-    action = wezterm.action_callback(theme_switcher.theme_switcher)
+    action = wezterm.action_callback(switch_theme)
   }
 }
 

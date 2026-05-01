@@ -177,6 +177,22 @@ init-mac:
     just cargo
     just nix-clean-mac
 
+
+# Daily update — refresh Fedora, Flatpak, Nix/Home Manager, and user toolchains
+update-linux:
+    sudo env -u LD_LIBRARY_PATH dnf upgrade --refresh -y
+    flatpak update -y
+    cd ~/.config/nix-linux && nix flake update
+    just nix-linux
+    mise upgrade --bump --exclude pnpm
+    mise trust ~/.config/mise.toml
+    uv tool upgrade --all
+    cargo install cargo-update
+    cargo install-update -a
+    just manual-deps
+    pi update
+    printenv > ~/.emacs.d/.local/env
+
 # Daily update — refresh packages without full reinstall
 update-mac:
     mise upgrade --bump --exclude pnpm

@@ -38,6 +38,10 @@ shell-integration-features = path
 # command = /Users/darkawower/.nix-profile/bin/fish
 # command = bash -c "zellij"
 # command = "xonsh"
+{{- if eq .chezmoi.os "linux" }}
+command = xonsh
+{{- else }}
 command = shell:zsh -l -c 'exec xonsh'
+{{- end }}
 
 # term = xterm-256color
