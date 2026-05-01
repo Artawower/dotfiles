@@ -17,51 +17,51 @@ version = "0.21.1"
 backend = "go:golang.org/x/tools/gopls"
 
 [[tools.node]]
-version = "25.9.0"
+version = "24.15.0"
 backend = "core:node"
 
 [tools.node."platforms.linux-arm64"]
-checksum = "sha256:8fb4283301b8c720fc9f18bffff0f659e72cc14d0cf207a3bb411808aaa73a57"
-url = "https://nodejs.org/dist/v25.9.0/node-v25.9.0-linux-arm64.tar.gz"
+checksum = "sha256:73afc234d558c24919875f51c2d1ea002a2ada4ea6f83601a383869fefa64eed"
+url = "https://nodejs.org/dist/v24.15.0/node-v24.15.0-linux-arm64.tar.gz"
 
 [tools.node."platforms.linux-arm64-musl"]
-checksum = "sha256:97f6fe125faa51f84a7bb600d0cd7aefcfaaa0e75a5f49a7c61c3df91d12d535"
-url = "https://unofficial-builds.nodejs.org/download/release/v25.9.0/node-v25.9.0-linux-arm64-musl.tar.gz"
+checksum = "sha256:31e98aa960a067da91edffd5d93bc46657b5d2a8029612c359f5f2ac0060152a"
+url = "https://unofficial-builds.nodejs.org/download/release/v24.15.0/node-v24.15.0-linux-arm64-musl.tar.gz"
 
 [tools.node."platforms.linux-x64"]
-checksum = "sha256:134e55b2408448a219760fe04dc44d6851f9de8a79549021ffd870e9082d9e7b"
-url = "https://nodejs.org/dist/v25.9.0/node-v25.9.0-linux-x64.tar.gz"
+checksum = "sha256:44836872d9aec49f1e6b52a9a922872db9a2b02d235a616a5681b6a85fec8d89"
+url = "https://nodejs.org/dist/v24.15.0/node-v24.15.0-linux-x64.tar.gz"
 
 [tools.node."platforms.linux-x64-musl"]
-checksum = "sha256:1ac44af012be6bc17f1e3723edbf12897c0baeae5d1dc75b9f97d71413e4c8f5"
-url = "https://unofficial-builds.nodejs.org/download/release/v25.9.0/node-v25.9.0-linux-x64-musl.tar.gz"
+checksum = "sha256:f55af5bd489c5347b113ca6594cae00a54b30ba57ac5875324311bfc6f4762e3"
+url = "https://unofficial-builds.nodejs.org/download/release/v24.15.0/node-v24.15.0-linux-x64-musl.tar.gz"
 
 [tools.node."platforms.macos-arm64"]
-checksum = "sha256:e479f3c469d3d9303a44f00a8ea37a3788395d171bb8059c48a4bbbd2e371b59"
-url = "https://nodejs.org/dist/v25.9.0/node-v25.9.0-darwin-arm64.tar.gz"
+checksum = "sha256:372331b969779ab5d15b949884fc6eaf88d5afe87bde8ba881d6400b9100ffc4"
+url = "https://nodejs.org/dist/v24.15.0/node-v24.15.0-darwin-arm64.tar.gz"
 
 [tools.node."platforms.macos-x64"]
-checksum = "sha256:7d737b53ce191142bfa1c17cfa5b070d96e84eebf76b8dd06d84981cbdc3f7e3"
-url = "https://nodejs.org/dist/v25.9.0/node-v25.9.0-darwin-x64.tar.gz"
+checksum = "sha256:ffd5ee293467927f3ee731a553eb88fd1f48cf74eebc2d74a6babe4af228673b"
+url = "https://nodejs.org/dist/v24.15.0/node-v24.15.0-darwin-x64.tar.gz"
 
 [tools.node."platforms.windows-x64"]
-checksum = "sha256:929552b8305effac843ba7b4270c437aefb702fc3fbd73fcd1bffd35d4ac284e"
-url = "https://nodejs.org/dist/v25.9.0/node-v25.9.0-win-x64.zip"
+checksum = "sha256:cc5149eabd53779ce1e7bdc5401643622d0c7e6800ade18928a767e940bb0e62"
+url = "https://nodejs.org/dist/v24.15.0/node-v24.15.0-win-x64.zip"
 
 [[tools."npm:@angular/cli"]]
-version = "21.2.8"
+version = "21.2.9"
 backend = "npm:@angular/cli"
 
 [[tools."npm:@angular/language-server"]]
-version = "21.2.10"
+version = "21.2.11"
 backend = "npm:@angular/language-server"
 
 [[tools."npm:@angular/language-service"]]
-version = "21.2.10"
+version = "21.2.11"
 backend = "npm:@angular/language-service"
 
 [[tools."npm:@github/copilot-language-server"]]
-version = "1.479.0"
+version = "1.480.0"
 backend = "npm:@github/copilot-language-server"
 
 [[tools."npm:@gy920/qwen-mcp-tool"]]
@@ -69,11 +69,11 @@ version = "1.1.4"
 backend = "npm:@gy920/qwen-mcp-tool"
 
 [[tools."npm:@kilocode/cli"]]
-version = "7.2.25"
+version = "7.2.31"
 backend = "npm:@kilocode/cli"
 
 [[tools."npm:@mariozechner/pi-coding-agent"]]
-version = "0.70.6"
+version = "0.72.1"
 backend = "npm:@mariozechner/pi-coding-agent"
 
 [[tools."npm:@mem0/cli"]]
@@ -81,15 +81,15 @@ version = "0.2.4"
 backend = "npm:@mem0/cli"
 
 [[tools."npm:@mermaid-js/mermaid-cli"]]
-version = "11.12.0"
+version = "11.14.0"
 backend = "npm:@mermaid-js/mermaid-cli"
 
 [[tools."npm:@openai/codex"]]
-version = "0.125.0"
+version = "0.128.0"
 backend = "npm:@openai/codex"
 
 [[tools."npm:@qwen-code/qwen-code"]]
-version = "0.15.4"
+version = "0.15.6"
 backend = "npm:@qwen-code/qwen-code"
 
 [[tools."npm:@tobilu/qmd"]]
@@ -101,7 +101,7 @@ version = "3.2.7"
 backend = "npm:@vue/language-server"
 
 [[tools."npm:context-mode"]]
-version = "1.0.103"
+version = "1.0.104"
 backend = "npm:context-mode"
 
 [[tools."npm:copilot-node-server"]]
@@ -113,7 +113,7 @@ version = "11.0.0"
 backend = "npm:env-cmd"
 
 [[tools."npm:eslint"]]
-version = "10.2.1"
+version = "10.3.0"
 backend = "npm:eslint"
 
 [[tools."npm:git-trim"]]
@@ -137,7 +137,7 @@ version = "4.0.0-1"
 backend = "npm:ngx-unused-css"
 
 [[tools."npm:npm-check-updates"]]
-version = "22.0.1"
+version = "22.1.0"
 backend = "npm:npm-check-updates"
 
 [[tools."npm:npm-upgrade"]]
@@ -145,7 +145,7 @@ version = "3.1.2"
 backend = "npm:npm-upgrade"
 
 [[tools."npm:opencode-ai"]]
-version = "1.14.29"
+version = "1.14.33"
 backend = "npm:opencode-ai"
 
 [[tools."npm:opentmux"]]
@@ -157,7 +157,7 @@ version = "0.12.4"
 backend = "npm:orgnote-cli"
 
 [[tools."npm:pi-antigravity-rotator"]]
-version = "1.6.0"
+version = "1.10.1"
 backend = "npm:pi-antigravity-rotator"
 
 [[tools."npm:pi-link"]]
@@ -217,7 +217,7 @@ version = "0.3.3"
 backend = "pipx:rassumfrassum"
 
 [[tools."pipx:ty"]]
-version = "0.0.33"
+version = "0.0.34"
 backend = "pipx:ty"
 
 [[tools.pnpm]]
@@ -251,3 +251,7 @@ url = "https://github.com/pnpm/pnpm/releases/download/v10.33.2/pnpm-macos-x64"
 [tools.pnpm."platforms.windows-x64"]
 checksum = "sha256:3d1af71e9da7081efd58f95942e1f7e2107bf8fcdae03eb2331c0b6cea59510b"
 url = "https://github.com/pnpm/pnpm/releases/download/v10.33.2/pnpm-win-x64.exe"
+
+[[tools.uv]]
+version = "0.11.8"
+backend = "aqua:astral-sh/uv"

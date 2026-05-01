@@ -1,8 +1,3 @@
-# theme = dark:Catppuccin Frappe,light:Github Light Defaul
-# theme = dark:Catppuccin Macchiato,light:Github Light Defaul
-# theme = dark:Laser,light:Seoulbones Dark
-# theme = dark:Laser,light:Catppuccin Latte
-# theme = dark:Laser,light:Pro light
 {{- if eq .chezmoi.os "linux" }}
 theme = noctalia
 {{- else }}
@@ -13,7 +8,6 @@ window-decoration = false
 window-theme = ghostty
 macos-non-native-fullscreen = true
 
-# Disable native tabs to prevent AeroSpace bug
 keybind = cmd+t=unbind
 window-inherit-working-directory = true
 window-inherit-font-size = false
@@ -21,13 +15,10 @@ window-inherit-font-size = false
 copy-on-select = clipboard
 background-opacity = 0.90
 background-blur-radius = 10
-# window-decoration = true
-# macos-titlebar-style = hidden
 macos-titlebar-style = "tabs"
 window-padding-x = 16,16
 window-padding-y = 16,16
 
-# font-family = "JetBrains Mono"
 font-family = "Myna Nerd Font"
 font-size = 15
 
@@ -38,14 +29,9 @@ keybind = super+s=unbind
 macos-option-as-alt = true
 
 shell-integration-features = path
-# shell-integration = fish
-# command = /Users/darkawower/.nix-profile/bin/fish
-# command = bash -c "zellij"
-# command = "xonsh"
 {{- if eq .chezmoi.os "linux" }}
 command = xonsh
 {{- else }}
 command = shell:zsh -l -c 'exec xonsh'
 {{- end }}
 
-# term = xterm-256color

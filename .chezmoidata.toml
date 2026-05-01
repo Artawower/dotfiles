@@ -1,1 +1,15 @@
+[features]
+ai = false
+core = true
+emacs = true
+frontend = false
+go = false
+helix = true
+keyboard = true
+python = false
+rust = true
+terminal = true
+tiling = true
+
+[settings]
 layout = "colemak"
