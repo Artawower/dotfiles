@@ -196,14 +196,14 @@ update-linux:
     cargo install cargo-update
     cargo install-update -a
     just manual-deps
-    pi update
+    pi update --extensions
     printenv > ~/.emacs.d/.local/env
 
 # Daily update — refresh packages without full reinstall
 update-mac:
     mise upgrade --bump --exclude pnpm
     mise trust ~/.config/mise.toml
-    pi update
+    pi update --extensions
     printenv > ~/.emacs.d/.local/env
 
 
