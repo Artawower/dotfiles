@@ -825,6 +825,93 @@ def add_single_tab(tab: TabSpec) -> dict[str, Any]:
     }
 
 
+def choose_dir_with_zoxide_fzf() -> str:
+    zoxide_path = shutil_which("zoxide")
+    if not zoxide_path:
+        raise CommandError("zoxide is required for pick-dir")
+
+    fzf_path = shutil_which("fzf")
+    if not fzf_path:
+        raise CommandError("fzf is required for pick-dir")
+
+    candidates = run_process([zoxide_path, "query", "-l"])
+    if not candidates:
+        raise CommandError("zoxide returned no directories")
+
+    selected = run_process(
+        [fzf_path, "--prompt", "workspace dir> "],
+        input_text=candidates,
+    )
+    path = Path(selected).expanduser()
+    if not path.is_dir():
+        raise CommandError(f"Selected path is not a directory: {selected}")
+    return str(path)
+
+
+def surface_from_panel(workspace: str, panel: dict[str, Any]) -> SurfaceTarget:
+    surface_uuid = panel.get("id")
+    surface_ref = panel.get("ref")
+    if not surface_uuid or not surface_ref:
+        raise CommandError(f"Surface IDs are incomplete: {panel!r}")
+    return SurfaceTarget(
+        workspace=workspace,
+        ref=surface_ref,
+        uuid=surface_uuid,
+        pane_ref=panel.get("pane_ref"),
+        pane_uuid=panel.get("pane_id"),
+    )
+
+
+def pick_workspace_dir() -> dict[str, Any]:
+    """Pick a zoxide directory and cd every terminal tab in the current workspace."""
+    workspace = get_current_workspace()
+    selected_dir = choose_dir_with_zoxide_fzf()
+    panels = list_panels(workspace)
+
+    changed: list[dict[str, str | None]] = []
+    skipped: list[dict[str, str | None]] = []
+    errors: list[str] = []
+    cd_command = f"cd {shlex.quote(selected_dir)}"
+
+    for panel in panels:
+        panel_type = panel.get("type")
+        if panel_type not in (None, "terminal"):
+            skipped.append(
+                {
+                    "title": panel.get("title"),
+                    "surface_ref": panel.get("ref"),
+                    "surface_uuid": panel.get("id"),
+                    "type": panel_type,
+                }
+            )
+            continue
+
+        try:
+            surface = surface_from_panel(workspace, panel)
+            send_text(surface, cd_command)
+            changed.append(
+                {
+                    "title": panel.get("title"),
+                    "surface_ref": surface.ref,
+                    "surface_uuid": surface.uuid,
+                }
+            )
+        except Exception as exc:
+            errors.append(f"{panel.get('title') or panel.get('ref')}: {exc}")
+
+    if errors:
+        raise CommandError("; ".join(errors))
+
+    return {
+        "status": "ok",
+        "action": "pick-dir",
+        "workspace": workspace,
+        "cwd": selected_dir,
+        "changed": changed,
+        "skipped": skipped,
+    }
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Launch cmux layouts from TOML presets"
@@ -840,6 +927,12 @@ def build_parser() -> argparse.ArgumentParser:
 
     add = subparsers.add_parser("add", help="Add a single tab to current pane")
 
+    subparsers.add_parser(
+        "pick-dir",
+        aliases=["pd"],
+        help="Pick a zoxide directory and cd all terminal tabs in current workspace",
+    )
+
     return parser
 
 
@@ -854,7 +947,7 @@ def main(argv: list[str]) -> int:
 
     # Backward compat: no subcommand or non-subcommand first arg → treat as "launch"
     if not raw_args or (
-        raw_args[0] not in ("launch", "add", "--help", "-h")
+        raw_args[0] not in ("launch", "add", "pick-dir", "pd", "--help", "-h")
         and not raw_args[0].startswith("-")
     ):
         raw_args = ["launch"] + raw_args
@@ -866,13 +959,15 @@ def main(argv: list[str]) -> int:
 
     preset_dir = Path(__file__).resolve().parent
     try:
-        presets = discover_presets(preset_dir)
-
         if action == "add":
+            presets = discover_presets(preset_dir)
             tabs = collect_unique_tabs(presets)
             tab = choose_tab_with_fzf(tabs)
             result = add_single_tab(tab)
+        elif action in ("pick-dir", "pd"):
+            result = pick_workspace_dir()
         else:
+            presets = discover_presets(preset_dir)
             preset = resolve_preset(presets, args.preset)
             result = launch_preset(preset)
     except Exception as exc:

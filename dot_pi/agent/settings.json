@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.70.6",
+  "lastChangelogVersion": "0.72.1",
   "hideThinkingBlock": true,
   "quietStartup": true,
   "enableSkillCommands": true,
@@ -42,20 +42,11 @@
     {
       "source": "npm:lsp-pi@1.0.4",
       "extensions": [
-        "+lsp-tool.ts",
-        "+lsp.ts"
+        "-lsp-tool.ts",
+        "-lsp.ts"
       ]
     },
     "npm:pi-copy-output",
-    {
-      "source": "npm:pi-teams",
-      "extensions": [
-        "-extensions/index.ts"
-      ],
-      "skills": [
-        "-skills/teams.md"
-      ]
-    },
     "npm:@sherif-fanous/pi-catppuccin",
     "npm:pi-notify",
     {
@@ -68,13 +59,6 @@
       "source": "npm:pi-tool-display",
       "extensions": [
         "+index.ts"
-      ]
-    },
-    {
-      "source": "npm:@ifi/pi-extension-subagents",
-      "extensions": [
-        "-index.ts",
-        "-notify.ts"
       ]
     },
     {
@@ -92,31 +76,11 @@
     {
       "source": "npm:@tintinweb/pi-subagents",
       "extensions": [
-        "+src/index.ts"
-      ]
-    },
-    {
-      "source": "npm:@ifi/oh-pi-ant-colony",
-      "extensions": [
-        "-extensions/ant-colony/index.ts"
+        "-src/index.ts"
       ]
     },
     "npm:@mjakl/pi-dark-or-light",
     "npm:@benvargas/pi-exa-mcp",
-    "npm:pi-context-saver",
-    {
-      "source": "npm:pi-zellij",
-      "extensions": [
-        "-extensions/index.ts"
-      ],
-      "skills": [
-        "-skills/code-review/SKILL.md"
-      ],
-      "prompts": [
-        "-prompts/review-diff.md",
-        "-prompts/review.md"
-      ]
-    },
     {
       "source": "npm:@ogulcancelik/pi-spar",
       "extensions": [
@@ -124,18 +88,11 @@
       ]
     },
     {
-      "source": "npm:@ogulcancelik/pi-minimal-footer",
-      "extensions": [
-        "-index.ts"
-      ]
-    },
-    {
-      "source": "npm:pi-coordinator",
+      "source": "npm:pi-formatter",
       "extensions": [
         "-extensions/index.ts"
       ]
     },
-    "npm:pi-formatter",
     {
       "source": "git:github.com/hk-vk/pi-connect",
       "extensions": [
@@ -164,22 +121,6 @@
         "-index.ts"
       ]
     },
-    {
-      "source": "npm:@ifi/oh-pi-extensions",
-      "extensions": [
-        "-extensions/bg-process.ts",
-        "-extensions/custom-footer.ts",
-        "-extensions/auto-session-name.ts",
-        "-extensions/auto-update.ts",
-        "-extensions/btw.ts",
-        "-extensions/compact-header.ts",
-        "-extensions/git-guard.ts",
-        "-extensions/safe-guard.ts",
-        "-extensions/scheduler.ts",
-        "-extensions/usage-tracker.ts",
-        "-extensions/watchdog.ts"
-      ]
-    },
     "npm:pi-secret-guard",
     "npm:pi-extension-manager",
     {
@@ -189,44 +130,36 @@
       ]
     },
     "npm:pi-session-switch",
-    "npm:@dkmnx/pi-clarify",
-    "npm:pi-ask-user",
+    {
+      "source": "npm:@dkmnx/pi-clarify",
+      "extensions": [
+        "-index.ts"
+      ]
+    },
     "npm:pi-bailian-models",
     "npm:@thesethrose/pi-zai-provider",
     "git:github.com/HazAT/pi-interactive-subagents",
     {
-      "source": "git:github.com/TropicalDog17/pi-messenger-swarm",
-      "extensions": [
-        "-index.ts"
-      ],
-      "skills": [
-        "-skills/pi-messenger-swarm/SKILL.md"
-      ]
-    },
-    {
-      "source": "git:github.com/visua1hue/pi-pane",
-      "extensions": [
-        "-src/index.ts"
-      ]
-    },
-    {
       "source": "npm:pi-lens",
       "extensions": [
-        "-index.ts"
+        "+index.ts"
       ],
       "skills": [
-        "-skills/ast-grep/SKILL.md",
-        "-skills/lsp-navigation/SKILL.md"
+        "+skills/ast-grep/SKILL.md",
+        "+skills/lsp-navigation/SKILL.md"
       ]
     },
     "npm:pi-link",
     "git:github.com/tomooshi/condensed-milk-pi",
     "npm:@tmustier/pi-usage-extension",
-    "npm:@benvargas/pi-claude-code-use"
+    "npm:@benvargas/pi-claude-code-use",
+    "npm:context-mode",
+    "npm:pi-markdown-preview",
+    "npm:pi-jj-auto"
   ],
-  "defaultProvider": "google-antigravity",
-  "defaultModel": "gemini-3.1-pro-high",
-  "defaultThinkingLevel": "medium",
+  "defaultProvider": "github-copilot",
+  "defaultModel": "gpt-5.4",
+  "defaultThinkingLevel": "high",
   "collapseChangelog": false,
   "theme": "catppuccin-frappe",
   "extensions": [

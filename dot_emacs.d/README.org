@@ -2341,10 +2341,9 @@ Comile mode
   (magit-get-current-branch magit-toplevel)
   :bind
   (("C-M-g" . magit-status)
-   ("C-M-S-d" . magit-ediff-compare)
+   ("C-M-S-d" . my/magit-ediff-current-file-against-head)
    ("C-M-S-c" . magit-commit)
    ("C-M-S-a" . my/magit-stage-current-file)
-   ("C-M-d" . my/magit-ediff-current-file-against-head)
    ("C-c g g" . magit-status)
    :map magit-mode-map
    ("C-1" . magit-section-show-level-1)
@@ -3413,7 +3412,7 @@ def servers():
   :bind
   (("C-n" . flymake-goto-next-error)
    ("C-e" . flymake-goto-prev-error)
-    ("C-c e l" . flymake-show-diagnostics-buffer)
+   ("C-c e l" . flymake-show-diagnostics-buffer)
    ("C-c e c" . my/flymake-kill-error)
    ("C-c e C" . my/flymake-kill-errors)
    :map meow-normal-state-keymap
@@ -4862,10 +4861,10 @@ My own package for publish roam files
    ("C-c n P" . orgnote-publish-all)
    ("C-c n L" . orgnote-load))
   :custom
-  (orgnote-debug-p t))
+  (orgnote-debug-p t)
   ;; (orgnote-execution-script "bun /Users/darkawower/projects/pet/orgnote/orgnote-cli/dist/index.js"))
-  ;; :config
-  ;; (orgnote-autosync-global-mode))
+  :config
+  (orgnote-autosync-global-mode))
 
 #+END_SRC
 
