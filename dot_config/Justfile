@@ -150,8 +150,6 @@ systemd-services:
     sudo systemctl enable titdb.service
     sudo systemctl restart titdb.service
     systemctl --user daemon-reload
-    systemctl --user add-wants niri.service dms.service
-    systemctl --user enable dms.service
 
 fedora-files:
     ln -s /home/darkawower/.config/vicinae/scripts /home/darkawower/.local/share/vicinae/scripts

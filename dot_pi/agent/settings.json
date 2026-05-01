@@ -96,13 +96,6 @@
       ]
     },
     {
-      "source": "npm:pi-subagents",
-      "extensions": [
-        "-index.ts",
-        "-notify.ts"
-      ]
-    },
-    {
       "source": "npm:@ifi/oh-pi-ant-colony",
       "extensions": [
         "-extensions/ant-colony/index.ts"

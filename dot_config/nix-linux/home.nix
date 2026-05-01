@@ -97,6 +97,12 @@
       export LD_LIBRARY_PATH="/usr/lib64:${pkgs.stdenv.cc.cc.lib}/lib"
       exec /home/${user.username}/.local/bin/waystt-bin "$@"
     '')
+
+    (writeShellScriptBin "vicinae-soft" ''
+      export QT_QUICK_BACKEND=software
+      unset QT_PLUGIN_PATH
+      exec ${pkgs.vicinae}/bin/vicinae "$@"
+    '')
   ];
 
   home.sessionVariables = {
@@ -106,6 +112,13 @@
     LIBRARY_PATH = "${pkgs.enchant_2}/lib";
     LIBCLANG_PATH = "${pkgs.llvmPackages.libclang.lib}/lib";
     BINDGEN_EXTRA_CLANG_ARGS = "-I${pkgs.llvmPackages.libclang.lib}/lib/clang/${pkgs.llvmPackages.libclang.version}/include";
+    __EGL_VENDOR_LIBRARY_FILENAMES = "/usr/share/glvnd/egl_vendor.d/50_mesa.json";
+    __GLX_VENDOR_LIBRARY_NAME = "mesa";
+    LIBGL_DRIVERS_PATH = "/usr/lib64/dri";
+    GBM_BACKENDS_PATH = "/usr/lib64/gbm";
+    VDPAU_DRIVER_PATH = "/usr/lib64/vdpau";
+    VK_ICD_FILENAMES = "/usr/share/vulkan/icd.d/asahi_icd.aarch64.json";
+    VK_LAYER_PATH = "/usr/share/vulkan/explicit_layer.d:/usr/share/vulkan/implicit_layer.d";
   };
 
   systemd.user.services.swww-daemon = {

@@ -17,6 +17,17 @@
 {{   $overview = "l" -}}
 {{ end }}
 
+environment {
+    QT_PLUGIN_PATH null
+    __EGL_VENDOR_LIBRARY_FILENAMES "/usr/share/glvnd/egl_vendor.d/50_mesa.json"
+    __GLX_VENDOR_LIBRARY_NAME "mesa"
+    LIBGL_DRIVERS_PATH "/usr/lib64/dri"
+    GBM_BACKENDS_PATH "/usr/lib64/gbm"
+    VDPAU_DRIVER_PATH "/usr/lib64/vdpau"
+    VK_ICD_FILENAMES "/usr/share/vulkan/icd.d/asahi_icd.aarch64.json"
+    VK_LAYER_PATH "/usr/share/vulkan/explicit_layer.d:/usr/share/vulkan/implicit_layer.d"
+}
+
 input {
     keyboard {
         xkb {
@@ -115,11 +126,11 @@ layout {
 layer-rule {
     place-within-backdrop true
 }
-spawn-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=niri"
+spawn-at-startup "sh" "-c" "systemctl --user unset-environment QT_PLUGIN_PATH; systemctl --user set-environment __EGL_VENDOR_LIBRARY_FILENAMES=/usr/share/glvnd/egl_vendor.d/50_mesa.json __GLX_VENDOR_LIBRARY_NAME=mesa LIBGL_DRIVERS_PATH=/usr/lib64/dri GBM_BACKENDS_PATH=/usr/lib64/gbm VDPAU_DRIVER_PATH=/usr/lib64/vdpau VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/asahi_icd.aarch64.json VK_LAYER_PATH=/usr/share/vulkan/explicit_layer.d:/usr/share/vulkan/implicit_layer.d; dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=niri __EGL_VENDOR_LIBRARY_FILENAMES __GLX_VENDOR_LIBRARY_NAME LIBGL_DRIVERS_PATH GBM_BACKENDS_PATH VDPAU_DRIVER_PATH VK_ICD_FILENAMES VK_LAYER_PATH XDG_DATA_DIRS"
 spawn-at-startup "darkman run"
 spawn-at-startup "ydotoold"
 // spawn-at-startup "dms" "run"
-spawn-at-startup "vicinae" "server"
+spawn-at-startup "vicinae-soft" "server"
 spawn-sh-at-startup "pkill xremap; xremap --ignore xremap --watch ~/.config/xremap/config.yml"
 spawn-at-startup "sh" "-c" "sleep 1 && /usr/bin/quickshell -c noctalia-shell"
 spawn-at-startup "sh" "-c" "sleep 1; exec hyprvoice serve"
