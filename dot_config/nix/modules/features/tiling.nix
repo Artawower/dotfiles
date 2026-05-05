@@ -13,6 +13,7 @@ in
       xwayland-satellite
       wl-clipboard
       wl-clip-persist
+      wl-screenrec
       waybar
       swww
       fuzzel

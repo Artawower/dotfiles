@@ -10,9 +10,6 @@ uv   = "latest"
 "npm:git-trim" = "0.2.1"
 {{ end -}}
 
-{{ if and .features.vcs .features.terminal -}}
-"go:github.com/idursun/jjui" = "latest"
-{{ end -}}
 
 {{ if or .features.terminal .features.emacs -}}
 "npm:typescript-language-server"      = "latest"
