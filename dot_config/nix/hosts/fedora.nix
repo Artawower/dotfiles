@@ -10,7 +10,7 @@ in
     ../modules/features/battery-thresholds.nix
   ];
 
-  conf.layout = data.settings.layout;
+  conf.layout = data.layout;
 
   conf.features = {
     core.enable     = data.features.core;

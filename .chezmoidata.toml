@@ -1,3 +1,5 @@
+layout = "colemak"
+
 [features]
 ai = false
 core = true
@@ -10,6 +12,3 @@ python = false
 rust = true
 terminal = true
 tiling = true
-
-[settings]
-layout = "colemak"
