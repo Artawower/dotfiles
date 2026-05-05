@@ -1,17 +1,8 @@
 default:
     just --choose
 
-# Set keyboard layout (colemak/qwerty) and apply
 layout layout="":
-    #!/usr/bin/env bash
-    if [ -z "{{ layout }}" ]; then
-        LAYOUT=$(echo -e 'colemak\nqwerty' | fzf --prompt='layout> ' --height=2 --no-multi)
-    else
-        LAYOUT='{{ layout }}'
-    fi
-    sed -i "s/^layout = .*/layout = \"${LAYOUT}\"/" ~/.local/share/chezmoi/.chezmoidata.toml
-    echo "Layout set to ${LAYOUT}"
-    chezmoi apply
+    ~/.config/scripts/layout {{ layout }}
 
 [private]
 fedora-deps:
