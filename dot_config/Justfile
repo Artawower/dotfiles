@@ -56,38 +56,7 @@ mise:
     mise trust ~/.config/mise.toml
 
 mise-bump:
-    #!/usr/bin/env python3
-    import re, subprocess, os
-
-    template = os.path.expanduser("~/.local/share/chezmoi/dot_config/mise.toml.tmpl")
-    config   = os.path.expanduser("~/.config/mise/config.toml")
-
-    subprocess.run(["mise", "upgrade", "--bump", "--exclude", "pnpm"], check=True)
-
-    bumped = {}
-    with open(config) as f:
-        for line in f:
-            m = re.match(r'^("?[^"={}\n]+"?)\s*=\s*"([^"]+)"', line.strip())
-            if m:
-                bumped[m.group(1).strip()] = m.group(2)
-
-    with open(template) as f:
-        content = f.read()
-
-    for tool, version in bumped.items():
-        if version in ("latest", "lts"):
-            continue
-        content = re.sub(
-            rf'({re.escape(tool)}\s*=\s*")([^"]+)(")',
-            rf'\g<1>{version}\g<3>',
-            content
-        )
-
-    with open(template, "w") as f:
-        f.write(content)
-
-    subprocess.run(["chezmoi", "apply"], check=True)
-    print("✓ Versions bumped and template updated")
+    ~/.config/scripts/mise-bump
 
 [working-directory("./nix")]
 nix:
