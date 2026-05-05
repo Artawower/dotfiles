@@ -9,7 +9,7 @@ layout layout="":
     else
         LAYOUT='{{ layout }}'
     fi
-    echo "layout = \"${LAYOUT}\"" > ~/.local/share/chezmoi/.chezmoidata.toml
+    sed -i "s/^layout = .*/layout = \"${LAYOUT}\"/" ~/.local/share/chezmoi/.chezmoidata.toml
     echo "Layout set to ${LAYOUT}"
     chezmoi apply
 
