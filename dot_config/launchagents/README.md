@@ -6,7 +6,7 @@ What it is
 Files
 - system-theme-watcher.plist: LaunchAgent definition (copied to ~/Library/LaunchAgents/com.user.system-theme-watcher.plist).
 - on-system-theme-change.sh: Hook script that calls:
-  - ~/.config/helix/theme_switcher.sh
+  - ~/.config/scripts/helix-theme-switcher
   - ~/.config/zellij/theme_switcher.sh
 - install.sh / uninstall.sh: helpers to (un)install the LaunchAgent.
 

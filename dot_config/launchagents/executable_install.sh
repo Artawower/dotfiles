@@ -18,7 +18,7 @@ cp "$PLIST_SRC" "$PLIST_DST"
 
 # Ensure scripts are executable
 chmod +x "$SRC_DIR/on-system-theme-change.sh" || true
-[ -f "$HOME/.config/helix/theme_switcher.sh" ] && chmod +x "$HOME/.config/helix/theme_switcher.sh" || true
+[ -f "$HOME/.config/scripts/helix-theme-switcher" ] && chmod +x "$HOME/.config/scripts/helix-theme-switcher" || true
 [ -f "$HOME/.config/zellij/theme_switcher.sh" ] && chmod +x "$HOME/.config/zellij/theme_switcher.sh" || true
 
 launchctl load -w "$PLIST_DST"
