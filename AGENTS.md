@@ -1,93 +1,121 @@
 # Dotfiles — AI Agent Reference
 
-Source: `~/.local/share/chezmoi/`
-Target: `$HOME` (chezmoi apply deploys here)
+This repository is a chezmoi source tree for personal dotfiles.
 
-## VCS Rules
+- Source: `~/.local/share/chezmoi/`
+- Target: `$HOME` after `chezmoi apply`
+- Main deployed config subtree: `dot_config/` → `~/.config/`
+- Supported hosts:
+  - macOS / Apple Silicon via `nix-darwin` + Home Manager
+  - Fedora Asahi Linux via Home Manager + Fedora packages
 
-- **Always `jj`**, never `git commit` or `git add`
-- Before each atomic change: `jj log --no-graph -r @ --template 'description'`
-- If current revision description **doesn't match** intent → `jj new -m "<description>"`
-- If it **matches** (or is empty/WIP) → reuse `@`, set description: `jj desc -m "<description>"`
-- **No empty commits** — every revision must have file changes
-- Never push without user confirmation
+Do not assume the current host is Linux-only. Check `uname -s`, `.chezmoidata.toml`, or the Nix host modules before adding platform-specific logic.
+
+## Version control
+
+- Use `jj` only. Never run `git add` or `git commit`.
+- Before each atomic change, inspect the current revision:
+  `jj log --no-graph -r @ --template 'description'`
+- If the current revision is unrelated, create a new one:
+  `jj new -m "<type(scope): summary>"`
+- If the current revision matches the task, reuse it and update the description if needed:
+  `jj desc -m "<type(scope): summary>"`
+- No empty revisions. Every described revision should contain file changes.
+- Keep revisions atomic; split mixed shell/editor/Nix/desktop changes before presenting work as done.
+- Never push without explicit user confirmation.
 
 ## Edit workflow
 
-1. `chezmoi edit <file>` — edit in source (`~/.local/share/chezmoi/`)
-2. OR edit target (`~/.config/...`, `~/.pi/...`) then `chezmoi re-add <file>`
-3. `chezmoi diff` — verify before apply
-4. `chezmoi apply` — deploy to target
-5. Commit in chezmoi source: `cd ~/.local/share/chezmoi && jj new -m "..."` etc.
+Prefer changing chezmoi source files, not deployed targets.
 
-## Source tree (chezmoi source → target)
+1. Edit files under `~/.local/share/chezmoi/` directly, or use `chezmoi edit <target-file>`.
+2. If you edit deployed files under `$HOME` / `~/.config`, run `chezmoi re-add <target-file>` afterwards.
+3. Verify with `chezmoi diff`.
+4. Run `chezmoi apply` only when deployment is intended or explicitly requested.
+5. Preserve executable bits for files represented as `executable_*` in the source tree.
 
-```
-dot_config/                          → ~/.config/
-  xonsh/                               Shell — rc.xsh is entry point, sources all .xsh modules
-  helix/                                Editor — config.toml, themes/, utils/, languages.toml
-  helix/                                Editor
-    config.toml                          Main config (HNEI keybindings, LSP roots)
-    languages.toml                       Language-specific settings
-    themes/                              catppuccin + custom themes
-    utils/                               blame, git-hunk scripts
-    theme_switcher.sh                    Auto dark/light theme
-  emacs/                                Editor — literate config (README.org → init.el), templates/, elpaca.lock
-  ghostty/config                        Terminal
-  zellij/config.kdl                     Multiplexer
-  starship.toml                         Prompt
-  git/config + ignore                   Git
-  jj/config.toml                        Jujutsu (signing, aliases, max-new-file-size)
-  mise.toml                             Runtimes + global npm packages via "npm:" prefix
-  Justfile                              Setup recipes (init-linux, init-mac, mise, uv, cargo, go)
-  scripts/                              jj-bisect, layout-presets
-  nix/ + nix-linux/ + home-manager/     Nix configs
-  wallboy/config.toml                   Wallpaper
-  wezterm/wezterm.lua                   Alt terminal
-  rassumfrassum/                        Lint helpers
+## Configuration model
 
-  Linux-only:
-    niri/                                Compositor
-    xremap/config.yml                    Keyboard remap (Colemak)
-    hypr/hyprland.conf                   Alt compositor
-    cava/                                Audio visualizer
-    noctalia/                            Desktop shell
-    vicinae/                             Desktop utils
-    systemd/user/                        User services
+- `.chezmoidata.toml` controls feature flags and keyboard layout. Do not hardcode enabled features when this file already provides them.
+- `dot_config/Justfile` is the operational entry point:
+  - `just init` bootstraps the current OS
+  - `just update` updates OS, Nix/Home Manager, and toolchains
+  - `just sync` runs update with flake re-add and mise version bumping
+  - `just layout`, `just nix`, `just mise`, `just clean`, `just doctor` are focused helpers
+- `dot_config/mise.toml.tmpl` owns language runtimes and global developer tools (`npm:`, `pipx:`, `cargo:`, `go:` entries).
+- `dot_config/nix/` owns the current Nix flake, host modules, feature modules, Home Manager adapter, and nix-darwin integration.
+- Fedora-only packages and services belong in guarded Linux recipes or Linux modules.
+- macOS-only packages and services belong in Darwin modules or guarded Darwin recipes.
 
-  macOS-only:
-    skhd/skhdrc                          Hotkey daemon
-    aerospace/aerospace.toml             Tiling WM
-    karabiner/karabiner.json             Keyboard remap
-    sketchybar/                          Bar
-    yabai/                               Tiling WM
-    launchagents/                        System services
+## Source tree map
 
-  AI tools:
-    opencode/                            OpenCode AI — config, agents, plugin
-    eca/                                  ECA AI — config, agents, commands (from shared prompts), rules
+```text
+dot_config/                         → ~/.config/
+  xonsh/                              Shell; rc.xsh sources modular *.xsh files
+  helix/                              Primary terminal editor config, themes, LSP, layout keymaps
+  nix/                                Nix flake, hosts, feature modules, Darwin/Linux adapters
+  mise.toml.tmpl                      Runtime and global tool versions
+  Justfile                            Setup, update, sync, cleanup, layout recipes
+  scripts/                            Helper executables: jj-bisect, layout, mise-bump, layouts
+  jj/, git/, jjui/, gitu/             VCS tooling configuration
+  ghostty/, zellij/, yazi/, starship  Terminal/TUI configuration
+  opencode/, eca/, private_agents/    AI tooling configuration
 
-dot_pi/                              → ~/.pi/
-  agent/
-    agents/                            Agent definitions
-    mcp.json                           MCP servers
-    AGENTS.md                          Agent instructions
-    settings.json                      ← SYMLINK to ~/.config/.pi/agent/settings.json — DO NOT chezmoi-edit
-    prompts/                           From shared prompts (with YAML frontmatter)
-  docs/                                Pi docs
-  themes/                              Pi themes
+  Linux desktop:
+    niri/, xremap/, hypr/, noctalia/, vicinae/, systemd/, cava/
 
-dot_agents/                          → ~/.agents/
-  skills/                              Pi skills
-  AGENTS.md                            Skills registry
+  macOS desktop:
+    aerospace/, skhd/, private_karabiner/, sketchybar/, yabai/, launchagents/
 
-.chezmoiexternal/prompt/             Shared prompts (single source of truth for pi/opencode/eca)
-run_always_sync-prompts.sh           Copies prompts → pi (w/ frontmatter), opencode/eca (w/o frontmatter)
+dot_pi/                             → ~/.pi/
+  agent/                              Pi agents, MCP config, prompts, settings
+  docs/, themes/                      Pi docs/themes
+
+dot_agents/                         → ~/.agents/
+  skills/                             Pi skills
+
+.chezmoiexternal/prompt/             Shared prompts source
+run_always_sync-prompts.sh           Syncs prompts to pi/opencode/eca formats
 ```
 
-## Key behaviors
+## Platform notes
 
-- **pi settings.json** — symlink to git repo. Pi writes here. DO NOT chezmoi-edit or template.
-- **Shared prompts** — edit in `.chezmoiexternal/prompt/`, `chezmoi apply` syncs to all 3 tools
-- **Colemak HNEI** — `h`=left, `n`=down, `e`=up, `i`=right. Spread across xonsh, helix, xremap, karabiner, niri.
-- **mise** — manages runtimes + global packages. All declarative in mise.toml.
+### Fedora Asahi Linux
+
+- Fedora provides kernel, Mesa/GPU stack, Hyprland-related system packages, Docker, Flatpak apps, and manual desktop dependencies.
+- Home Manager provides user-level packages and shell/editor/tooling integration.
+- `dot_config/xonsh/rc.xsh` unsets `LD_LIBRARY_PATH` on Linux after sourcing Home Manager session variables because Nix library paths can break Fedora system binaries.
+- Use `sudo env -u LD_LIBRARY_PATH ...` for Fedora system package commands when needed.
+- Linux desktop work should respect the current Niri-first setup while keeping existing Hypr/Noctalia files intact unless explicitly asked.
+- Trackpad palm rejection is handled by `trackpad-is-too-damn-big` (`titdb`) through `manual-deps` and `systemd-services` recipes.
+
+### macOS
+
+- `dot_config/nix/darwin.nix` and `dot_config/nix/modules/darwin.nix` own nix-darwin and Homebrew integration.
+- Home Manager host config is `dot_config/nix/hosts/macbook.nix`.
+- Window-management configs are split between Aerospace, skhd, Karabiner, SketchyBar, and legacy Yabai files.
+- Do not add Linux-only assumptions to shared shell, editor, or mise config without guards.
+
+## Keyboard and editor conventions
+
+- The active layout is controlled by `.chezmoidata.toml` and `just layout`.
+- Colemak HNEI navigation means: `h` left, `n` down, `e` up, `i` right.
+- Layout-sensitive bindings are split where possible:
+  - Helix: `dot_config/helix/keys-colemak.toml`, `keys-qwerty.toml`, selection keymaps
+  - xonsh: `dot_config/xonsh/keybindings_colemak.xsh`, `keybindings_qwerty.xsh`
+  - desktop: xremap, Karabiner, Niri, and skhd configs
+- Helix is the primary terminal editor configuration in this repository. Do not add Neovim-specific instructions unless a Neovim config is reintroduced.
+
+## AI tooling notes
+
+- Pi-specific configuration lives under `dot_pi/`, not under `dot_config/`.
+- Shared prompts are maintained in `.chezmoiexternal/prompt/`; `run_always_sync-prompts.sh` renders them for Pi, OpenCode, and ECA.
+- Do not duplicate prompt text in tool-specific directories unless the sync script requires that generated output.
+
+## Safety rules
+
+- Keep OS-specific commands behind `case "$(uname -s)"` guards or platform-specific modules.
+- Do not edit generated caches, deployed symlinks, or lock files unless the task explicitly targets them.
+- Do not put secrets into templates. Use chezmoi private/encrypted mechanisms for sensitive files.
+- Prefer small focused helpers in `dot_config/scripts/` over large inline scripts in `Justfile` when logic grows.
+- Avoid broad cleanups that mix unrelated shell, editor, Nix, AI, and desktop changes in one revision.
