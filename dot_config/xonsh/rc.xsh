@@ -16,6 +16,14 @@ import subprocess
 from pathlib import Path
 from pprint import pprint
 
+try:
+    import xontrib.sh
+    $XONTRIB_SH_SHELLS = ["bash", "sh"]
+    xontrib load sh
+
+except Exception as e:
+    print(f"warning: failed to load xontrib-sh: {e}")
+
 config_dir = Path.home() / '.config/xonsh'
 
 source @(config_dir / 'env.xsh')
