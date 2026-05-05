@@ -175,7 +175,6 @@ sync:
 update readd_flake_lock="false" bump="false":
     #!/usr/bin/env bash
     set -euo pipefail
-    chezmoi apply
     case "$(uname -s)" in
         Linux)
             sudo env -u LD_LIBRARY_PATH dnf upgrade --refresh -y

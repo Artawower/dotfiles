@@ -13,7 +13,6 @@ in
   environment.systemPackages = with pkgs; [
     vim
     nixfmt-rfc-style
-    xonsh
   ];
 
   environment.variables = {
@@ -31,11 +30,11 @@ in
 
   # users.users.${user.username}.shell = pkgs.fish;
 
-  environment.shells = [ pkgs.xonsh ];
+  # xonsh lives in Home Manager (~/.nix-profile/bin/xonsh via terminal.nix).
+  # darwin only needs to register that path so macOS accepts it as a login shell.
+  environment.shells = [ "/Users/${user.username}/.nix-profile/bin/xonsh" ];
 
-  users.users.${user.username} = {
-    shell = pkgs.xonsh;
-  };
+  users.users.${user.username}.shell = "/Users/${user.username}/.nix-profile/bin/xonsh";
 
   system.defaults = {
     dock = {
@@ -177,8 +176,8 @@ in
     enable = true;
     onActivation = {
       autoUpdate = true;
-      cleanup    = "uninstall";
-      upgrade    = true;
+      cleanup = "uninstall";
+      upgrade = true;
     };
 
     taps = [
@@ -194,15 +193,23 @@ in
     brews = [
       # Emacs with macOS-specific patches (xwidgets, imagemagick, dbus — not in nixpkgs)
       {
-        name            = "d12frosted/emacs-plus/emacs-plus@30";
+        name = "d12frosted/emacs-plus/emacs-plus@30";
         restart_service = true;
-        args            = [ "with-xwidgets" "with-imagemagick" "with-dbus" "with-compress-install" ];
+        args = [
+          "with-xwidgets"
+          "with-imagemagick"
+          "with-dbus"
+          "with-compress-install"
+        ];
       }
 
       # Window management — deep macOS system integration, codesigning requirements
       { name = "koekeishiya/formulae/yabai"; }
       { name = "koekeishiya/formulae/skhd"; }
-      { name = "FelixKratz/formulae/borders"; restart_service = false; }
+      {
+        name = "FelixKratz/formulae/borders";
+        restart_service = false;
+      }
 
       # Bootstrap tools — manage themselves, installed before nix
       "mise"
@@ -230,7 +237,12 @@ in
       "pearcleaner"
       "krtirtho/apps/spotube"
       "discord"
-      { name = "stretchly"; args = { no_quarantine = true; }; }
+      {
+        name = "stretchly";
+        args = {
+          no_quarantine = true;
+        };
+      }
       "applite"
       "obsidian"
       "neohtop"
@@ -279,7 +291,7 @@ in
       "cmux"
     ];
 
-    masApps = {};
+    masApps = { };
   };
 
   system.activationScripts.masOptional = ''
