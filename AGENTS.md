@@ -59,7 +59,7 @@ dot_config/                         → ~/.config/
   scripts/                            Helper executables: jj-bisect, layout, mise-bump, layouts
   jj/, git/, jjui/, gitu/             VCS tooling configuration
   ghostty/, zellij/, yazi/, starship  Terminal/TUI configuration
-  opencode/, eca/, private_agents/    AI tooling configuration
+  opencode/, eca/                     AI tooling configuration
 
   Linux desktop:
     niri/, xremap/, hypr/, noctalia/, vicinae/, systemd/, cava/
