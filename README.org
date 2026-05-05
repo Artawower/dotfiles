@@ -1,83 +1,94 @@
-#+TITLE: 🚀 My Awesome Dotfiles
+#+TITLE: 🚀 My Dotfiles
 #+AUTHOR: artawower@protonmail.com
 #+OPTIONS: toc:2 num:nil ^:nil
 
 * 📋 Overview
 
-Modern, AI-powered development environment for macOS and Linux. Managed by [[https://www.chezmoi.io/][chezmoi]] with [[https://github.com/jdx/mise][mise]] for runtime/package management, [[https://nixos.org/][Nix]] for system-level reproducibility, and extensive editor integrations.
+Modern, AI-assisted development environment for macOS and Fedora Asahi Linux. The repository is managed by [[https://www.chezmoi.io/][chezmoi]], uses [[https://github.com/jdx/mise][mise]] for runtimes and global developer tools, and keeps reproducible system/user configuration in [[https://nixos.org/][Nix]], Home Manager, and nix-darwin modules.
 
 #+begin_quote
-*Philosophy:* Modular, reproducible, AI-assisted development with literate configuration.
+*Philosophy:* modular, reproducible, keyboard-driven, AI-assisted development across macOS and Linux.
 #+end_quote
-
 
 #+html: <img src="./images/media.webp"><br/>
 #+html: <img src="./images/coding.webp">
 
 ** 🎯 Key Features
 
-- ⌨️ Multi-layout keyboard support — [[#keyboard-layouts][Colemak (HNEI) and QWERTY (HJKL)]]
-- 💻 *Zellij* / *cmux* for rich terminal multiplexing
-- 🐚 *Xonsh* - Python-powered shell with rich customization
-- 📦 *mise* - Declarative runtime & global package management
-- 🏗️ *Nix + Home Manager* - Reproducible system configuration
-- ✨ *Multi-editor* - Emacs (primary), Helix for quick terminal edits
-- 🤖 *AI Integration* - Pi, ECA, OpenCode for intelligent coding assistance
-- 🎨 *Desktop* - macOS: Yabai / Linux: Niri + Hyprland
-- 🔧 *Polyglot* - Go, Rust, Node.js, Python, Java tooling
+- ⌨️ Multi-layout keyboard support — [[#keyboard-layouts][Colemak HNEI and QWERTY HJKL]]
+- 🐚 *Xonsh* — Python-powered shell split into small modules
+- 💻 *Zellij* / *cmux* — terminal multiplexing and AI-native terminal workflows
+- 📦 *mise* — declarative runtimes and global tools
+- 🏗️ *Nix + Home Manager + nix-darwin* — reproducible packages and host integration
+- ✨ *Editors* — Emacs as the main IDE, Helix for fast terminal editing, Zed config included
+- 🤖 *AI tooling* — Pi, ECA, OpenCode, shared prompts, local skills/agents
+- 🎨 *Desktop* — macOS: Aerospace/skhd/Karabiner/SketchyBar; Linux: Niri with Hypr/Noctalia/Vicinae support
+- 🔧 *Polyglot* — Node.js/frontend, Python, Go, Rust tooling
 
 * 🚀 Quick Start
 
 ** Prerequisites
 
-- macOS (Apple Silicon or Intel) or Linux (Fedora)
-- That's it — chezmoi installs itself
+- macOS or Fedora Linux
+- Internet connection
+- A working shell with =sh= and =curl=
 
-** One-Line Install
+** Bootstrap dotfiles
 
 #+NAME: install
 #+BEGIN_SRC bash
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/Artawower/dotfiles
 #+END_SRC
 
-This downloads chezmoi, clones the repo, and applies all dotfiles in one step.
+This installs chezmoi, clones this repository as the source state, and applies the dotfiles to =$HOME=.
 
-** Install Tools
+** Install Nix
 
-After bootstrapping, =just= and =mise= are already available:
-
-#+NAME: install-tools
-#+BEGIN_SRC bash
-just init-mac     # macOS — installs mise runtimes, cargo/go tools, nix
-just init-linux   # Linux — same + systemd services, hyprland plugins
-#+END_SRC
-
-** Install Nix (optional but recommended)
+Nix is the recommended way to get the base toolchain, including =just=.
 
 #+NAME: install-nix
 #+BEGIN_SRC bash
-# Install Nix package manager (multi-user installation)
 curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | \
   sh -s -- install
 
-# Source nix
 . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-
-# Apply Nix configuration
-just nix-mac      # macOS
-just nix-linux    # Linux
 #+END_SRC
 
-** Post-Installation
+** Apply system/user configuration
+
+After =just= is available, use the unified recipes from =~/.config/Justfile=:
+
+#+NAME: install-tools
+#+BEGIN_SRC bash
+cd ~/.config
+just init     # first-time OS bootstrap
+just nix      # apply nix-darwin/Home Manager config
+just mise     # install mise runtimes and global tools
+#+END_SRC
+
+For regular maintenance:
+
+#+BEGIN_SRC bash
+cd ~/.config
+just update   # update OS packages, Nix/Home Manager, mise, uv, Pi extensions
+just sync     # update + re-add flake lock + bump mise-managed versions
+just clean    # garbage collection and cleanup
+just doctor   # environment diagnostics
+#+END_SRC
+
+** Post-installation
 
 #+NAME: post-install
 #+BEGIN_SRC bash
-# Configure Xonsh as default shell
+# Configure Xonsh as default shell, if desired
 echo "$(which xonsh)" | sudo tee -a /etc/shells
-chsh -s $(which xonsh)
+chsh -s "$(which xonsh)"
 
-# Switch keyboard layout (default: colemak)
-just layout qwerty  # or "just layout" to pick interactively
+# Switch keyboard layout
+cd ~/.config
+just layout qwerty
+just layout colemak
+just layout          # pick interactively with fzf
 #+END_SRC
 
 * ⌨️ Keyboard Layouts
@@ -85,118 +96,145 @@ just layout qwerty  # or "just layout" to pick interactively
 :CUSTOM_ID: keyboard-layouts
 :END:
 
-All configs support both **Colemak** (HNEI) and **QWERTY** (HJKL) layouts via a single variable in =.chezmoidata.toml=:
+Most interactive configs support both **Colemak** (HNEI) and **QWERTY** (HJKL). The active layout is stored in =.chezmoidata.toml=:
 
 #+BEGIN_SRC toml
 layout = "colemak"   # or "qwerty"
 #+END_SRC
 
-Switch with one command:
+Switch with:
 
 #+BEGIN_SRC bash
-just layout qwerty   # switch to QWERTY
-just layout colemak  # switch back
-just layout          # pick interactively with fzf
+cd ~/.config
+just layout qwerty
+just layout colemak
+just layout
 #+END_SRC
+
+Layout-sensitive files include Helix keymaps, xonsh keybindings, xremap, Karabiner, Niri, skhd, and Zellij configs.
 
 * 🛠️ Core Tools
 
 ** Shell Environment
 
-| Tool      | Purpose                    | Config                    |
-|-----------+----------------------------+---------------------------|
-| [[https://xon.sh/][Xonsh]]     | Python-powered shell       | =xonsh/rc.xsh=            |
-| [[https://zellij.dev/][Zellij]]    | Terminal multiplexer       | =zellij/=                 |
-| [[https://github.com/nikitabobko/AeroSpace][cmux]]      | AI-native terminal IDE     | =cmux/settings.json=      |
-| [[https://starship.rs/][Starship]]  | Cross-shell prompt         | =starship.toml=           |
-| [[https://github.com/ajeetdsouza/zoxide][Zoxide]]    | Smart directory jumper     | =xonsh/zoxide.xsh=        |
+| Tool      | Purpose                       | Source config                         |
+|-----------+-------------------------------+---------------------------------------|
+| [[https://xon.sh/][Xonsh]]     | Python-powered shell          | =dot_config/xonsh/rc.xsh=             |
+| [[https://zellij.dev/][Zellij]]    | Terminal multiplexer          | =dot_config/zellij/=                  |
+| [[https://github.com/manaflow-ai/cmux][cmux]]      | AI-native terminal workflow   | =dot_config/cmux/private_settings.json.tmpl= |
+| [[https://ghostty.org/][Ghostty]]   | Terminal emulator             | =dot_config/ghostty/config.tmpl=      |
+| [[https://starship.rs/][Starship]]  | Cross-shell prompt            | =dot_config/starship.toml=            |
+| [[https://github.com/ajeetdsouza/zoxide][Zoxide]]    | Smart directory jumper        | =dot_config/xonsh/zoxide.xsh=         |
 
 ** Editors & IDEs
 
-| Tool  | Role                   | Features                                |
-|-------+------------------------+-----------------------------------------|
-| [[https://www.gnu.org/software/emacs/][Emacs]] | IDE                    | Elpaca, extensive packages              |
-| [[https://helix-editor.com/][Helix]] | Quick terminal editing | LSP, tree-sitter, yazi, git integration |
+| Tool  | Role                   | Source config                 |
+|-------+------------------------+-------------------------------|
+| [[https://www.gnu.org/software/emacs/][Emacs]] | Main IDE               | =dot_emacs.d/README.org=      |
+| [[https://helix-editor.com/][Helix]] | Terminal editor        | =dot_config/helix/=           |
+| [[https://zed.dev/][Zed]]   | GUI editor config      | =dot_config/zed/=             |
 
 ** File Managers
 
-| Tool  | Role                   | Features                    |
-|-------+------------------------+-----------------------------|
-| [[https://github.com/yorukot/superfile][spf]]   | Terminal file manager   | Vim-like navigation         |
-| [[https://github.com/sxyazi/yazi][Yazi]]  | Terminal file manager   | Async, fast preview         |
+| Tool  | Role                  | Source config                                      |
+|-------+-----------------------+----------------------------------------------------|
+| [[https://github.com/yorukot/superfile][Superfile]] | Terminal file manager | =private_Library/.../private_superfile/= |
+| [[https://github.com/sxyazi/yazi][Yazi]]      | Terminal file manager | =dot_config/yazi/=                         |
 
 ** AI Coding Assistants
 
-| Tool     | Purpose                                          |
-|----------+--------------------------------------------------|
-| [[https://github.com/mariozechner/pi-coding-agent][Pi]]       | Primary AI coding agent harness with skills system |
-| [[https://github.com/editor-code-assistant/eca][ECA]]      | AI tool with seamless Emacs integration           |
+| Tool     | Purpose                                                   | Source config       |
+|----------+-----------------------------------------------------------+---------------------|
+| [[https://github.com/mariozechner/pi-coding-agent][Pi]]       | Primary coding-agent harness, skills, prompts, MCP   | =dot_pi/=           |
+| [[https://github.com/editor-code-assistant/eca][ECA]]      | AI assistant with Emacs-friendly workflows            | =dot_config/eca/=   |
+| [[https://opencode.ai/][OpenCode]] | AI coding agent configuration                          | =dot_config/opencode/= |
 
-** Package Managers
+Shared prompts live in =.chezmoiexternal/prompt/= and are rendered by =run_always_sync-prompts.sh= into Pi, ECA, and OpenCode formats.
 
-| Language   | Tools                              |
-|------------+------------------------------------|
-| System     | [[https://www.chezmoi.io/][chezmoi]], [[https://github.com/jdx/mise][mise]], [[https://nixos.org/][Nix]] |
-| Node.js    | mise (=npm:= prefix)               |
-| Python     | uv, pip3                           |
-| Rust       | Cargo                              |
-| Go         | Go modules                         |
+** Package and Runtime Management
 
-** Desktop Environment
+| Layer       | Tooling                                      |
+|-------------+----------------------------------------------|
+| Dotfiles    | chezmoi                                      |
+| Recipes     | just                                         |
+| System/user | Nix, Home Manager, nix-darwin                |
+| Runtimes    | mise with =npm:=, =pipx:=, =cargo:=, =go:= entries |
+| Python apps | uv                                           |
 
-*** macOS
+* 🖥️ Desktop Environment
 
-| Component  | Tool            | Purpose                  |
-|------------+-----------------+--------------------------|
-| WM         | [[https://github.com/koekeishiya/yabai][Yabai]]           | Tiling window management |
-| Borders    | [[https://github.com/FelixKratz/JankyBorders][JankyBorders]]    | Window border effects    |
-| Menu Bar   | [[https://github.com/jordanbaird/Ice][ICE]]             | Menu bar management      |
-| Hotkeys    | [[https://github.com/koekeishiya/skhd][Skhd]]            | Keyboard shortcuts       |
-| Bar        | [[https://github.com/FelixKratz/SketchyBar][SketchyBar]]      | Status bar               |
-| Launcher   | [[https://www.raycast.com/][Raycast]]         | Productivity launcher    |
-| Keyboard   | [[https://karabiner-elements.pqrs.org/][Karabiner]]       | Advanced key remapping   |
-| Wallpapers | [[https://github.com/Zagaz/wallboy][Wallboy]]         | Wallpaper management     |
+** macOS
 
-*** Linux
+| Component | Tool / config                         | Purpose                    |
+|-----------+---------------------------------------+----------------------------|
+| WM        | [[https://nikitabobko.github.io/AeroSpace/guide][Aerospace]] / legacy Yabai configs | Tiling window management   |
+| Hotkeys   | [[https://github.com/koekeishiya/skhd][skhd]]                                  | Keyboard shortcuts         |
+| Keyboard  | [[https://karabiner-elements.pqrs.org/][Karabiner]]                             | Advanced key remapping     |
+| Bar       | [[https://github.com/FelixKratz/SketchyBar][SketchyBar]]                            | Status bar                 |
+| Launcher  | [[https://www.raycast.com/][Raycast]]                               | Productivity launcher      |
+| Services  | =dot_config/launchagents/=            | macOS launch agents        |
 
-| Component  | Tool            | Purpose                  |
-|------------+-----------------+--------------------------|
-| Compositor | [[https://github.com/YaLTeR/niri][Niri]] / [[https://hyprland.org/][Hyprland]] | Scrollable/tiling WM     |
-| Keyboard   | [[https://github.com/k0kubun/xremap][xremap]]         | Colemak key remapping    |
-| Shell      | [[https://github.com/nicoulaj/noctalia][Noctalia]]       | Desktop shell            |
-| Visualizer | [[https://github.com/karlstav/cava][Cava]]           | Audio visualizer         |
+** Fedora Asahi Linux
 
-* 🎨 Customization
-** Xonsh Aliases
-60+ aliases configured in =xonsh/aliases.xsh=:
-- Docker shortcuts (=dps=, =drm=, =dex=)
-- Kubernetes (=k=, =kgp=, =kd=)
-- Git operations (=gst=, =gco=, =gp=)
-- Development (=pn= for pnpm, =bn= for bun)
+| Component | Tool / config                         | Purpose                    |
+|-----------+---------------------------------------+----------------------------|
+| Compositor | [[https://github.com/YaLTeR/niri][Niri]]                                | Scrollable compositor      |
+| Alt WM     | [[https://hyprland.org/][Hyprland]]                             | Alternate compositor config |
+| Keyboard   | [[https://github.com/k0kubun/xremap][xremap]]                               | Colemak key remapping      |
+| Shell UI   | Noctalia / Vicinae                    | Desktop shell/utilities    |
+| Visualizer | [[https://github.com/karlstav/cava][Cava]]                                | Audio visualizer           |
+| Trackpad   | trackpad-is-too-damn-big (=titdb=)    | Palm rejection             |
+
+Fedora provides kernel/Mesa/GPU stack and system packages. Home Manager provides user packages and shell/editor/tooling integration.
 
 * 🔧 Management with Chezmoi
 
-This repo is a [[https://www.chezmoi.io/][chezmoi]] source state (=chezmoi edit= opens files from =~/.local/share/chezmoi/=).
+This repository is a [[https://www.chezmoi.io/][chezmoi]] source state. Source files live in =~/.local/share/chezmoi/= and deploy into =$HOME=.
 
-| Command              | Purpose                          |
-|----------------------+----------------------------------|
-| =chezmoi apply=       | Deploy changes to =~/=            |
-| =chezmoi edit <file>= | Edit source version of a file    |
-| =chezmoi diff=        | Preview pending changes          |
-| =chezmoi re-add=      | Sync target → source             |
-| =just mise=           | Install/update mise packages     |
-| =just layout=         | Switch keyboard layout           |
+| Command                         | Purpose                         |
+|---------------------------------+---------------------------------|
+| =chezmoi apply=                 | Deploy source state to =$HOME=  |
+| =chezmoi edit <target-file>=    | Edit source version of a target |
+| =chezmoi diff=                  | Preview pending target changes  |
+| =chezmoi re-add <target-file>=  | Sync target changes back to source |
+| =cd ~/.config && just init=     | Bootstrap current OS            |
+| =cd ~/.config && just update=   | Update OS/Nix/toolchains        |
+| =cd ~/.config && just layout=   | Switch keyboard layout          |
 
 OS-specific configs are excluded via =.chezmoiignore.tmpl=:
-- Linux configs (niri, hyprland, xremap, cava, noctalia...) skipped on macOS
-- macOS configs (yabai, karabiner, sketchybar, skhd...) skipped on Linux
+
+- Linux-only configs are skipped on macOS: niri, xremap, hypr, cava, noctalia, vicinae, systemd.
+- macOS-only configs are skipped on Linux: aerospace, skhd, karabiner, sketchybar, yabai, launchagents.
+
+* 📁 Repository Map
+
+#+BEGIN_SRC text
+.chezmoidata.toml                 Feature flags and keyboard layout
+.chezmoiexternal/prompt/          Shared prompt source
+run_always_sync-prompts.sh        Prompt sync for Pi/ECA/OpenCode
+run_once_link-pi-skills.sh        Pi skills linking helper
+
+dot_config/                       ~/.config
+  Justfile                        init/update/sync/nix/mise/layout recipes
+  mise.toml.tmpl                  runtime and global tool declarations
+  nix/                            flake, hosts, feature modules
+  xonsh/                          shell modules
+  helix/                          terminal editor config
+  opencode/, eca/                 AI tool configs
+  niri/, hypr/, noctalia/         Linux desktop configs
+  aerospace/, skhd/, yabai/       macOS desktop configs
+
+dot_pi/                           ~/.pi
+dot_agents/                       ~/.agents
+dot_emacs.d/                      ~/.emacs.d
+#+END_SRC
 
 * 🔧 System Requirements
 
-- *OS:* macOS 12+ (Monterey or later) / Linux (Fedora)
-- *Arch:* Apple Silicon (M1/M2/M3) or Intel / x86_64 / ARM64
-- *Disk:* ~5GB for full installation
-- *Network:* Internet connection for packages
+- *OS:* macOS / Fedora Linux
+- *Arch:* Apple Silicon and ARM64 Linux are first-class in the current Nix hosts; Intel may require small adjustments
+- *Disk:* several GB for Nix store, language runtimes, and editor tooling
+- *Network:* required for bootstrap and package updates
 
 * 📚 Documentation
 
@@ -206,34 +244,26 @@ OS-specific configs are excluded via =.chezmoiignore.tmpl=:
 - [[https://nix-community.github.io/home-manager/][Home Manager Guide]]
 - [[https://xon.sh/tutorial.html][Xonsh Tutorial]]
 - [[https://docs.helix-editor.com/][Helix Docs]]
+- [[https://jj-vcs.github.io/jj/latest/][Jujutsu Docs]]
 
 * 🤝 Contributing
 
-This is a personal configuration, but feel free to:
-- Fork and adapt for your needs
-- Open issues for bugs
-- Share improvements via PR
-
-* 📝 License
-
-MIT License - Use freely, attribution appreciated.
+This is a personal configuration, but feel free to fork and adapt it. Issues and PRs are welcome when they improve portability or documentation without compromising the personal workflow.
 
 -----
 
 #+begin_center
-/Built with ❤️  and AI assistance/
+/Built with ❤️ and AI assistance/
 
 #+HTML: <p align="center">
 #+HTML: <a href="https://nixos.org/"><img src="https://img.shields.io/badge/Nix-5277C3?style=for-the-badge&logo=nixos&logoColor=white" alt="Nix"></a>
 #+HTML: <a href="https://xon.sh/"><img src="https://img.shields.io/badge/Xonsh-Shell-285EAD?style=for-the-badge" alt="Xonsh"></a>
 #+HTML: <a href="https://www.gnu.org/software/emacs/"><img src="https://img.shields.io/badge/Emacs-7F5AB6?style=for-the-badge&logo=gnuemacs&logoColor=white" alt="Emacs"></a>
 #+HTML: <a href="https://zellij.dev/"><img src="https://img.shields.io/badge/Zellij-Terminal-F39C12?style=for-the-badge" alt="Zellij"></a>
-#+HTML: <a href="https://github.com/koekeishiya/yabai"><img src="https://img.shields.io/badge/Yabai-WM-1E1E2E?style=for-the-badge" alt="Yabai"></a>
+#+HTML: <a href="https://nikitabobko.github.io/AeroSpace/guide"><img src="https://img.shields.io/badge/Aerospace-WM-1E1E2E?style=for-the-badge" alt="Aerospace"></a>
 #+HTML: <a href="https://github.com/editor-code-assistant/eca"><img src="https://img.shields.io/badge/ECA-AI-00D9FF?style=for-the-badge" alt="ECA"></a>
 #+HTML: <a href="https://helix-editor.com/"><img src="https://img.shields.io/badge/Helix-7E57C2?style=for-the-badge" alt="Helix"></a>
 #+HTML: <a href="https://github.com/jdx/mise"><img src="https://img.shields.io/badge/mise-Packages-2ECC71?style=for-the-badge" alt="mise"></a>
 #+HTML: <a href="https://www.chezmoi.io/"><img src="https://img.shields.io/badge/Chezmoi-Dotfiles-E74C3C?style=for-the-badge" alt="Chezmoi"></a>
-#+HTML: <a href="https://github.com/nikitabobko/cmux"><img src="https://img.shields.io/badge/cmux-Terminal-9B59B6?style=for-the-badge" alt="cmux"></a>
-#+HTML: <a href="https://github.com/yorukot/superfile"><img src="https://img.shields.io/badge/Superfile-FileManager-3498DB?style=for-the-badge" alt="Superfile"></a>
 #+HTML: </p>
 #+end_center
