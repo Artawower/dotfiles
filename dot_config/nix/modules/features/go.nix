@@ -1,19 +1,13 @@
 { config, lib, pkgs, ... }:
 
-let
-  cfg      = config.conf.features.go;
-  isDarwin = pkgs.stdenv.isDarwin;
-in
+let cfg = config.conf.features.go; in
 
 {
   config = lib.mkIf cfg.enable {
-    conf.packages.nix = lib.optionals (!isDarwin) (with pkgs; [
+    conf.packages.nix = with pkgs; [
       go
-    ]);
-
-    conf.packages.brews = lib.optionals isDarwin [
-      "go"
-      "gopls"
+      gopls
+      go-tools
     ];
   };
 }

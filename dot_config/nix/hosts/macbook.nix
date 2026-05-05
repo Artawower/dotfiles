@@ -1,11 +1,16 @@
-{ ... }:
+{ user, ... }:
 
 let
-  data = builtins.fromTOML (builtins.readFile ~/.local/share/chezmoi/.chezmoidata.toml);
+  data = builtins.fromTOML (builtins.readFile "${builtins.getEnv "HOME"}/.local/share/chezmoi/.chezmoidata.toml");
 in
 
 {
   imports = [ ../modules/darwin.nix ];
+
+  home.stateVersion    = "23.05";
+  home.username        = user.username;
+  home.homeDirectory   = "/Users/${user.username}";
+  programs.home-manager.enable = true;
 
   conf.layout = data.layout;
 

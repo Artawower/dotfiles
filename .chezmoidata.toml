@@ -1,14 +1,14 @@
 layout = "colemak"
 
 [features]
-ai = false
+ai = true
 core = true
 vcs = true
 emacs = true
-frontend = false
-go = false
+frontend = true
+go = true
 keyboard = true
-python = false
+python = true
 rust = true
 terminal = true
 tiling = true

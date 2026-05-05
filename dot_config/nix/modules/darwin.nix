@@ -4,7 +4,6 @@
   imports = [
     ./options.nix
     ./adapters/home-manager.nix
-    ./adapters/homebrew.nix
     ./features/core.nix
     ./features/vcs.nix
     ./features/terminal.nix

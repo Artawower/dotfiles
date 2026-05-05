@@ -23,14 +23,5 @@ in
       slurp
       swappy
     ]);
-
-    conf.packages.casks = lib.optionals isDarwin [
-      "nikitabobko/tap/aerospace"
-    ];
-
-    conf.packages.brews = lib.optionals isDarwin [
-      "koekeishiya/formulae/skhd"
-      "FelixKratz/formulae/borders"
-    ];
   };
 }
