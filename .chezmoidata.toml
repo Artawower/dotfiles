@@ -1,10 +1,10 @@
 [features]
 ai = false
 core = true
+vcs = true
 emacs = true
 frontend = false
 go = false
-helix = true
 keyboard = true
 python = false
 rust = true

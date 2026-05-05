@@ -2527,6 +2527,7 @@ Setup blamer face
 (use-package majutsu
   :bind (("C-M-j" . majutsu)
          ("C-M-D" . majutsu-diff)
+         ("C-M-d" . majutsu-diff-dwim)
          :map majutsu-diff-section-map
          ("s-<return>" . majutsu-diff-visit-workspace-file)
          ("C-n" . magit-section-forward)

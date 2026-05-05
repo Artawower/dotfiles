@@ -56,9 +56,9 @@ mise:
 cargo-linux:
     PKG_CONFIG_PATH=/usr/lib64/pkgconfig LD_LIBRARY_PATH=/usr/lib64 cargo install wl-screenrec
 
-[working-directory("./nix-linux")]
+[working-directory("./nix")]
 nix-linux:
-    nix run home-manager/master -- switch -b backup --flake . --impure
+    nix run home-manager/master -- switch -b backup --flake ".#darkawower@fedora" --impure
 
 [working-directory("./nix")]
 nix-darwin-mac:
@@ -67,7 +67,7 @@ nix-darwin-mac:
 
 [working-directory("./nix")]
 nix-home-mac:
-    nix run home-manager/master -- switch -b backup --flake ~/.config/nix
+    nix run home-manager/master -- switch -b backup --flake ".#darkawower@macbook"
     @echo "Successfully applied Home Manager configuration for macOS."
 
 [working-directory("./nix")]
@@ -160,7 +160,7 @@ fedora-upgrade VERSION="44":
 update-linux:
     sudo env -u LD_LIBRARY_PATH dnf upgrade --refresh -y
     flatpak update -y
-    cd ~/.config/nix-linux && nix flake update
+    cd ~/.config/nix && nix flake update
     just nix-linux
     mise upgrade --bump --exclude pnpm
     mise trust ~/.config/mise.toml
