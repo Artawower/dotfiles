@@ -110,11 +110,10 @@ enable = true
 [keys.normal]
 X = ["extend_line_up", "extend_to_line_bounds"]
 "C-." = "rotate_view"
-C-a = [":sh unibear add_file %%{buffer_name}"]
 "C-s" = ":write"
 "F12" = [":new", ":insert-output $SHELL", ":buffer-close!", ":redraw"]
 y = "yank_to_clipboard"
-N = [":pipe-to sh -c 'printf \"%%s:%%s-%%s\\\\n%%s\" \"$(realpath \"$1\")\" \"$2\" \"$3\" \"$(cat)\" | pbcopy' sh \"%{buffer_name}\" \"%{selection_line_start}\" \"%{selection_line_end}\""]
+"S-n" = [":pipe-to sh -c 'printf \"%%s:%%s-%%s\\\\n%%s\" \"$(realpath \"$1\")\" \"$2\" \"$3\" \"$(cat)\" | pbcopy' sh \"%{buffer_name}\" \"%{selection_line_start}\" \"%{selection_line_end}\""]
 Y = "yank"
 D = ["ensure_selections_forward", "extend_to_line_end", "delete_selection"]
 0 = "goto_line_start"
