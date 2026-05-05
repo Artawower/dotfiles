@@ -1,7 +1,7 @@
-{ inputs, pkgs, ... }:
+{ inputs, pkgs, user, ... }:
 
 let
-  data = builtins.fromTOML (builtins.readFile ~/.local/share/chezmoi/.chezmoidata.toml);
+  data = builtins.fromTOML (builtins.readFile "${builtins.getEnv "HOME"}/.local/share/chezmoi/.chezmoidata.toml");
 in
 
 {
@@ -9,6 +9,11 @@ in
     ../modules/linux.nix
     ../modules/features/battery-thresholds.nix
   ];
+
+  home.stateVersion  = "25.11";
+  home.username      = user.username;
+  home.homeDirectory = "/home/${user.username}";
+  programs.home-manager.enable = true;
 
   conf.layout = data.layout;
 

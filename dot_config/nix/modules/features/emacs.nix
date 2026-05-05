@@ -13,28 +13,11 @@ in
       tree-sitter
       ripgrep
       fd
-    ];
-
-    conf.packages.brews = lib.optionals isDarwin [
-      "d12frosted/emacs-plus/emacs-plus@30"
-      "dbus"
-      "librsvg"
-      "jansson"
-      "gnutls"
-      "tree-sitter"
-      "imagemagick"
-      "jpeg"
-      "enchant"
-      "pkgconf"
-      "texinfo"
-    ];
-
-    conf.packages.nix = lib.optionals (!isDarwin) (with pkgs; [
+    ] ++ lib.optionals (!isDarwin) [
       emacs
-      pinentry-gnome3
       isync
       msmtp
       cacert
-    ]);
+    ];
   };
 }

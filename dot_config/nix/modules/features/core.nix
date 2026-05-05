@@ -1,13 +1,31 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
-let cfg = config.conf.features.core; in
+let
+  cfg = config.conf.features.core;
+in
 
 {
   config = lib.mkIf cfg.enable {
     conf.packages.nix = with pkgs; [
-      ripgrep fd fzf jq tree
-      curl wget unzip
+      ripgrep
+      fd
+      fzf
+      jq
+      tree
+      curl
+      wget
+      unzip
+      coreutils
       dash
+      htop
+      ncdu
+      sqlite
+      just
     ];
   };
 }

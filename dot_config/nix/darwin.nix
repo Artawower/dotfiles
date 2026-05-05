@@ -20,7 +20,7 @@ in
     # EDITOR = "emacsclient -c";
     EDITOR = "hx";
 
-    PATH = "/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH";
+    PATH = "${pkgs.coreutils}/bin:$PATH";
   };
 
   nix.settings.experimental-features = "nix-command flakes";
@@ -153,7 +153,7 @@ in
   system.activationScripts.fixReadlink = ''
     if [ ! -f /usr/local/bin/readlink ]; then
       mkdir -p /usr/local/bin
-      ln -sf /opt/homebrew/bin/greadlink /usr/local/bin/readlink 2>/dev/null || true
+      ln -sf ${pkgs.coreutils}/bin/readlink /usr/local/bin/readlink 2>/dev/null || true
     fi
   '';
 
@@ -177,196 +177,65 @@ in
     enable = true;
     onActivation = {
       autoUpdate = true;
-      cleanup = "uninstall";
-      upgrade = true;
+      cleanup    = "uninstall";
+      upgrade    = true;
     };
-    brews = [
-      # Libraries & build tools (keep in Homebrew)
-      "jpeg"
-      "enchant"
-      "imagemagick"
-      "automake"
-      "autoconf"
-      "dbus"
-      "gcc"
-      "libgccjit"
-      "pkgconf"
-      "meson"
-      "ninja"
-      "librsvg"
-      "texinfo"
-      "zlib"
-      "libxml2"
-      "jansson"
-      "gnutls"
-      "unbound"
-      "p11-kit"
-      "nettle"
-      "libtasn1"
-      "libnghttp2"
-      "libidn2"
-      "libevent"
-      "gdk-pixbuf"
-      "tree-sitter"
 
-      # System tools
-      "coreutils"
-      "openvpn"
-      "nmap"
-      "gomi"
-      "gpg"
-      "wireguard-tools"
-      "mas"
-      "terminal-notifier"
-      "ntfy"
-
-      # Window management (system integration required)
-      {
-        name = "koekeishiya/formulae/yabai";
-      }
-      {
-        name = "FelixKratz/formulae/borders";
-        restart_service = false;
-      }
-      { name = "koekeishiya/formulae/skhd"; }
-      # "sketchybar"
-      # Development tools (keep in Homebrew for reasons)
-      "moar"
-      "uv"
-      "ipython"
-      "ncdu"
-      "awk"
-      "go"
-      "python"
-      "grep"
-      "findutils"
-      "gnu-sed"
-      "make"
-      "gnu-tar"
-      "clojure"
-      "clojure/tools/clojure"
-      "spoof-mac"
-      "google-java-format"
-      "lua-language-server"
-      "wakatime-cli"
-      "proctools"
-      "jj"
-      "sdkman/tap/sdkman-cli"
-      "mkcert"
-      "cocoapods"
-      "staticcheck"
-      "mise"
-      "superfile"
-      "lazygit"
-      "dtach"
-      "bandwhich"
-      "poetry"
-      "pandoc"
-      "multimarkdown"
-      "jqp"
-      "podman"
-      "cloc"
-      "claude-squad"
-      "opencode"
-      "git-delta"
-      "harper"
-      "pdf2svg"
-      "fzf"
-      "graphviz"
-      "direnv"
-      "zellij"
-      # "helix"
-      {
-        name = "d12frosted/emacs-plus/emacs-plus@30";
-        restart_service = true;
-        args = [
-          "with-xwidgets"
-          "with-imagemagick"
-          "with-dbus"
-          "with-compress-install"
-        ];
-      }
-
-      # "jackett"
-      # "acsandmann/tap/rift"
-      "just"
-      "resterm"
-      "cava"
-      "pipes-sh"
-      "Artawower/tap/wallboy"
-      "vips"
-      "borkdude/brew/babashka"
-      "clojure-lsp/brew/clojure-lsp-native"
-      "gleam"
-      "erlang"
-      "llvm"
-      "ast-grep"
-      "quicktype"
-      "rustup"
-      "fontforge"
-      "oven-sh/bun/bun"
-      "rust"
-      "ripgrep"
-      "gitu"
-      "pinentry-mac"
-      "lgug2z/tap/komorebi-for-mac"
-      "gopls"
-      "yt-dlp"
-      "ffmpeg"
-      "mole"
-      "sqlite"
-
-      # Emacs development
-      "eask-cli"
-      "chezmoi"
-    ];
     taps = [
-      "BarutSRB/tap"
-      "clojure/tools"
-      "kamillobinski/thock"
-      "krtirtho/apps"
-      "koraysels/personal"
-      "FelixKratz/formulae"
-      "marcuzzz/homebrew-marcstap"
       "d12frosted/emacs-plus"
-      "SDKMAN/tap"
-      "nikitabobko/tap"
-      "ozankasikci/tap"
       "koekeishiya/formulae"
-      "borkdude/brew"
-      "sst/tap"
-      "lgug2z/tap"
+      "FelixKratz/formulae"
+      "kamillobinski/thock"
+      "nikitabobko/tap"
+      "krtirtho/apps"
+      "Artawower/tap"
     ];
-    casks = [
-      # Fonts (not available as Nerd Fonts in nixpkgs)
-      "font-liga-comic-mono"
-      "font-monaspace-nf" # Monaspace Nerd Font (with icons)
 
-      # "betterdisplay@2.2.10"
+    brews = [
+      # Emacs with macOS-specific patches (xwidgets, imagemagick, dbus — not in nixpkgs)
+      {
+        name            = "d12frosted/emacs-plus/emacs-plus@30";
+        restart_service = true;
+        args            = [ "with-xwidgets" "with-imagemagick" "with-dbus" "with-compress-install" ];
+      }
+
+      # Window management — deep macOS system integration, codesigning requirements
+      { name = "koekeishiya/formulae/yabai"; }
+      { name = "koekeishiya/formulae/skhd"; }
+      { name = "FelixKratz/formulae/borders"; restart_service = false; }
+
+      # Bootstrap tools — manage themselves, installed before nix
+      "mise"
+      "chezmoi"
+      "mas"
+      "Artawower/tap/wallboy"
+      "ntfy"
+    ];
+
+    casks = [
+      "font-liga-comic-mono"
+      "font-monaspace-nf"
+      "ghostty"
+      "wezterm"
+      "orbstack"
+      "karabiner-elements"
+      "nikitabobko/tap/aerospace"
       "lulu"
       "vlc"
       "marta"
-      "ghostty"
-      "orbstack"
-      "wezterm"
       "freedom"
       "flameshot"
       "pearcleaner"
       "krtirtho/apps/spotube"
       "discord"
-      {
-        name = "stretchly";
-        args = {
-          no_quarantine = true;
-        };
-      }
+      { name = "stretchly"; args = { no_quarantine = true; }; }
       "applite"
       "obsidian"
       "neohtop"
       "db-browser-for-sqlite"
       "jordanbaird-ice"
       "zen"
-      "karabiner-elements"
+      "zen@twilight"
       "loom"
       "zoom"
       "shottr"
@@ -383,18 +252,11 @@ in
       "cursor"
       "mattermost"
       "ticktick"
-      # "ollama"
       "raycast"
-      "zen@twilight"
-      # "th-ch/youtube-music/youtube-music"
-      # "swiftbar"
       "licecap"
-      "nikitabobko/tap/aerospace"
       "amneziavpn"
       "dotnet-sdk"
       "dotnet-sdk@9"
-      # "rust-disk-cleaner"
-      # "macforge"
       "telegram-desktop"
       "bitwarden"
       "whatsapp"
@@ -411,17 +273,11 @@ in
       "claude-code"
       "android-studio"
       "spotify"
-      # "omniwm"
       "bloom"
       "cmux"
     ];
-    masApps = {
-      # "Bitwarden" = 1352778147;
-      # "Whatsapp" = 310633997;
-      # "Telegram" = 747648890;
-      # "Hyperduck" = 6444667067;
-      # "Gifski" = 1351639930;
-    };
+
+    masApps = {};
   };
 
   system.activationScripts.masOptional = ''

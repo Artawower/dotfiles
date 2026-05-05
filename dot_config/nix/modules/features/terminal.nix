@@ -1,14 +1,6 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, pkgs, ... }:
 
-let
-  cfg = config.conf.features.terminal;
-  isDarwin = pkgs.stdenv.isDarwin;
-in
+let cfg = config.conf.features.terminal; in
 
 {
   config = lib.mkIf cfg.enable {
@@ -20,7 +12,11 @@ in
       yaml-language-server
 
       zellij
+      neovim
       yazi
+      ranger
+      tmux
+      xxh
 
       starship
       zoxide
@@ -28,11 +24,6 @@ in
       bat
       fastfetch
       direnv
-    ];
-
-    conf.packages.casks = lib.optionals isDarwin [
-      "ghostty"
-      "cmux"
     ];
   };
 }

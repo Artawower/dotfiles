@@ -44,7 +44,7 @@
       darwinConfigurations.${user.hostname} = nix-darwin.lib.darwinSystem {
         modules = [
           darwin-login-items.darwinModules.default
-          (import ./darwin.nix { inherit self user; })
+          ({ pkgs, ... }: import ./darwin.nix { inherit self pkgs user; })
         ];
       };
 

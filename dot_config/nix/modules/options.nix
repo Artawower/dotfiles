@@ -7,7 +7,9 @@
       default = "qwerty";
     };
 
-    features = lib.mapAttrs (_: lib.mkEnableOption) {
+    features = lib.mapAttrs (_: desc: {
+      enable = lib.mkEnableOption desc;
+    }) {
       core     = "core CLI tools";
       vcs      = "version control tooling";
       terminal = "terminal, TUI tools, and shell";
@@ -24,14 +26,6 @@
     packages = {
       nix = lib.mkOption {
         type    = lib.types.listOf lib.types.package;
-        default = [];
-      };
-      brews = lib.mkOption {
-        type    = lib.types.listOf lib.types.str;
-        default = [];
-      };
-      casks = lib.mkOption {
-        type    = lib.types.listOf lib.types.str;
         default = [];
       };
     };

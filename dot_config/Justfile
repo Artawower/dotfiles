@@ -57,27 +57,45 @@ cargo-linux:
     PKG_CONFIG_PATH=/usr/lib64/pkgconfig LD_LIBRARY_PATH=/usr/lib64 cargo install wl-screenrec
 
 [working-directory("./nix")]
-nix-linux:
-    nix run home-manager/master -- switch -b backup --flake ".#darkawower@fedora" --impure
+nix:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    case "$(uname -s)" in
+        Darwin)
+            sudo -v
+            sudo /run/current-system/sw/bin/darwin-rebuild switch --flake "$HOME/.config/nix"
+            nix run home-manager/master -- switch -b backup --flake ".#darkawower@macbook" --impure
+            ;;
+        Linux)
+            nix run home-manager/master -- switch -b backup --flake ".#darkawower@fedora" --impure
+            ;;
+        *)
+            echo "Unsupported OS: $(uname -s)" >&2
+            exit 1
+            ;;
+    esac
 
 [working-directory("./nix")]
-nix-darwin-mac:
-    sudo -v && sudo /run/current-system/sw/bin/darwin-rebuild switch --flake ~/.config/nix
-    @echo "Successfully applied Nix configuration for macOS."
+nix-update readd="false":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    nix flake update
+    if [ "{{ readd }}" = "true" ]; then
+        chezmoi re-add "$HOME/.config/nix/flake.lock"
+    fi
 
-[working-directory("./nix")]
-nix-home-mac:
-    nix run home-manager/master -- switch -b backup --flake ".#darkawower@macbook"
-    @echo "Successfully applied Home Manager configuration for macOS."
-
-[working-directory("./nix")]
-nix-clean-mac:
-    find "$$HOME" \
-        -path "$$HOME/OrbStack/*" -prune -o \
-        -path "$$HOME/Library/Containers/*" -prune -o \
+nix-clean:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if [ "$(uname -s)" != "Darwin" ]; then
+        exit 0
+    fi
+    find "$HOME" \
+        -path "$HOME/OrbStack/*" -prune -o \
+        -path "$HOME/Library/Containers/*" -prune -o \
         -xtype l -print0 | while IFS= read -r -d '' link; do \
-            echo "Removing broken link: $$link"; \
-            rm -f "$$link" 2>/dev/null || true; \
+            echo "Removing broken link: $link"; \
+            rm -f "$link" 2>/dev/null || true; \
         done
 
 [working-directory("/tmp")]
@@ -133,7 +151,7 @@ fedora-files:
 init-linux:
     just flatpak
     just fedora-deps
-    just nix-linux
+    just nix
     just mise
     uv tool upgrade --all
     just cargo-linux
@@ -146,9 +164,8 @@ init-mac:
     just quasiqwerty
     just mise
     uv tool upgrade --all
-    just nix-darwin-mac
-    just nix-home-mac
-    just nix-clean-mac
+    just nix
+    just nix-clean
 
 
 # Fedora major-version upgrade. Downloads first, then reboots into offline upgrade.
@@ -156,23 +173,30 @@ fedora-upgrade VERSION="44":
     sudo env -u LD_LIBRARY_PATH dnf system-upgrade download --releasever={{VERSION}} --allowerasing
     sudo env -u LD_LIBRARY_PATH dnf system-upgrade reboot
 
-# Daily update — refresh Fedora, Flatpak, Nix/Home Manager, and user toolchains
-update-linux:
-    sudo env -u LD_LIBRARY_PATH dnf upgrade --refresh -y
-    flatpak update -y
-    cd ~/.config/nix && nix flake update
-    just nix-linux
-    mise upgrade --bump --exclude pnpm
+# Daily update — refresh OS packages, Nix/Home Manager, and user toolchains
+update readd_flake_lock="false":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    case "$(uname -s)" in
+        Linux)
+            sudo env -u LD_LIBRARY_PATH dnf upgrade --refresh -y
+            flatpak update -y
+            ;;
+        Darwin)
+            ;;
+        *)
+            echo "Unsupported OS: $(uname -s)" >&2
+            exit 1
+            ;;
+    esac
+    just nix-update "{{ readd_flake_lock }}"
+    just nix
+    mise upgrade --exclude pnpm
     mise trust ~/.config/mise.toml
     uv tool upgrade --all
-    just manual-deps
-    pi update --extensions
-    printenv > ~/.emacs.d/.local/env
-
-# Daily update — refresh packages without full reinstall
-update-mac:
-    mise upgrade --bump --exclude pnpm
-    mise trust ~/.config/mise.toml
+    if [ "$(uname -s)" = "Linux" ]; then
+        just manual-deps
+    fi
     pi update --extensions
     printenv > ~/.emacs.d/.local/env
 
