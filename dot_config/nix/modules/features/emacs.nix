@@ -15,6 +15,8 @@ in
       fd
     ] ++ lib.optionals (!isDarwin) [
       emacs
+      enchant_2
+      pkg-config
       isync
       msmtp
       cacert
