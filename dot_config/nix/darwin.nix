@@ -208,6 +208,8 @@ in
       "mise"
       "chezmoi"
       "mas"
+      "pkgconf"
+      "enchant"
       "Artawower/tap/wallboy"
       "ntfy"
     ];
