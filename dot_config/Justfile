@@ -53,38 +53,12 @@ mise:
     mise install
     mise trust ~/.config/mise.toml
 
-cargo:
-    just _cargo-{{os()}}
-    cargo install gitu kdlfmt
-    cargo install codebook-lsp
+cargo-linux:
+    PKG_CONFIG_PATH=/usr/lib64/pkgconfig LD_LIBRARY_PATH=/usr/lib64 cargo install wl-screenrec
 
-_cargo-linux:
-    PKG_CONFIG_PATH=/usr/lib64/pkgconfig
-    LD_LIBRARY_PATH=/usr/lib64
-    cargo install wl-screenrec
-
-_cargo-macos:
-    :
-    
-go:
-    go install golang.org/x/tools/gopls@latest
-
-uv:
-    uv tool upgrade --all
-    uv tool install rassumfrassum 
-    uv tool install ty
-    uv tool install basedpyright
-    uv tool install httpie
-    uv tool install http-prompt
-  
-    
 [working-directory("./nix-linux")]
 nix-linux:
     nix run home-manager/master -- switch -b backup --flake . --impure
-
-nix-mac:
-    just nix-home-mac
-    just nix-darwin-mac
 
 [working-directory("./nix")]
 nix-darwin-mac:
@@ -161,7 +135,8 @@ init-linux:
     just fedora-deps
     just nix-linux
     just mise
-    just uv
+    uv tool upgrade --all
+    just cargo-linux
     just manual-deps
     just fedora-files
     just systemd-services
@@ -170,12 +145,9 @@ init-linux:
 init-mac:
     just quasiqwerty
     just mise
-    just uv
+    uv tool upgrade --all
     just nix-darwin-mac
     just nix-home-mac
-    just uv
-    just go
-    just cargo
     just nix-clean-mac
 
 
@@ -193,8 +165,6 @@ update-linux:
     mise upgrade --bump --exclude pnpm
     mise trust ~/.config/mise.toml
     uv tool upgrade --all
-    cargo install cargo-update
-    cargo install-update -a
     just manual-deps
     pi update --extensions
     printenv > ~/.emacs.d/.local/env
