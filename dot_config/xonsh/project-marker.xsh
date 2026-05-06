@@ -122,21 +122,8 @@ def _update_project_marker():
         
         try:
             theme_file.write_text(theme_content)
-            
-            # Touch config.kdl to trigger zellij reload
-            import time
-            config_file = Path.home() / '.config/zellij/config.kdl'
-            if config_file.exists():
-                content = config_file.read_text()
-                # Add/update timestamp comment to trigger file change
-                import re
-                timestamp = str(int(time.time()))
-                if '// project-marker-ts:' in content:
-                    content = re.sub(r'// project-marker-ts:\d+', f'// project-marker-ts:{timestamp}', content)
-                else:
-                    content += f'\n// project-marker-ts:{timestamp}\n'
-                config_file.write_text(content)
-        except Exception as e:
+            # Theme takes effect on next Zellij session start
+        except Exception:
             pass
 
 @events.on_chdir
