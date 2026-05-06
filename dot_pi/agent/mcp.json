@@ -75,7 +75,7 @@
       "directTools": true
     },
     "qmd": {
-      "command": "/Users/darkawower/.volta/bin/qmd",
+      "command": "qmd",
       "args": ["mcp"],
       "lifecycle": "lazy",
       "directTools": true
