@@ -1,3 +1,4 @@
+from pathlib import Path
 #!/usr/bin/env python3
 import subprocess
 import json
@@ -11,7 +12,7 @@ from typing import Optional, Callable
 class Paths:
     yabai: str = '/opt/homebrew/bin/yabai'
     wezterm: str = '/opt/homebrew/bin/wezterm'
-    xonsh: str = '/Users/darkawower/.nix-profile/bin/xonsh'
+    xonsh: str = str(Path.home() / '.nix-profile/bin/xonsh')
     zen: str = '/Applications/Twilight.app/Contents/MacOS/zen'
     notifier: str = '/opt/homebrew/bin/terminal-notifier'
 
