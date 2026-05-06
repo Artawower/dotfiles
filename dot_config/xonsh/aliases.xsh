@@ -1,75 +1,98 @@
-aliases['c'] = 'clear'
-aliases['с'] = 'clear'
+import platform
+import socket
+from pathlib import Path
+
+# Navigation
+aliases['c']  = 'clear'
+aliases['с']  = 'clear'
 aliases['..'] = 'cd ../'
-aliases['b'] = 'cd -'
-aliases['n'] = 'nvim'
-aliases['y'] = 'yazi'
-aliases['g'] = 'gitu'
-aliases['п'] = 'gitu'
-aliases['h'] = '/usr/bin/hx'
-aliases['p'] = 'pi'
+aliases['b']  = 'cd -'
+
+# Editors
+aliases['h']  = '/usr/bin/hx'
+aliases['p']  = 'pi'
+aliases['o']  = 'opencode'
+aliases['e']  = 'emacsclient -ac ""'
+
+# VCS
+aliases['g']  = 'gitu'
+aliases['п']  = 'gitu'   # cyrillic
 aliases['ju'] = 'jjui'
 aliases['jb'] = 'python3 ~/.config/scripts/jj-bisect.py'
-aliases['ch'] = "chezmoi"
-aliases['agents'] = 'cd ~/.config/agents'
+aliases['ch'] = 'chezmoi'
+aliases['czcd'] = 'cd $(chezmoi source-path)'
 
-aliases['doom'] = '~/.emacs.d/bin/doom'
-aliases['emacs30'] = 'emacs --init-dir ~/.emacs.d-30'
-aliases['pip'] = 'pip3'
+# Shell
+aliases['y']  = 'yazi'
+aliases['z']  = 'zellij'
+aliases['l']  = '~/.config/scripts/layout'
+
+# Python / pip
+aliases['pip']    = 'pip3'
 aliases['python'] = 'python3'
-# aliases['wakatime-cli'] = '/opt/homebrew/bin/wakatime'
-aliases['nv'] = '~/.config/nv.sh'
-aliases['l'] = 'python3 ~/.config/scripts/layout-presets.py'
 
-aliases['ls'] = 'eza --icons'
+# File listing
+aliases['ls']   = 'eza --icons'
 aliases['tree'] = 'eza --tree'
 
-aliases['br'] = 'bun run'
-aliases['bi'] = 'bun install'
+# Bun
+aliases['br']  = 'bun run'
+aliases['bi']  = 'bun install'
 aliases['bis'] = 'bun install --exact --save'
 aliases['bid'] = 'bun install --exact --save --dev'
 
-aliases['m'] = 'minikube'
+# Kubernetes / minikube
+aliases['m']  = 'minikube'
 aliases['ms'] = 'minikube start --driver=docker --alsologtostderr'
 aliases['md'] = 'minikube dashboard'
 aliases['kg'] = 'kubectl get'
 
-aliases['dublog'] = 'ssh darkawower@49.12.98.254'
-aliases['on'] = 'ssh -i ~/.ssh/orgnote darkawower@65.108.90.95'
+# Docker
+aliases['dc']  = 'docker compose'
+aliases['dcu'] = 'docker compose up'
+aliases['d']   = 'docker'
 
-aliases['om'] = 'cd ~/projects/pet/orgnote'
-aliases['oc'] = 'cd ~/projects/pet/orgnote/orgnote-client'
-aliases['os'] = 'cd ~/projects/pet/orgnote/org-mode-ast'
-aliases['oa'] = 'cd ~/projects/pet/orgnote/orgnote-api'
-aliases['oci'] = 'cd ~/projects/pet/orgnote/orgnote-cli'
-aliases['ob'] = 'cd ~/projects/pet/orgnote/orgnote-backend'
-aliases['ui'] = 'cd ~/projects/ui/'
-aliases['uim'] = 'cd ~/projects/ui-main-dev/'
-aliases['ua'] = 'cd ~/projects/ui_alternative/'
-aliases['mr'] = 'cd ~/projects/miron/'
-aliases['pet'] = 'cd ~/projects/pet/'
-aliases['sub'] = 'cd ~/projects/pet/subscrumber-repo/'
-
+# Nix
 aliases['uclean'] = 'sudo nix-collect-garbage -d'
 
-aliases['syncwp'] = 'unison -ui text "/Volumes/DARK SIDE/wallpappers/" ~/Pictures/wallpappers'
-aliases['watch-dark-mode'] = 'sh ~/.config/scripts/kitty-auto-theme-switcher.sh &'
-aliases['displays'] = f"{$HOME}/.config/yabai/layouts/Arturs-MacBook-Pro.local/desktop.sh"
-aliases['preserve-displays'] = f"{$HOME}/.config/yabai/restore-script.sh"
-aliases['dc'] = 'docker compose'
-aliases['dcu'] = 'docker compose up'
-aliases['d'] = 'docker'
-
-aliases['ql'] = 'quasar clean'
-
-aliases['o'] = 'opencode'
-
-# Preserve PATH for sudo (needed for Nix commands)
+# Preserve PATH inside sudo (needed for Nix/mise commands)
 aliases['sudo'] = 'sudo env PATH=$PATH'
 
-# Yabai
-aliases['yabai-apps'] = "yabai -m query --windows | jq '.[].app'"
-aliases['yabai-titles'] = "yabai -m query --windows | jq '.[].title'"
+# Just (uses ~/.config as justfile dir)
 aliases['j'] = 'just ~/.config/'
-aliases['z'] = 'zellij'
-aliases['zj'] = 'zellij'
+
+if platform.system() == 'Darwin':
+    # Yabai window queries
+    aliases['yabai-apps']   = "yabai -m query --windows | jq '.[].app'"
+    aliases['yabai-titles'] = "yabai -m query --windows | jq '.[].title'"
+
+    # Yabai layout scripts keyed by hostname
+    _hostname = socket.gethostname()
+    _hostname = _hostname if '.' in _hostname else f'{_hostname}.local'
+    _home = str(Path.home())
+    aliases['displays']          = f'{_home}/.config/yabai/layouts/{_hostname}/desktop.sh'
+    aliases['preserve-displays'] = f'{_home}/.config/yabai/restore-script.sh'
+    del _home
+    del _hostname
+
+
+def _load_ssh_aliases() -> None:
+    """Auto-generate `ssh <host>` aliases for every named Host in ~/.ssh/config."""
+    ssh_config = Path.home() / '.ssh/config'
+    if not ssh_config.exists():
+        return
+    for line in ssh_config.read_text().splitlines():
+        line = line.strip()
+        if not line.lower().startswith('host '):
+            continue
+        for host in line[5:].split():
+            # skip wildcards, IPs, well-known service hosts
+            if any(c in host for c in ('*', '?', '!')):
+                continue
+            if host.replace('.', '').isdigit():
+                continue
+            if host in ('github.com', 'gitlab.com', 'bitbucket.org'):
+                continue
+            aliases.setdefault(host, f'ssh {host}')
+
+_load_ssh_aliases()
