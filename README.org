@@ -21,7 +21,7 @@ Modern, AI-assisted development environment for macOS and Fedora Asahi Linux. Th
 - 📦 *mise* — declarative runtimes and global tools
 - 🏗️ *Nix + Home Manager + nix-darwin* — reproducible packages and host integration
 - ✨ *Editors* — Emacs as the main IDE, Helix for fast terminal editing, Zed config included
-- 🤖 *AI tooling* — Pi, ECA, OpenCode, shared prompts, local skills/agents
+- 🤖 *AI tooling* — Pi, ECA, OpenCode, local skills/agents
 - 🎨 *Desktop* — macOS: Aerospace/skhd/Karabiner/SketchyBar; Linux: Niri with Hypr/Noctalia/Vicinae support
 - 🔧 *Polyglot* — Node.js/frontend, Python, Go, Rust tooling
 
@@ -149,7 +149,6 @@ Layout-sensitive files include Helix keymaps, xonsh keybindings, xremap, Karabin
 | [[https://github.com/editor-code-assistant/eca][ECA]]      | AI assistant with Emacs-friendly workflows            | =dot_config/eca/=   |
 | [[https://opencode.ai/][OpenCode]] | AI coding agent configuration                          | =dot_config/opencode/= |
 
-Shared prompts live in =.chezmoiexternal/prompt/= and are rendered by =run_always_sync-prompts.sh= into Pi, ECA, and OpenCode formats.
 
 ** Package and Runtime Management
 
@@ -210,9 +209,6 @@ OS-specific configs are excluded via =.chezmoiignore.tmpl=:
 
 #+BEGIN_SRC text
 .chezmoidata.toml                 Feature flags and keyboard layout
-.chezmoiexternal/prompt/          Shared prompt source
-run_always_sync-prompts.sh        Prompt sync for Pi/ECA/OpenCode
-run_once_link-pi-skills.sh        Pi skills linking helper
 
 dot_config/                       ~/.config
   Justfile                        init/update/sync/nix/mise/layout recipes
