@@ -245,3 +245,7 @@ quasiqwerty:
     else
         echo "QuasiQWERTY is already installed."
     fi
+
+
+sync-dotfiles:
+    chezmoi apply

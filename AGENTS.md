@@ -74,8 +74,6 @@ dot_pi/                             → ~/.pi/
 dot_agents/                         → ~/.agents/
   skills/                             Pi skills
 
-.chezmoiexternal/prompt/             Shared prompts source
-run_always_sync-prompts.sh           Syncs prompts to pi/opencode/eca formats
 ```
 
 ## Platform notes
@@ -109,8 +107,6 @@ run_always_sync-prompts.sh           Syncs prompts to pi/opencode/eca formats
 ## AI tooling notes
 
 - Pi-specific configuration lives under `dot_pi/`, not under `dot_config/`.
-- Shared prompts are maintained in `.chezmoiexternal/prompt/`; `run_always_sync-prompts.sh` renders them for Pi, OpenCode, and ECA.
-- Do not duplicate prompt text in tool-specific directories unless the sync script requires that generated output.
 
 ## Safety rules
 
