@@ -1,16 +1,16 @@
 #:schema https://docs.jj-vcs.dev/latest/config-schema.json
 
 [user]
-name = "Artur Iaroshenko"
-email = "artawower@protonmail.com"
+name = "{{ .full_name }}"
+email = "{{ .email }}"
 
 [signing]
 behavior = "own"
 backend = "gpg"
 {{- if eq .chezmoi.os "linux" }}
-key = "542983F6B228CCC1"
+key = "{{ .gpg_key_linux }}"
 {{- else }}
-key = "4357424B95BAB5C5"
+key = "{{ .gpg_key_darwin }}"
 {{- end }}
 
 [ui]

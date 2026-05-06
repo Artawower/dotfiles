@@ -1,5 +1,12 @@
 layout = "colemak"
 
+username = "darkawower"
+hostname = "Arturs-MacBook-Pro"
+full_name = "Artur Iaroshenko"
+email = "artawower@protonmail.com"
+gpg_key_darwin = "4357424B95BAB5C5"
+gpg_key_linux = "542983F6B228CCC1"
+
 [features]
 ai = true
 core = true
