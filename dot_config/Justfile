@@ -88,7 +88,8 @@ nix-clean:
     find "$HOME" \
         -path "$HOME/OrbStack/*" -prune -o \
         -path "$HOME/Library/Containers/*" -prune -o \
-        -xtype l -print0 | while IFS= read -r -d '' link; do \
+        \( -type l ! -exec test -e {} \; -print0 \) | \
+        while IFS= read -r -d '' link; do \
             echo "Removing broken link: $link"; \
             rm -f "$link" 2>/dev/null || true; \
         done
