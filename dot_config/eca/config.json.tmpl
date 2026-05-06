@@ -3,10 +3,10 @@
   "defaultAgent": "manager",
   "behavior": {
     "manager": {
-      "systemPromptFile": "/Users/darkawower/.config/eca/agents/manager.md"
+      "systemPromptFile": "{{ .chezmoi.homeDir }}/.config/eca/agents/manager.md"
     },
     "code-reviewer": {
-      "systemPromptFile": "/Users/darkawower/.config/eca/agents/code-reviewer.md",
+      "systemPromptFile": "{{ .chezmoi.homeDir }}/.config/eca/agents/code-reviewer.md",
       "toolCall": {
         "byDefault": "ask",
         "approval": {
@@ -46,7 +46,7 @@
   },
   "rules": [
     {
-      "path": "/Users/darkawower/.config/eca/rules/common-rules.md"
+      "path": "{{ .chezmoi.homeDir }}/.config/eca/rules/common-rules.md"
     }
   ],
   "hooks": {
@@ -87,7 +87,7 @@
     "toon-context": {
       "command": "bun",
       "args": [
-        "/Users/darkawower/apps/TOON-context-mcp-server/toon-context-mcp/build/index.js"
+        "{{ .chezmoi.homeDir }}/apps/TOON-context-mcp-server/toon-context-mcp/build/index.js"
       ],
       "env": {
         "TOON_THRESHOLD": "0.7",

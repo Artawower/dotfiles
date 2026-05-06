@@ -54,9 +54,8 @@ aliases['uclean'] = 'sudo nix-collect-garbage -d'
 
 aliases['syncwp'] = 'unison -ui text "/Volumes/DARK SIDE/wallpappers/" ~/Pictures/wallpappers'
 aliases['watch-dark-mode'] = 'sh ~/.config/scripts/kitty-auto-theme-switcher.sh &'
-aliases['displays'] = '/Users/darkawower/.config/yabai/layouts/Arturs-MacBook-Pro.local/desktop.sh'
-aliases['preserve-displays'] = '/Users/darkawower/.config/yabai/restore-script.sh'
-aliases['volar'] = '/Users/darkawower/.npm-global/bin/vue-language-server'
+aliases['displays'] = f"{$HOME}/.config/yabai/layouts/Arturs-MacBook-Pro.local/desktop.sh"
+aliases['preserve-displays'] = f"{$HOME}/.config/yabai/restore-script.sh"
 aliases['dc'] = 'docker compose'
 aliases['dcu'] = 'docker compose up'
 aliases['d'] = 'docker'
