@@ -9,11 +9,11 @@ gpg_key_linux = "542983F6B228CCC1"
 
 [models]
 # Role-based model selection — override to match your providers/budget
-default  = "anthropic/claude-sonnet-4-6"
-quick    = "anthropic/claude-haiku-4-5-20251001"  # fast + cheap: routing, research, critique
-research = "openai/gpt-5.4"                       # deep analysis, planning, architecture
-coder    = "openai/gpt-5.5"                        # code generation
-reviewer = "anthropic/claude-sonnet-4-6"           # code review, quality
+default = "anthropic/claude-sonnet-4-6"
+quick = "anthropic/claude-haiku-4-5-20251001" # fast + cheap: routing, research, critique
+research = "openai/gpt-5.4"                   # deep analysis, planning, architecture
+coder = "openai/gpt-5.5"                      # code generation
+reviewer = "anthropic/claude-sonnet-4-6"      # code review, quality
 
 [features]
 ai = true

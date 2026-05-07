@@ -33,10 +33,10 @@ nix:
         Darwin)
             sudo -v
             sudo /run/current-system/sw/bin/darwin-rebuild switch --flake "$HOME/.config/nix"
-            nix run home-manager/master -- switch -b backup --flake ".#darkawower@macbook" --impure
+            nix run home-manager/master -- switch -b backup --flake ".#${USER}@macbook" --impure
             ;;
         Linux)
-            nix run home-manager/master -- switch -b backup --flake ".#darkawower@fedora" --impure
+            nix run home-manager/master -- switch -b backup --flake ".#${USER}@fedora" --impure
             ;;
         *)
             echo "Unsupported OS: $(uname -s)" >&2
