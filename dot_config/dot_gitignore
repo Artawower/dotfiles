@@ -1,15 +1,7 @@
 /*
-!backup
 !fonts
-!htop
-!kitty
-!neofetch
-!nvim
-!neovim_old
 !yabai
-!ranger
 !skhd
-!wal
 !alacritty.yamlREADME.md
 
 
@@ -20,13 +12,7 @@
 jj/repos
 jj/repos/*
 
-!.zshrc
-!nv.sh
-# !emacs-tree-sitter
-!wal
 !README.org
-!.p10k.zsh
-!oh-my-zsh-custom
 !sketchybar
 !.wezterm.lua
 !.raycast

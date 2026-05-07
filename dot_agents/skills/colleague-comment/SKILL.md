@@ -1,5 +1,5 @@
 ---
-name: colleague-comments
+name: colleague-comment
 description: Анализ замечаний коллеги на релевантность, объективность и практическую ценность.
 argument-hint: "<замечания коллеги>"
 ---
