@@ -106,10 +106,10 @@ init:
             ;;
         Darwin)
             just quasiqwerty
-            just mise
-            uv tool upgrade --all
             just nix
             just nix-clean
+            just mise
+            uv tool upgrade --all
             ;;
     esac
 
