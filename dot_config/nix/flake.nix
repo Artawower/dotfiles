@@ -49,12 +49,12 @@
       };
 
       homeConfigurations = {
-        "${user.username}@macbook" = mkDarwinHome "aarch64-darwin" [
-          ./hosts/macbook.nix
+        "${user.username}@mac" = mkDarwinHome "aarch64-darwin" [
+          ./hosts/mac.nix
         ];
 
-        "${user.username}@fedora" = mkLinuxHome "aarch64-linux" [
-          ./hosts/fedora.nix
+        "${user.username}@linux" = mkLinuxHome "aarch64-linux" [
+          ./hosts/linux.nix
         ];
       };
     };
