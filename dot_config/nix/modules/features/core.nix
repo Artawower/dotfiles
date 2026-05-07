@@ -26,6 +26,7 @@ in
       ncdu
       sqlite
       just
+      mise
     ];
   };
 }

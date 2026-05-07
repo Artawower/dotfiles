@@ -211,8 +211,7 @@ in
         restart_service = false;
       }
 
-      # Bootstrap tools — manage themselves, installed before nix
-      "mise"
+      # Bootstrap tools — installed before nix
       "chezmoi"
       "mas"
       "pkgconf"
