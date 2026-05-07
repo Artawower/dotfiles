@@ -1,6 +1,8 @@
+# Interactive recipe chooser
 default:
     just --choose
 
+# Switch keyboard layout (colemak/qwerty); no arg = print current
 layout layout="":
     ~/.config/scripts/layout {{ layout }}
 
@@ -17,13 +19,16 @@ flatpak:
     flatpak install -y flathub eu.betterbird.Betterbird
     flatpak install -y flathub com.github.KRTirtho.Spotube
 
+# Install mise tools and trust config (mise.toml → deployed)
 mise:
     mise install
     mise trust ~/.config/mise.toml
 
+# Bump mise tool version pins to latest and write back to mise.toml.tmpl
 upgrade:
     ~/.config/scripts/upgrade
 
+# Apply chezmoi config and rebuild Nix (home-manager switch / darwin-rebuild)
 [working-directory("./nix")]
 nix:
     #!/usr/bin/env bash
@@ -44,6 +49,7 @@ nix:
             ;;
     esac
 
+# Update nix flake inputs (flake.lock); readd=true also saves lock to chezmoi sources
 [working-directory("./nix")]
 nix-update readd="false":
     #!/usr/bin/env bash
@@ -83,6 +89,7 @@ fedora-files:
     echo "$(whoami) ALL=(root) NOPASSWD: $HOME/.local/bin/cpu-profile-apply" | sudo tee /etc/sudoers.d/cpu-profile
     sudo chmod 440 /etc/sudoers.d/cpu-profile
 
+# Bootstrap current OS from scratch (packages, Nix, mise, services)
 init:
     #!/usr/bin/env bash
     set -euo pipefail
@@ -111,8 +118,10 @@ fedora-upgrade VERSION="44":
     sudo env -u LD_LIBRARY_PATH dnf system-upgrade download --releasever={{VERSION}} --allowerasing
     sudo env -u LD_LIBRARY_PATH dnf system-upgrade reboot
 
+# Full sync: upgrade everything, bump mise pins, re-add flake.lock and mutable configs to chezmoi
 sync:
     just update readd_flake_lock=true bump=true
+    chezmoi re-add ~/.pi/agent/settings.json
 
 # Daily update — refresh OS packages, Nix/Home Manager, and user toolchains
 update readd_flake_lock="false" bump="false":
@@ -145,6 +154,7 @@ update readd_flake_lock="false" bump="false":
     pi update --extensions
     printenv > ~/.emacs.d/.local/env
 
+# Garbage-collect Nix store, prune Docker, clean OS package caches
 clean:
     #!/usr/bin/env bash
     set -euo pipefail
@@ -162,6 +172,7 @@ clean:
             ;;
     esac
 
+# Print environment diagnostics (shell, PATH, toolchain locations)
 doctor:
     @echo "Shell: $$SHELL"
     @echo "PATH entries:"; printf '%s\n' "$${PATH//:/\n}"
@@ -175,5 +186,10 @@ doctor:
 quasiqwerty:
     ~/.config/scripts/setup-quasiqwerty
 
+# Apply chezmoi dotfiles (source → deployed)
 apply:
     chezmoi apply
+
+
+help:
+    just --list
