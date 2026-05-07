@@ -1,7 +1,7 @@
 ---
 mode: subagent
 description: Researches external docs, libraries, APIs via web search and Context7. Use when need to look up documentation, find examples, check library APIs, or research technical topics.
-model: anthropic/claude-haiku-4-5-20251001
+model: {{ .models.quick }}
 tools:
   byDefault: deny
   allow:
