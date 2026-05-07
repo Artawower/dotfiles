@@ -2547,7 +2547,6 @@ Setup blamer face
             "/opt/homebrew/bin/emacsclient")
            ((executable-find "emacsclient"))
            (t "emacsclient"))))
-  (set-face-attribute 'majutsu-interactive-selected-hunk nil :background (modus-themes-get-color-value 'green-cooler))
   (define-key majutsu-diff-mode-map (kbd "C-n") nil))
 #+END_SRC
 
