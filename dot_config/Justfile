@@ -175,5 +175,5 @@ doctor:
 quasiqwerty:
     ~/.config/scripts/setup-quasiqwerty
 
-sync-dotfiles:
+apply:
     chezmoi apply
