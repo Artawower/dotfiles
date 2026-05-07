@@ -21,16 +21,12 @@ in
       yaml-language-server
 
       zellij
-      neovim
       yazi
-      ranger
       tmux
-      xxh
 
       starship
       zoxide
       eza
-      bat
       fastfetch
       direnv
     ];
