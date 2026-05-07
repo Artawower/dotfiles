@@ -4,7 +4,11 @@ import subprocess
 import sys
 import os
 
-TEMPLATE = os.path.expanduser("~/.local/share/chezmoi/dot_config/mise.toml.tmpl")
+def _chezmoi_source() -> str:
+    result = subprocess.run(["chezmoi", "source-path"], capture_output=True, text=True, check=True)
+    return result.stdout.strip()
+
+TEMPLATE = os.path.join(_chezmoi_source(), "dot_config", "mise.toml.tmpl")
 CONFIG   = os.path.expanduser("~/.config/mise.toml")
 EXCLUDE  = {"pnpm"}
 

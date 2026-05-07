@@ -21,8 +21,8 @@ mise:
     mise install
     mise trust ~/.config/mise.toml
 
-mise-bump:
-    ~/.config/scripts/mise-bump
+upgrade:
+    ~/.config/scripts/upgrade
 
 [working-directory("./nix")]
 nix:
@@ -133,7 +133,7 @@ update readd_flake_lock="false" bump="false":
     just nix-update "{{ readd_flake_lock }}"
     just nix
     if [ "{{ bump }}" = "true" ]; then
-        just mise-bump
+        just upgrade
     else
         mise upgrade --exclude pnpm
         mise trust ~/.config/mise.toml
