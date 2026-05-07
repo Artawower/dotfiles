@@ -1,7 +1,7 @@
 ---
 description: Critically evaluates software architecture and implementation plans. Flags over-engineering, coupling issues, missing pieces, and design flaws. Read-only — never modifies code or plans.
 mode: subagent
-model: anthropic/claude-sonnet-4-6
+model: {{ .models.reviewer }}
 tools:
   write: false
   edit: false
