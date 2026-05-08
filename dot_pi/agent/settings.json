@@ -3,16 +3,12 @@
   "hideThinkingBlock": true,
   "quietStartup": true,
   "enableSkillCommands": true,
-  "npmCommand": [
-    "npm"
-  ],
+  "npmCommand": ["npm"],
   "packages": [
     "npm:pi-web-access",
     {
       "source": "npm:pi-powerline-footer",
-      "extensions": [
-        "+index.ts"
-      ]
+      "extensions": ["+index.ts"]
     },
     {
       "source": "npm:oh-pi",
@@ -35,69 +31,28 @@
         "-pi-package/extensions/git-guard.ts",
         "-pi-package/extensions/safe-guard.ts"
       ],
-      "themes": [
-        "-pi-package/themes/catppuccin-mocha.json"
-      ]
-    },
-    {
-      "source": "npm:lsp-pi@1.0.4",
-      "extensions": [
-        "-lsp-tool.ts",
-        "-lsp.ts"
-      ]
+      "themes": ["-pi-package/themes/catppuccin-mocha.json"]
     },
     "npm:pi-copy-output",
     "npm:@sherif-fanous/pi-catppuccin",
     "npm:pi-notify",
     {
-      "source": "npm:pi-animations",
-      "extensions": [
-        "-animations.ts"
-      ]
-    },
-    {
       "source": "npm:pi-tool-display",
-      "extensions": [
-        "+index.ts"
-      ]
+      "extensions": ["+index.ts"]
     },
     {
       "source": "npm:pi-usage-bars",
-      "extensions": [
-        "+extensions/usage-bars/index.ts"
-      ]
-    },
-    {
-      "source": "npm:@danchamorro/pi-prompt-enhancer",
-      "extensions": [
-        "+index.ts"
-      ]
+      "extensions": ["+extensions/usage-bars/index.ts"]
     },
     {
       "source": "npm:@tintinweb/pi-subagents",
-      "extensions": [
-        "-src/index.ts"
-      ]
+      "extensions": ["-src/index.ts"]
     },
     "npm:@mjakl/pi-dark-or-light",
     "npm:@benvargas/pi-exa-mcp",
     {
-      "source": "npm:@ogulcancelik/pi-spar",
-      "extensions": [
-        "+index.ts"
-      ]
-    },
-    {
-      "source": "npm:pi-formatter",
-      "extensions": [
-        "-extensions/index.ts"
-      ]
-    },
-    {
       "source": "git:github.com/hk-vk/pi-connect",
-      "extensions": [
-        "-index.ts"
-      ]
+      "extensions": ["-index.ts"]
     },
     {
       "source": "npm:pi-free",
@@ -110,51 +65,33 @@
     },
     {
       "source": "npm:pi-image-preview",
-      "extensions": [
-        "-index.ts"
-      ]
+      "extensions": ["-index.ts"]
     },
     "npm:pi-skills-sh",
-    {
-      "source": "npm:@thurstonsand/pi-powerline-footer",
-      "extensions": [
-        "-index.ts"
-      ]
-    },
     "npm:pi-secret-guard",
     "npm:pi-extension-manager",
     {
       "source": "npm:pi-btw",
-      "extensions": [
-        "-extensions/btw.ts"
-      ]
+      "extensions": ["-extensions/btw.ts"]
     },
     "npm:pi-session-switch",
     {
       "source": "npm:@dkmnx/pi-clarify",
-      "extensions": [
-        "-index.ts"
-      ]
+      "extensions": ["-index.ts"]
     },
     "npm:pi-bailian-models",
     "npm:@thesethrose/pi-zai-provider",
     "git:github.com/HazAT/pi-interactive-subagents",
     {
       "source": "npm:pi-lens",
-      "extensions": [
-        "+index.ts"
-      ],
-      "skills": [
-        "+skills/ast-grep/SKILL.md",
-        "+skills/lsp-navigation/SKILL.md"
-      ]
+      "extensions": ["+index.ts"],
+      "skills": ["+skills/ast-grep/SKILL.md", "+skills/lsp-navigation/SKILL.md"]
     },
     "npm:pi-link",
     "git:github.com/tomooshi/condensed-milk-pi",
     "npm:@tmustier/pi-usage-extension",
     "npm:@benvargas/pi-claude-code-use",
     "npm:context-mode",
-    "npm:pi-markdown-preview",
     "npm:pi-jj-auto"
   ],
   "defaultProvider": "anthropic",
