@@ -44,5 +44,4 @@ if IS_LINUX:
     for _p in ['/usr/sbin', '/usr/bin', '/usr/local/bin']:
         $PATH.insert(0, _p)
 
-# ── Clean up loop variable ───────────────────────────────────────────────────
 del _p, home, IS_DARWIN, IS_LINUX, platform, Path

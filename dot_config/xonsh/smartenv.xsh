@@ -1,4 +1,3 @@
-#!/usr/bin/env xonsh
 from pathlib import Path
 import platform
 
