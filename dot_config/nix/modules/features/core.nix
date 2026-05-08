@@ -27,6 +27,10 @@ in
       sqlite
       just
       mise
+
+      nil
+      marksman
+      yaml-language-server
     ];
   };
 }
