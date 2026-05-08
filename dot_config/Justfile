@@ -33,7 +33,7 @@ mise-bump:
 nix:
     #!/usr/bin/env bash
     set -euo pipefail
-    chezmoi apply
+    chezmoi apply --force
     case "$(uname -s)" in
         Darwin)
             sudo -v
