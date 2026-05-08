@@ -15,10 +15,7 @@ in
       (import ../../pkgs/xonsh.nix { inherit pkgs; })
 
       helix
-      marksman
-      nil
       bash-language-server
-      yaml-language-server
 
       zellij
       yazi
