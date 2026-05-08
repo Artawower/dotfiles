@@ -29,6 +29,7 @@ in
       mise
 
       nil
+      pandoc
       marksman
       yaml-language-server
     ];
