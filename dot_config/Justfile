@@ -141,7 +141,7 @@ upgrade:
             exit 1
             ;;
     esac
-    just nix-update
+    just nix-update readd=true
     just nix
     mise upgrade --exclude pnpm
     mise trust ~/.config/mise.toml
