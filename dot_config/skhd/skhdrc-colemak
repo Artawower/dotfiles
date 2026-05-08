@@ -115,8 +115,8 @@ lcmd + lctrl + ralt + rshift - s :
         "display notification \"Restarting Skhd\" with title \"SKHD\""; \
     skhd --restart-sevice
 
-cmd + ralt + rshift - i : /opt/homebrew/bin/yabai -m config window_opacity off
-cmd + ralt + rshift - o : /opt/homebrew/bin/yabai -m config window_opacity on
+lalt + ralt + rshift - i : /opt/homebrew/bin/yabai -m config window_opacity off
+lalt + ralt + rshift - o : /opt/homebrew/bin/yabai -m config window_opacity on
 
 
 
