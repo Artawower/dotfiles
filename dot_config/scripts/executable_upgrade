@@ -44,5 +44,8 @@ for tool, version in bumped.items():
 with open(TEMPLATE, "w") as f:
     f.write(content)
 
-subprocess.run(["chezmoi", "apply"], check=True)
+# Re-add mise.lock so chezmoi source stays in sync with what mise wrote.
+# Without this, chezmoi apply would detect an external modification and prompt.
+subprocess.run(["chezmoi", "re-add", os.path.expanduser("~/.config/mise.lock")], check=True)
+subprocess.run(["chezmoi", "apply", "--force"], check=True)
 print("✓ Versions bumped and template updated")

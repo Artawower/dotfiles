@@ -4,7 +4,7 @@ from pathlib import Path
 if shutil.which('zoxide'):
     # --hook none: suppress default hook; we register our own below
     execx($(zoxide init xonsh --hook none), 'exec', __xonsh__.ctx, filename='zoxide')
-    aliases['s'] = aliases['zi']  # interactive zoxide picker (fzf)
+    aliases['pp'] = aliases['zi']  # interactive zoxide picker (fzf)
 
     @builtins.events.on_chdir  # type: ignore
     def __zoxide_vcs_hook(newdir, olddir, **_kwargs):
