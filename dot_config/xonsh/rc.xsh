@@ -12,6 +12,7 @@ def fixed_decode(s, encoding=None):
 
 xonsh.tools.decode = fixed_decode
 
+import platform
 import subprocess
 from pathlib import Path
 from pprint import pprint
@@ -35,6 +36,10 @@ source @(config_dir / 'project-marker.xsh')
 source @(config_dir / 'keybindings.xsh')
 source @(config_dir / 'hooks.xsh')
 source @(config_dir / 'functions.xsh')
+if platform.system() == 'Darwin':
+    source @(config_dir / 'functions_darwin.xsh')
+elif platform.system() == 'Linux':
+    source @(config_dir / 'functions_linux.xsh')
 source @(config_dir / 'aliases.xsh')
 source @(config_dir / 'completers.xsh')
 source @(config_dir / 'filters.xsh')
@@ -48,8 +53,7 @@ source-bash ~/.nix-profile/etc/profile.d/hm-session-vars.sh  # Home Manager sess
 # Nix home-manager sets LD_LIBRARY_PATH with Nix libs, which breaks
 # Fedora system binaries (e.g. libz version mismatch in binutils).
 # Nix binaries don't need it — they use RPATH. Just unset it.
-import platform as _platform
-if _platform.system() == 'Linux':
+if platform.system() == 'Linux':
     if 'LD_LIBRARY_PATH' in ${...}:
         del $LD_LIBRARY_PATH
     # Let Nix GUI/OpenGL apps discover Fedora Mesa/GLVND drivers.
@@ -67,4 +71,3 @@ if _platform.system() == 'Linux':
     if 'QT_PLUGIN_PATH' in ${...}:
         del $QT_PLUGIN_PATH
     del _share_dir
-del _platform

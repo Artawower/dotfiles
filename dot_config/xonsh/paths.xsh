@@ -5,7 +5,6 @@ home = Path.home()
 IS_DARWIN = platform.system() == 'Darwin'
 IS_LINUX  = platform.system() == 'Linux'
 
-# ── Universal: mise / uv / cargo / go / local ───────────────────────────────
 for _p in [
     home / 'bin',
     home / '.local/bin',
@@ -15,19 +14,14 @@ for _p in [
     home / '.cargo/bin',
     home / 'go/bin',
     home / '.go/bin',
+    home / '.nix-profile/bin',
 ]:
     $PATH.insert(0, str(_p))
 
-# ── Nix ─────────────────────────────────────────────────────────────────────
-$PATH.insert(0, str(home / '.nix-profile/bin'))
 $PATH.insert(0, '/nix/var/nix/profiles/default/bin')
 
-# ── macOS (Homebrew + Android SDK + OrbStack) ────────────────────────────────
 if IS_DARWIN:
-    for _p in [
-        '/opt/homebrew/sbin',
-        '/opt/homebrew/bin',
-    ]:
+    for _p in ['/opt/homebrew/sbin', '/opt/homebrew/bin']:
         $PATH.insert(0, _p)
 
     $PATH.insert(0, str(home / '.orbstack/bin'))
@@ -39,8 +33,8 @@ if IS_DARWIN:
     $PATH.insert(0, str(_sdk / 'platform-tools'))
     del _sdk
 
-# ── Linux (system paths that must follow Nix) ───────────────────────────────
 if IS_LINUX:
+    # System paths after Nix so Nix binaries take precedence
     for _p in ['/usr/sbin', '/usr/bin', '/usr/local/bin']:
         $PATH.insert(0, _p)
 
