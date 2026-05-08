@@ -24,8 +24,8 @@ mise:
     mise install
     mise trust ~/.config/mise.toml
 
-# Bump mise tool version pins to latest and write back to mise.toml.tmpl
-upgrade:
+[private]
+mise-bump:
     ~/.config/scripts/upgrade
 
 # Apply chezmoi config and rebuild Nix (home-manager switch / darwin-rebuild)
@@ -118,13 +118,15 @@ fedora-upgrade VERSION="44":
     sudo env -u LD_LIBRARY_PATH dnf system-upgrade download --releasever={{VERSION}} --allowerasing
     sudo env -u LD_LIBRARY_PATH dnf system-upgrade reboot
 
-# Full sync: upgrade everything, bump mise pins, re-add flake.lock and mutable configs to chezmoi
+# Full sync: upgrade everything, bump version pins, save state to chezmoi sources
 sync:
-    just update readd_flake_lock=true bump=true
+    just upgrade
+    just mise-bump
+    chezmoi re-add "$HOME/.config/nix/flake.lock"
     chezmoi re-add ~/.pi/agent/settings.json
 
-# Daily update — refresh OS packages, Nix/Home Manager, and user toolchains
-update readd_flake_lock="false" bump="false":
+# Upgrade everything: OS packages, Nix flake inputs + rebuild, mise tools, uv, pi extensions
+upgrade:
     #!/usr/bin/env bash
     set -euo pipefail
     case "$(uname -s)" in
@@ -139,14 +141,10 @@ update readd_flake_lock="false" bump="false":
             exit 1
             ;;
     esac
-    just nix-update "{{ readd_flake_lock }}"
+    just nix-update
     just nix
-    if [ "{{ bump }}" = "true" ]; then
-        just upgrade
-    else
-        mise upgrade --exclude pnpm
-        mise trust ~/.config/mise.toml
-    fi
+    mise upgrade --exclude pnpm
+    mise trust ~/.config/mise.toml
     uv tool upgrade --all
     if [ "$(uname -s)" = "Linux" ]; then
         just manual-deps
