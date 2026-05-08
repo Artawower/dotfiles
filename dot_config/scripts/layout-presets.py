@@ -735,6 +735,24 @@ def launch_preset(preset: Preset) -> dict[str, Any]:
         for pane_id in pane_targets
     ]
 
+    # Close the surface that launched the script — it has no role in the layout.
+    calling_surface = os.environ.get("CMUX_SURFACE_ID")
+    launcher_closed = False
+    if calling_surface:
+        try:
+            run_cmux(
+                [
+                    "close-surface",
+                    "--workspace",
+                    workspace,
+                    "--surface",
+                    calling_surface,
+                ]
+            )
+            launcher_closed = True
+        except CommandError:
+            pass  # best-effort; don't fail the whole launch
+
     return {
         "status": "ok",
         "preset": preset.id,
@@ -745,6 +763,7 @@ def launch_preset(preset: Preset) -> dict[str, Any]:
         "parallel": True,
         "panes": panes,
         "launched": launched,
+        "launcher_closed": launcher_closed,
     }
 
 
