@@ -184,8 +184,8 @@ def get_root_pane(workspace: str) -> PaneTarget:
         workspace=workspace,
         ref=pane_ref,
         uuid=pane_uuid,
-        selected_surface_ref=None,
-        selected_surface_uuid=None,
+        selected_surface_ref=pane.get("selected_surface_ref"),
+        selected_surface_uuid=pane.get("selected_surface_id"),
     )
 
 
@@ -194,9 +194,11 @@ def create_split(workspace: str, parent: PaneTarget, direction: str) -> PaneTarg
     before_ids = {item["id"] for item in before if item.get("id")}
     before_refs = {item["ref"] for item in before if item.get("ref")}
 
-    output = run_cmux(
-        ["new-split", direction, "--workspace", workspace, "--pane", parent.uuid]
-    )
+    surface_id = parent.selected_surface_uuid or parent.selected_surface_ref
+    split_args = ["new-split", direction, "--workspace", workspace]
+    if surface_id:
+        split_args.extend(["--surface", surface_id])
+    output = run_cmux(split_args)
     fields = parse_key_values(output)
     created_ref = fields.get("pane")
 
@@ -623,13 +625,11 @@ def reuse_selected_surface(pane: PaneTarget, title: str) -> SurfaceTarget:
     return surface
 
 
-def initialize_tab(
-    surface: SurfaceTarget, startup_command: str | None, cwd: str
-) -> None:
+def initialize_tab(surface: SurfaceTarget, startup_command: str | None) -> None:
+    if not startup_command:
+        return
     wait_for_shell_ready(surface)
-    send_text(surface, f"cd {shlex.quote(cwd)}")
-    if startup_command:
-        send_text(surface, startup_command)
+    send_text(surface, startup_command)
 
 
 def render_preset(preset: Preset, cwd: str) -> list[RenderedTab]:
@@ -700,9 +700,7 @@ def launch_preset(preset: Preset) -> dict[str, Any]:
     initialization_errors: list[str] = []
     with ThreadPoolExecutor(max_workers=len(created_tabs) or 1) as executor:
         future_to_rendered = {
-            executor.submit(
-                initialize_tab, surface, rendered.startup_command, cwd
-            ): rendered
+            executor.submit(initialize_tab, surface, rendered.startup_command): rendered
             for rendered, surface in created_tabs
         }
         for future in as_completed(future_to_rendered):
@@ -811,7 +809,7 @@ def add_single_tab(tab: TabSpec) -> dict[str, Any]:
     else:
         startup_command = None
 
-    initialize_tab(surface, startup_command, cwd)
+    initialize_tab(surface, startup_command)
 
     return {
         "status": "ok",
