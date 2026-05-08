@@ -47,11 +47,13 @@ def _vis(args):
 
 
 def _docker_clean(args):
+    """Remove all unused Docker images, containers, networks, and volumes."""
     ![docker image prune -a]
     ![docker system prune -a --volumes]
 
 
 def _clean_space(args):
+    """Free disk space: Docker cleanup + Nix garbage collection."""
     _docker_clean(args)
     ![nix-collect-garbage]
 
@@ -140,8 +142,6 @@ if platform.system() == 'Linux':
 
     aliases['limit'] = _limit
 
-
-# ── Alias registrations ─────────────────────────────────────────────────────
 
 aliases['hx']          = _hx
 aliases['vis']         = _vis

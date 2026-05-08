@@ -17,6 +17,7 @@ from pathlib import Path
 from pprint import pprint
 
 import sys as _sys
+# xontrib-sh: lets xonsh source bash/sh scripts (needed for hm-session-vars below)
 if 'xontrib.sh' not in _sys.modules:
     try:
         import xontrib.sh
@@ -42,7 +43,7 @@ source @(config_dir / 'zoxide.xsh')
 source @(config_dir / 'autoenv.xsh')
 source @(config_dir / 'smartenv.xsh')
 
-source-bash ~/.nix-profile/etc/profile.d/hm-session-vars.sh
+source-bash ~/.nix-profile/etc/profile.d/hm-session-vars.sh  # Home Manager session env vars (PATH, LOCALE, etc.)
 
 # Nix home-manager sets LD_LIBRARY_PATH with Nix libs, which breaks
 # Fedora system binaries (e.g. libz version mismatch in binutils).

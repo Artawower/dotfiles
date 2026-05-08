@@ -60,18 +60,15 @@ aliases['sudo'] = 'sudo env PATH=$PATH'
 aliases['j'] = 'just ~/.config/'
 
 if platform.system() == 'Darwin':
-    # Yabai window queries
     aliases['yabai-apps']   = "yabai -m query --windows | jq '.[].app'"
     aliases['yabai-titles'] = "yabai -m query --windows | jq '.[].title'"
 
-    # Yabai layout scripts keyed by hostname
-    _hostname = socket.gethostname()
-    _hostname = _hostname if '.' in _hostname else f'{_hostname}.local'
+    _fqdn = socket.gethostname()
+    _fqdn = _fqdn if '.' in _fqdn else f'{_fqdn}.local'
     _home = str(Path.home())
-    aliases['displays']          = f'{_home}/.config/yabai/layouts/{_hostname}/desktop.sh'
+    aliases['displays']          = f'{_home}/.config/yabai/layouts/{_fqdn}/desktop.sh'
     aliases['preserve-displays'] = f'{_home}/.config/yabai/restore-script.sh'
-    del _home
-    del _hostname
+    del _home, _fqdn
 
 
 def _load_ssh_aliases() -> None:

@@ -26,12 +26,12 @@ $XONSH_STYLE_OVERRIDES = {
 
 $TITLE = '{current_job:{} | }{cwd}'
 
-_gpg = _subprocess.run(['tty'], capture_output=True, text=True)
-if _gpg.returncode == 0 and _gpg.stdout.strip():
-    $GPG_TTY = _gpg.stdout.strip()
-del _gpg
+_tty = _subprocess.run(['tty'], capture_output=True, text=True)
+if _tty.returncode == 0 and _tty.stdout.strip():
+    $GPG_TTY = _tty.stdout.strip()
+del _tty
 
-$LSP_USE_PLISTS          = 'true'
+$LSP_USE_PLISTS          = 'true'   # Emacs lsp-mode: faster plist-based deserialization
 $DOTNET_CLI_TELEMETRY_OPTOUT = '1'
 $DOTNET_ROLL_FORWARD     = 'Major'
 
