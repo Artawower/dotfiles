@@ -52,8 +52,6 @@ aliases['dc']  = 'docker compose'
 aliases['dcu'] = 'docker compose up'
 aliases['d']   = 'docker'
 
-# Nix
-aliases['uclean'] = 'sudo nix-collect-garbage -d'
 
 # Preserve PATH inside sudo (needed for Nix/mise commands)
 aliases['sudo'] = 'sudo env PATH=$PATH'
