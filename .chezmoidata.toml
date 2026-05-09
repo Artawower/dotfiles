@@ -1,29 +1,28 @@
-layout = "colemak"
-
-username = "darkawower"
-hostname = "Arturs-MacBook-Pro"
-full_name = "Artur Iaroshenko"
 email = "artawower@protonmail.com"
+full_name = "Artur Iaroshenko"
 gpg_key_darwin = "4357424B95BAB5C5"
 gpg_key_linux = "542983F6B228CCC1"
-
-[models]
-# Role-based model selection — override to match your providers/budget
-default = "anthropic/claude-sonnet-4-6"
-quick = "anthropic/claude-haiku-4-5-20251001" # fast + cheap: routing, research, critique
-research = "openai/gpt-5.4"                   # deep analysis, planning, architecture
-coder = "openai/gpt-5.5"                      # code generation
-reviewer = "anthropic/claude-sonnet-4-6"      # code review, quality
+hostname = "Arturs-MacBook-Pro"
+layout = "colemak"
+username = "darkawower"
 
 [features]
 ai = true
 core = true
-vcs = true
 emacs = true
 frontend = true
 go = true
+helix = true
 keyboard = true
 python = true
 rust = true
 terminal = true
 tiling = true
+vcs = true
+
+[models]
+coder = "openai/gpt-5.5"
+default = "anthropic/claude-sonnet-4-6"
+quick = "anthropic/claude-haiku-4-5-20251001"
+research = "openai/gpt-5.4"
+reviewer = "anthropic/claude-sonnet-4-6"

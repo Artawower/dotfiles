@@ -32,6 +32,8 @@ in
       pandoc
       marksman
       yaml-language-server
+
+      multimarkdown
     ];
   };
 }
